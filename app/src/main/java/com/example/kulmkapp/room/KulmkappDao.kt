@@ -19,4 +19,9 @@ interface KulmkappDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertKulmkappItem(vararg kulmkappItem: KulmkappItemEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertIngredient(vararg ingredient: IngredientEntity)
+
+
+
 }
