@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">kulmkApp</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_dashboard">Shopping list</string>
+    <string name="title_notifications">Recipes</string>
+    <string name="fridge_string">Fridge</string>
 </resources>

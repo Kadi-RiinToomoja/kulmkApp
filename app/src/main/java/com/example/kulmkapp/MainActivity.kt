@@ -38,5 +38,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         Log.i(TAG, db.getKulmkappDao().loadAllIngredients().toString())
+
+        //SpoonacularAPI.getRecipes(applicationContext)
     }
 }
