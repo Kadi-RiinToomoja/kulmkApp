@@ -6,6 +6,7 @@ import java.util.*
 
 @Entity(tableName = "Ingredients")
 class IngredientEntity (
+    @PrimaryKey
     var id: Int,
     var name: String,
 ){

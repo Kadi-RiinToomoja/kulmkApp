@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
+@TypeConverters(DateTypeConverter::class)
 @Database(
-    entities = [IngredientEntity::class, KulmkappItemEntity::class, RecipeEntity::class],
-    version = 1
+    entities = [IngredientEntity::class, KulmkappItemEntity::class, RecipeEntity::class, RecipeIngredientEntity::class],
+    version = 3
 )
 abstract class LocalRoomDb : RoomDatabase() {
 

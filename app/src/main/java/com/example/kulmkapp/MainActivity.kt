@@ -9,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.kulmkapp.databinding.ActivityMainBinding
+import com.example.kulmkapp.room.IngredientEntity
 import com.example.kulmkapp.room.LocalRoomDb
 
 class MainActivity : AppCompatActivity() {
@@ -37,6 +38,9 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        val moos = IngredientEntity(10, "Moos")
+        db.getKulmkappDao().insertIngredient(moos)
+
         Log.i(TAG, db.getKulmkappDao().loadAllIngredients().toString())
 
         //SpoonacularAPI.getRecipes(applicationContext)

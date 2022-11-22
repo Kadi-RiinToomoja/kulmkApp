@@ -38,6 +38,10 @@ interface KulmkappDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipe(vararg recipe: RecipeEntity)
 
+    @Query("SELECT * FROM RecipeIngredients WHERE recipeId == :id")
+    fun loadAllIngredientsForRecipe(vararg id: Int): List<RecipeIngredientEntity>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertRecipeIngredient(vararg recipe: RecipeIngredientEntity)
 
 }
