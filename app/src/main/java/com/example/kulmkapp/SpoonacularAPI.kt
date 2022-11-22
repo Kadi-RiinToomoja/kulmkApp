@@ -18,12 +18,31 @@ object SpoonacularAPI {
                 if(e!=null){
                     Log.e("Error", "Something was wrong! ${e.message}")
                 } else {
-                    val cities = result
-                    Log.d("Response", result.toString())
-                    Log.d("Response", result.get(0).asJsonObject.get("missedIngredients").asJsonArray.toString())
-                    Log.d("Response", result.get(0).asJsonObject.get("missedIngredients").asJsonArray.get(0).asJsonObject.get("name").asString)
+                    var recipes = mutableListOf<Recipe>()
+                    result.forEach {
+                        var recipeId = it.asJsonObject.get("id").asInt
+                        var imageUrl = it.asJsonObject.get("image").asString
+                        var recipeName = it.asJsonObject.get("title").asString
+
+                        var missedIngredients = mutableListOf<String>()
+                        it.asJsonObject.get("missedIngredients").asJsonArray.forEach { ingredient ->
+                            missedIngredients.add(ingredient.asJsonObject.get("name").asString)
+                        }
+
+                        var usedIngredients = mutableListOf<String>()
+                        it.asJsonObject.get("usedIngredients").asJsonArray.forEach { ingredient ->
+                            usedIngredients.add(ingredient.asJsonObject.get("name").asString)
+                        }
+
+                        recipes.add(Recipe(recipeId, imageUrl, recipeName, usedIngredients, missedIngredients))
+                    }
+                    recipes.forEach {
+
+                    }
+                    Log.d("SpoonacularResponse", recipes.toString())
 
                 }
             }
     }
 }
+
