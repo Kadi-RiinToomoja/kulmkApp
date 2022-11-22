@@ -43,6 +43,6 @@ class MainActivity : AppCompatActivity() {
 
         Log.i(TAG, db.getKulmkappDao().loadAllIngredients().toString())
 
-        //SpoonacularAPI.getRecipes(applicationContext)
+        //SpoonacularAPI.getRecipes(applicationContext, "apples,+flour,+sugar")
     }
 }
