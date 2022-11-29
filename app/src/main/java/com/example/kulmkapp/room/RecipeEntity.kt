@@ -8,8 +8,7 @@ class RecipeEntity(
     @PrimaryKey
     val id: Int,
     val title: String,
-    //val usedIngredients: List<IngredientEntity>, // tee uus table recipeingredients
-    //val missedIngredients: List<IngredientEntity>,
+    // uues tablis RecipeIngredients on sellesama id järgi ingrediendi id
     val imgUrl: String?
 ) {
     constructor() : this(0, "", "")
