@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.kulmkapp.databinding.FragmentDashboardBinding
 import com.example.kulmkapp.logic.IngredientsList
+import com.example.kulmkapp.room.KulmkappDao
 
 class DashboardFragment : Fragment() {
 
@@ -41,8 +42,9 @@ class DashboardFragment : Fragment() {
     fun readIngredientsList(){
         var activity = this.activity
         if(activity!=null){
-            val classObject = IngredientsList(activity)
-            classObject.readIngredients()
+            val dao = KulmkappDao() //TODO: siin peaks võtma meie dao kuskilt
+            val classObject = IngredientsList(activity, dao)
+            classObject.readIngredientsIfNeeded()
         }
 
     }
