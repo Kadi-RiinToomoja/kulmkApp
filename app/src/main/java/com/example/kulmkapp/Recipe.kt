@@ -1,9 +1,11 @@
 package com.example.kulmkapp
 
+import com.example.kulmkapp.room.IngredientEntity
+
 data class Recipe(var recipeId: Int,
-                  var imageUrl: String,
                   var recipeName: String,
-                  var usedIngredients: List<String>,
-                  var missedIngredients: List<String>)
+                  var imageUrl: String,
+                  var usedIngredients: MutableList<IngredientEntity>,
+                  var missedIngredients: MutableList<IngredientEntity>)
 {
 }
