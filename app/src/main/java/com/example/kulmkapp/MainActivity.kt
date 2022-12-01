@@ -1,6 +1,7 @@
 package com.example.kulmkapp
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -8,16 +9,22 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.kulmkapp.databinding.ActivityMainBinding
+import com.example.kulmkapp.room.IngredientEntity
+import com.example.kulmkapp.room.LocalRoomDb
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var db: LocalRoomDb // 123
+    var TAG = "MyMainActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        db = LocalRoomDb.getInstance(applicationContext)
 
         val navView: BottomNavigationView = binding.navView
 
@@ -31,7 +38,11 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        val moos = IngredientEntity(10, "Moos")
+        db.getKulmkappDao().insertIngredient(moos)
 
-        //SpoonacularAPI.getRecipes(applicationContext)
+        Log.i(TAG, db.getKulmkappDao().loadAllIngredients().toString())
+
+        //SpoonacularAPI.getRecipes(applicationContext, "apples,+flour,+sugar")
     }
 }

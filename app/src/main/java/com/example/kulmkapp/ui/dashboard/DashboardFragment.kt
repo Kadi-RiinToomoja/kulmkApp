@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.kulmkapp.databinding.FragmentDashboardBinding
+import com.example.kulmkapp.logic.IngredientsList
 
 class DashboardFragment : Fragment() {
 
@@ -32,8 +33,20 @@ class DashboardFragment : Fragment() {
         dashboardViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
+        readIngredientsList()
         return root
     }
+
+    fun readIngredientsList(){
+        var activity = this.activity
+        if(activity!=null){
+            val classObject = IngredientsList(activity)
+            classObject.readIngredients()
+        }
+
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
