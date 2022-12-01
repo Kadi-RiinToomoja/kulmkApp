@@ -1,9 +1,8 @@
-package com.example.kulmkapp
+package com.example.kulmkapp.ui.recipes
 
 import android.content.Context
 import android.util.Log
 import com.example.kulmkapp.room.IngredientEntity
-import com.example.kulmkapp.room.RecipeEntity
 import com.koushikdutta.ion.Ion
 
 object SpoonacularAPI {

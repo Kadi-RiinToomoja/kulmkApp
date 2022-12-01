@@ -1,4 +1,4 @@
-package com.example.kulmkapp
+package com.example.kulmkapp.ui.recipes
 
 import com.example.kulmkapp.room.IngredientEntity
 

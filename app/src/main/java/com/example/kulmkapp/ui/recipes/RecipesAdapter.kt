@@ -1,4 +1,4 @@
-package com.example.kulmkapp.ui.dashboard
+package com.example.kulmkapp.ui.recipes
 
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +21,7 @@ class RecipesAdapter(var data: List<RecipeEntity> =  listOf(),
     inner class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.single_recipe_2, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.single_recipe, parent, false)
         return RecipeViewHolder(view)
     }
 
