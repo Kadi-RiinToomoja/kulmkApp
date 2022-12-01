@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kulmkapp.databinding.FragmentDashboardBinding
 
 class DashboardFragment : Fragment() {
@@ -16,6 +18,8 @@ class DashboardFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var recipesAdapter: RecipesAdapter
+    val model: RecipeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +36,22 @@ class DashboardFragment : Fragment() {
         dashboardViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+        setupRecyclerView()
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        model.refresh()
+        recipesAdapter.data = model.recipeArray
+        recipesAdapter.notifyDataSetChanged()
+    }
+
+    private fun setupRecyclerView() {
+        val recipeClickListener = RecipesAdapter.RecipeClickListener { p -> p }
+        recipesAdapter = RecipesAdapter(model.recipeArray, recipeClickListener)
+        binding.recyclerviewRecipelist.adapter = recipesAdapter
+        binding.recyclerviewRecipelist.layoutManager = GridLayoutManager(context, 2)
     }
 
     override fun onDestroyView() {
