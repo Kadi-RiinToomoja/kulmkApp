@@ -1,9 +1,8 @@
-package com.example.kulmkapp
+package com.example.kulmkapp.ui.recipes
 
 import android.content.Context
 import android.util.Log
 import com.example.kulmkapp.room.IngredientEntity
-import com.example.kulmkapp.room.RecipeEntity
 import com.koushikdutta.ion.Ion
 
 object SpoonacularAPI {
@@ -20,7 +19,7 @@ object SpoonacularAPI {
                 if(e!=null){
                     Log.e("Error", "Something was wrong! ${e.message}")
                 } else {
-                    var recipes = mutableListOf<RecipeEntity>()
+                    var recipes = mutableListOf<Recipe>()
                     result.forEach {
                         var recipeId = it.asJsonObject.get("id").asInt
                         var recipeName = it.asJsonObject.get("title").asString
@@ -37,7 +36,7 @@ object SpoonacularAPI {
 
                         var imageUrl = it.asJsonObject.get("image").asString
 
-                        //recipes.add(RecipeEntity(recipeId, recipeName, usedIngredients, missedIngredients, imageUrl))
+                        recipes.add(Recipe(recipeId, recipeName, imageUrl, usedIngredients, missedIngredients))
                     }
                     Log.d("SpoonacularResponse", recipes.toString())
 
