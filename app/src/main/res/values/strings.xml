@@ -2,4 +2,5 @@
 <resources>
     <string name="title_recipes">Recipes</string>
     <string name="title_shopping_list">Shopping list</string>
+    <string name="app_name">KulmkApp</string>
 </resources>
