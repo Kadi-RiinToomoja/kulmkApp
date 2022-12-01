@@ -10,10 +10,10 @@ class IngredientsEntity (
     var id: Int,
     var name: String,
     var type: String,
-    var expireDate: Date?
+    //var expireDate: Date?
 ){
     // Companion objects are used for static definitions in Kotlin
     companion object { const val DATEFORMAT = "dd/MM/yyyy" }
 
-    constructor() : this(0, "", "", Date())
+    constructor() : this(0, "", "")
 }
