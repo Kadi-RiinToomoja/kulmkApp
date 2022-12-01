@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.kulmkapp.databinding.FragmentFridgeBinding
 import com.example.kulmkapp.logic.IngredientsList
 import com.example.kulmkapp.room.KulmkappDao
+import com.example.kulmkapp.room.LocalRoomDb
 
 class FridgeFragment : Fragment() {
 
@@ -40,7 +41,7 @@ class FridgeFragment : Fragment() {
     fun readIngredientsList(){
         var activity = this.activity
         if(activity!=null){
-            val dao = KulmkappDao() //TODO: siin peaks võtma meie dao kuskilt
+            val dao = LocalRoomDb.getInstance(activity).getKulmkappDao() // KulmkappDao() //TODO: siin peaks võtma meie dao kuskilt
             val classObject = IngredientsList(activity, dao)
             classObject.readIngredientsIfNeeded()
         }

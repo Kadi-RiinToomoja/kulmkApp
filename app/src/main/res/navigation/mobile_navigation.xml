@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/navigation_fridge"
         android:name="com.example.kulmkapp.ui.fridge.FridgeFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/fridge_string"
         tools:layout="@layout/fragment_fridge" />
 
     <fragment

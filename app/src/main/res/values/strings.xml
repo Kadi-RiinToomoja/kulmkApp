@@ -2,5 +2,7 @@
 <resources>
     <string name="title_recipes">Recipes</string>
     <string name="title_shopping_list">Shopping list</string>
+    <string name="fridge_string">Fridge</string>
     <string name="app_name">KulmkApp</string>
+    <string name="title_home">Home</string>
 </resources>
