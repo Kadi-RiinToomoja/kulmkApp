@@ -20,6 +20,6 @@
     <fragment
         android:id="@+id/navigation_recipes"
         android:name="com.example.kulmkapp.ui.recipes.RecipesFragment"
-        android:label="@string/title_notifications"
+        android:label="@string/title_recipes"
         tools:layout="@layout/fragment_recipes" />
 </navigation>
