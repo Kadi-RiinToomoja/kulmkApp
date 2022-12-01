@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.kulmkapp.databinding.FragmentFridgeBinding
+import com.example.kulmkapp.logic.IngredientsList
+import com.example.kulmkapp.room.KulmkappDao
 
 class FridgeFragment : Fragment() {
 
@@ -33,6 +35,15 @@ class FridgeFragment : Fragment() {
             textView.text = it
         }
         return root
+    }
+
+    fun readIngredientsList(){
+        var activity = this.activity
+        if(activity!=null){
+            val dao = KulmkappDao() //TODO: siin peaks võtma meie dao kuskilt
+            val classObject = IngredientsList(activity, dao)
+            classObject.readIngredientsIfNeeded()
+        }
     }
 
     override fun onDestroyView() {
