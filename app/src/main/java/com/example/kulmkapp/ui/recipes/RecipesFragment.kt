@@ -5,11 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.kulmkapp.R
 import com.example.kulmkapp.databinding.FragmentRecipesBinding
+import com.example.kulmkapp.room.RecipeEntity
 
 class RecipesFragment : Fragment() {
 
@@ -36,6 +42,7 @@ class RecipesFragment : Fragment() {
         dashboardViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+        this.setHasOptionsMenu(false)
         setupRecyclerView()
         return root
     }
@@ -48,7 +55,7 @@ class RecipesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val recipeClickListener = RecipesAdapter.RecipeClickListener { p -> p }
+        val recipeClickListener = RecipesAdapter.RecipeClickListener { p -> openRecipeDetails(p) }
         recipesAdapter = RecipesAdapter(model.recipeArray, recipeClickListener)
         binding.recyclerviewRecipelist.adapter = recipesAdapter
         binding.recyclerviewRecipelist.layoutManager = GridLayoutManager(context, 2)
@@ -57,5 +64,11 @@ class RecipesFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun openRecipeDetails(recipe: RecipeEntity) {
+        val bundle = Bundle()
+        bundle.putInt("recipeId", recipe.id)
+        findNavController().navigate(R.id.action_open_recipe_details, bundle)
     }
 }

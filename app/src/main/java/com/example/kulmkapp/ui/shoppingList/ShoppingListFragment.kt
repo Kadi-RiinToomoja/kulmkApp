@@ -32,6 +32,7 @@ class ShoppingListFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+        this.setHasOptionsMenu(false)
         return root
     }
 

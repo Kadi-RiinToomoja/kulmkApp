@@ -32,6 +32,7 @@ class FridgeFragment : Fragment() {
         notificationsViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+        this.setHasOptionsMenu(false)
         return root
     }
 
