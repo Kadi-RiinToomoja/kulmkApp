@@ -38,11 +38,21 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        testDB()
+
+        //SpoonacularAPI.getRecipes(applicationContext, "apples,+flour,+sugar")
+    }
+
+    private fun testDB() {
         val moos = IngredientEntity(10, "Moos")
         db.getKulmkappDao().insertIngredient(moos)
 
-        Log.i(TAG, db.getKulmkappDao().loadAllIngredients().toString())
+        val items = db.getKulmkappDao().loadAllIngredients()
+        for (item in items) {
+            Log.i("$TAG TestDB", item.name)
+        }
 
-        //SpoonacularAPI.getRecipes(applicationContext, "apples,+flour,+sugar")
+
     }
 }

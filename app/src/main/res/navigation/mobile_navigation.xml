@@ -14,13 +14,13 @@
     <fragment
         android:id="@+id/navigation_fridge"
         android:name="com.example.kulmkapp.ui.fridge.FridgeFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/fridge_string"
         tools:layout="@layout/fragment_fridge" />
 
     <fragment
         android:id="@+id/navigation_recipes"
         android:name="com.example.kulmkapp.ui.recipes.RecipesFragment"
-        android:label="@string/title_notifications"
+        android:label="@string/title_recipes"
         tools:layout="@layout/fragment_recipes" >
         <action
             android:id="@+id/action_open_recipe_details"

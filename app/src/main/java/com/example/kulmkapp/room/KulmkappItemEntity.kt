@@ -8,12 +8,11 @@ import java.util.Date
 class KulmkappItemEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val name: String,
-    val nameInList: String,
-    val idInList: Int,
-    val amount: Float,
-    val type: Int,
+    val customName: String,
+    val idInList: Int, // null kui ei ole sellist asja
+    val amount: Float?,
+    val isInFridge: Int, // is in fridge 1, is not 0, doesn't go there -1
     val expireDate: Date?
 ) {
-    constructor() : this(0, "", "", 0, 0f, 0, Date())
+    constructor() : this(0, "", 0, 0f, 0, Date())
 }

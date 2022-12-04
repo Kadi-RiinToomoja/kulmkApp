@@ -25,7 +25,7 @@ interface KulmkappDao {
     // KulmkappItems
 
     @Query("SELECT * FROM KulmkappItems")
-    fun loadAllKulmkappItems(): List<IngredientEntity>
+    fun loadAllKulmkappItems(): List<KulmkappItemEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertKulmkappItem(vararg kulmkappItem: KulmkappItemEntity)

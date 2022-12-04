@@ -1,7 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">kulmkApp</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Shopping list</string>
-    <string name="title_notifications">Recipes</string>
+    <string name="title_recipes">Recipes</string>
+    <string name="title_shopping_list">Shopping list</string>
     <string name="fridge_string">Fridge</string>
+    <string name="app_name">KulmkApp</string>
+    <string name="title_home">Home</string>
 </resources>
