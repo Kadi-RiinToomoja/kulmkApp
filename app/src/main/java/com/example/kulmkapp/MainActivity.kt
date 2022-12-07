@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         //SpoonacularAPI.getRecipes(applicationContext, "apples,+flour,+sugar")
     }
+    
 
     private fun testDB() {
         val moos = IngredientEntity(10, "Moos")
