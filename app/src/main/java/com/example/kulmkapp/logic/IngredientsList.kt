@@ -19,7 +19,7 @@ class IngredientsList(val activity : Activity, val dao: KulmkappDao) {
         Log.i(TAG, "test reading ingredients list")
 
         val existingIngredientEntities = dao.loadAllIngredients()
-        if(existingIngredientEntities.size!=0){
+        if(existingIngredientEntities.size==0){
             Log.i(TAG, "reading ingredients")
             readIngredients()
         }

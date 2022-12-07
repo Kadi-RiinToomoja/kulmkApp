@@ -42,7 +42,7 @@ class FridgeFragment : Fragment() {
     fun readIngredientsList(){
         var activity = this.activity
         if(activity!=null){
-            val dao = LocalRoomDb.getInstance(activity).getKulmkappDao() // KulmkappDao() //TODO: siin peaks võtma meie dao kuskilt
+            val dao = LocalRoomDb.getInstance(activity).getKulmkappDao()
             val classObject = IngredientsList(activity, dao)
             classObject.readIngredientsIfNeeded()
         }
