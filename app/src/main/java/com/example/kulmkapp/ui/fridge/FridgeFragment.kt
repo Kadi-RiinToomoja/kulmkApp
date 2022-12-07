@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kulmkapp.databinding.FragmentFridgeBinding
 import com.example.kulmkapp.logic.IngredientsList
 import com.example.kulmkapp.room.KulmkappDao
@@ -36,7 +37,16 @@ class FridgeFragment : Fragment() {
             textView.text = it
         }
         this.setHasOptionsMenu(false)
+        setupRecyclerView()
         return root
+    }
+
+    private fun setupRecyclerView() {
+        val fridgeClickListener =
+            FridgeAdapter.RecipeClickListener { p -> openRecipeDetailsActivity(p) }
+        fridgeAdapter = FridgeAdapter(model.recipeArray, recipeClickListener, model)
+        binding.recyclerviewRecipelist.adapter = recipesAdapter
+        binding.recyclerviewRecipelist.layoutManager = LinearLayoutManager(this)
     }
 
     fun readIngredientsList(){
