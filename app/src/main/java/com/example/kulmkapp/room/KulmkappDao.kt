@@ -41,6 +41,9 @@ interface KulmkappDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipe(vararg recipe: RecipeEntity)
 
+    @Query("UPDATE Recipes SET recipeUrl = :recipeUrl WHERE id = :id")
+    fun updateRecipe(id: Int, recipeUrl: String)
+
     @Query("SELECT * FROM RecipeIngredients WHERE recipeId == :id")
     fun loadAllIngredientsForRecipe(vararg id: Int): List<RecipeIngredientEntity>
 
