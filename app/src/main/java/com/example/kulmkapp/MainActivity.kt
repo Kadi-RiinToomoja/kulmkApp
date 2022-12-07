@@ -11,6 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.kulmkapp.databinding.ActivityMainBinding
 import com.example.kulmkapp.room.IngredientEntity
 import com.example.kulmkapp.room.LocalRoomDb
+import com.example.kulmkapp.ui.recipes.SpoonacularAPI
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         testDB()
 
-        //SpoonacularAPI.getRecipes(applicationContext, "apples,+flour,+sugar")
+        //SpoonacularAPI.getRecipes(applicationContext, "apples,+flour,+sugar", db)
     }
 
     private fun testDB() {
