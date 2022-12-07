@@ -9,7 +9,8 @@ class RecipeEntity(
     val id: Int,
     val title: String,
     // uues tablis RecipeIngredients on sellesama id järgi ingrediendi id
-    val imgUrl: String?
+    val imgUrl: String?,
+    val recipeUrl: String?
 ) {
-    constructor() : this(0, "", "")
+    constructor() : this(0, "", "", "")
 }

@@ -1,5 +1,7 @@
 package com.example.kulmkapp.ui.recipes
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -55,7 +57,7 @@ class RecipesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val recipeClickListener = RecipesAdapter.RecipeClickListener { p -> openRecipeDetails(p) }
+        val recipeClickListener = RecipesAdapter.RecipeClickListener { recipe -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(recipe.recipeUrl))) }
         recipesAdapter = RecipesAdapter(model.recipeArray, recipeClickListener)
         binding.recyclerviewRecipelist.adapter = recipesAdapter
         binding.recyclerviewRecipelist.layoutManager = GridLayoutManager(context, 2)

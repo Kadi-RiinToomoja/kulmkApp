@@ -22,8 +22,10 @@ object SpoonacularAPI {
                 if (e != null) {
                     Log.e("Error", "Something was wrong! ${e.message}")
                 } else {
+                    var ids: MutableList<Int> = mutableListOf()
                     result.forEach {
                         var recipeId = it.asJsonObject.get("id").asInt
+                        ids.add(recipeId)
                         var recipeName = it.asJsonObject.get("title").asString
 
                         var usedIngredients = mutableListOf<IngredientEntity>()
@@ -50,7 +52,7 @@ object SpoonacularAPI {
 
                         // insert data
                         db.getKulmkappDao()
-                            .insertRecipe(RecipeEntity(recipeId, recipeName, imageUrl))
+                            .insertRecipe(RecipeEntity(recipeId, recipeName, imageUrl, null))
 
                         usedIngredients.forEach { item ->
                             db.getKulmkappDao().insertIngredient(item)
@@ -70,8 +72,38 @@ object SpoonacularAPI {
                         )
 
                     }
+                    // links to recipes
+                    getRecipesSources(context, ids, db)
                 }
             }
     }
+
+    fun getRecipesSources(context: Context, ids: List<Int>, db: LocalRoomDb) {
+        Ion.with(context)
+            .load("https://api.spoonacular.com/recipes/informationBulk")
+            .setHeader("x-api-key", "40a02b1a97644f4aaf69b9f2902f0b5b")
+            //?ingredients=apples,+flour,+sugar&number=2
+            .addQuery("ids", ids.joinToString(","))
+            .asJsonArray()
+            .setCallback { e, result ->
+                if (e != null) {
+                    Log.e("Error", "Something was wrong! ${e.message}")
+                } else {
+                    result.forEach {
+                        var recipeId = it.asJsonObject.get("id").asInt
+                        var recipeUrl = it.asJsonObject.get("sourceUrl").asString
+
+                        // insert data
+                        db.getKulmkappDao().updateRecipe(recipeId, recipeUrl)
+
+                        Log.d(
+                            "SpoonacularResponse link",
+                            "$recipeId $recipeUrl"
+                        )
+                    }
+                }
+            }
+    }
+
 }
 

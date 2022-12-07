@@ -9,7 +9,7 @@ import androidx.room.TypeConverters
 @TypeConverters(DateTypeConverter::class)
 @Database(
     entities = [IngredientEntity::class, KulmkappItemEntity::class, RecipeEntity::class, RecipeIngredientEntity::class],
-    version = 4
+    version = 5
 )
 abstract class LocalRoomDb : RoomDatabase() {
 
