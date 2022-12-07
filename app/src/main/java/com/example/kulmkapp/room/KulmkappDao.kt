@@ -56,6 +56,7 @@ interface KulmkappDao {
     @Query("DELETE FROM RecipeIngredients WHERE recipeId==:id")
     fun deleteRecipeIngredients(id: Int)
 
+
     @Transaction
     fun deleteRecipeAndItsIngredients(id : Int) {
         deleteRecipe(id)

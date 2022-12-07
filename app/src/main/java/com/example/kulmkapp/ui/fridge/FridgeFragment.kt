@@ -1,5 +1,7 @@
 package com.example.kulmkapp.ui.fridge
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -31,10 +33,14 @@ class FridgeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val notificationsViewModel =
-            ViewModelProvider(this).get(FridgeViewModel::class.java)
+            ViewModelProvider(this)[FridgeViewModel::class.java]
 
         _binding = FragmentFridgeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        binding.fridgeAddButton.setOnClickListener {
+            onClickOpenAdd()
+        }
 
         val textView: TextView = binding.textNotifications
         notificationsViewModel.text.observe(viewLifecycleOwner) {
@@ -47,11 +53,11 @@ class FridgeFragment : Fragment() {
 
     private fun setupRecyclerView() {
         //val fridgeClickListener =
-            //FridgeAdapter.FridgeItemClickListener { p -> openRecipeDetailsActivity(p) }
+        //FridgeAdapter.FridgeItemClickListener { p -> openRecipeDetailsActivity(p) }
         //kas me tahame et midagi avaneks kui klikkida ühele fridge itemile
 
         var activity = this.activity
-        if(activity!=null){
+        if (activity != null) {
             Log.i(TAG, "setting up recycler view")
             val dao = LocalRoomDb.getInstance(activity).getKulmkappDao()
             var kulmkappItems = dao.loadAllKulmkappItems()
@@ -66,8 +72,20 @@ class FridgeFragment : Fragment() {
             binding.fridgeRecyclerView.layoutManager = LinearLayoutManager(this.context)
         }
         Log.i(TAG, "setUpRecyclerView method ends")
+    }
 
+    fun onClickOpenAdd() {
+        val builder: AlertDialog.Builder? = activity?.let {
+            AlertDialog.Builder(it)
+        }
 
+        // 2. Chain together various setter methods to set the dialog characteristics
+        builder?.setMessage("this is a message uno")?.setTitle("this is title dos")
+
+        // 3. Get the <code><a href="/reference/android/app/AlertDialog.html">AlertDialog</a></code> from <code><a href="/reference/android/app/AlertDialog.Builder.html#create()">create()</a></code>
+        val dialog: AlertDialog? = builder?.create()
+
+        dialog?.show()
     }
 
     fun readIngredientsList(){
