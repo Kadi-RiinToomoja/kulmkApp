@@ -5,4 +5,5 @@
     <string name="fridge_string">Fridge</string>
     <string name="app_name">KulmkApp</string>
     <string name="title_home">Home</string>
+    <string name="title_recipe_details">Recipe details</string>
 </resources>

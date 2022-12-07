@@ -29,8 +29,8 @@
     <fragment
         android:id="@+id/recipeDetailsFragment"
         android:name="com.example.kulmkapp.ui.recipes.RecipeDetailsFragment"
-        android:label="fragment_recipe_details"
-        tools:layout="@layout/fragment_recipe_details" >
+        android:label="@string/title_recipe_details"
+        tools:layout="@layout/fragment_recipe_details">
         <action
             android:id="@+id/action_open_recipe_list"
             app:destination="@id/mobile_navigation" />
