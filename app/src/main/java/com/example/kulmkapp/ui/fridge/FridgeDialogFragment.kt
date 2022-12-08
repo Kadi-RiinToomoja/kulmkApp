@@ -22,7 +22,7 @@ class FridgeDialogFragment : DialogFragment() {
                 // Add action buttons
                 .setPositiveButton(R.string.add,
                     DialogInterface.OnClickListener { dialog, id ->
-                        // sign in the user ...
+                        // lisa asjad fridgesse
                     })
                 .setNegativeButton(R.string.cancel,
                     DialogInterface.OnClickListener { dialog, id ->
