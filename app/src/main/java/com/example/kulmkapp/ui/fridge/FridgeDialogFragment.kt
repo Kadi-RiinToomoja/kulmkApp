@@ -2,9 +2,12 @@ package com.example.kulmkapp.ui.fridge
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.example.kulmkapp.R
@@ -31,8 +34,8 @@ class FridgeDialogFragment : DialogFragment() {
                 .setPositiveButton(R.string.select_date,
                     DialogInterface.OnClickListener { dialog, id ->
                         // lisa asjad fridgesse
-                        showDatePickerDialog()
-
+                        //showDatePickerDialog()
+                        showSearchDialog(this.requireContext())
                     })
                 .setNegativeButton(R.string.cancel,
                     DialogInterface.OnClickListener { dialog, id ->
@@ -42,4 +45,25 @@ class FridgeDialogFragment : DialogFragment() {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
+    fun showSearchDialog(context: Context) {
+        val items = listOf("SSS", "rrra", "dsfoksdfn")
+        val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, items)
+
+        val searchSpinner = Spinner(context)
+        searchSpinner.adapter = adapter
+
+        val builder = androidx.appcompat.app.AlertDialog.Builder(context)
+            .setTitle("Search")
+            .setView(searchSpinner)
+            .setPositiveButton("Search") { dialog, _ ->
+                val selectedItem = searchSpinner.selectedItem as String
+                // Perform search with the selected item
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.cancel()
+            }
+
+        builder.show()
+    }
 }

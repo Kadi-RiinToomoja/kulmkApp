@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kulmkapp.R
 import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
-import com.example.kulmkapp.ui.fridge.FridgeFragment
 
 class FridgeAdapter(
     var data: List<FridgeItemEntity>,
@@ -62,7 +60,9 @@ class FridgeAdapter(
         dao.deleteFridgeItem(itemId)
         Log.i(TAG, dao.loadAllFridgeItems().toString())
         // refresh
-        //notifyDataSetChanged()
+        data = dao.loadAllFridgeItems();
+        notifyDataSetChanged()
     }
+
 
 }
