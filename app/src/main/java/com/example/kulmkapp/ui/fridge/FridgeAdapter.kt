@@ -62,6 +62,7 @@ class FridgeAdapter(
         dao.deleteFridgeItem(itemId)
         Log.i(TAG, dao.loadAllFridgeItems().toString())
         // refresh
+        //notifyDataSetChanged()
     }
 
 }

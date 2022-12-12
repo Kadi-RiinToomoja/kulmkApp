@@ -35,6 +35,7 @@ class FridgeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.i(TAG, "onCreateView start")
         val notificationsViewModel =
             ViewModelProvider(this)[FridgeViewModel::class.java]
 
@@ -56,10 +57,12 @@ class FridgeFragment : Fragment() {
         //addToDbTest() // lisab hoopis MainActivity-s db-sse ja siin ainult võtab
 
         setupRecyclerView()
+        Log.i(TAG, "onCreateView end")
         return root
     }
 
     private fun setupRecyclerView() {
+        Log.i(TAG, "resView start")
         //val fridgeClickListener =
         //FridgeAdapter.FridgeItemClickListener { p -> openRecipeDetailsActivity(p) }
         //kas me tahame et midagi avaneks kui klikkida ühele fridge itemile
@@ -103,12 +106,12 @@ class FridgeFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        model.refresh()
-        fridgeAdapter.data = model.fridgeArray
-        fridgeAdapter.notifyDataSetChanged()
-    }
+    //override fun onResume() {
+    //        super.onResume()
+    //        model.refresh()
+    //        fridgeAdapter.data = model.fridgeArray
+    //        fridgeAdapter.notifyDataSetChanged()
+    //    }
 
     override fun onDestroyView() {
         super.onDestroyView()
