@@ -10,18 +10,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kulmkapp.R
-import com.example.kulmkapp.room.KulmkappItemEntity
-import com.example.kulmkapp.room.LocalRoomDb
+import com.example.kulmkapp.logic.room.FridgeItemEntity
+import com.example.kulmkapp.logic.room.LocalRoomDb
 import com.example.kulmkapp.ui.fridge.FridgeFragment
 
 class FridgeAdapter(
-    var data: List<KulmkappItemEntity>,
+    var data: List<FridgeItemEntity>,
     var activity: Activity
 ) : RecyclerView.Adapter<FridgeAdapter.FridgeItemViewHolder>() {
 
     val TAG = "fridge adapter class"
     fun interface FridgeItemClickListener {
-        fun onFridgeItemClick(recipe: KulmkappItemEntity)
+        fun onFridgeItemClick(recipe: FridgeItemEntity)
     }
 
     inner class FridgeItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -58,11 +58,10 @@ class FridgeAdapter(
     private fun deleteItemFromFridge(itemId: Int) {
         // delete item
         Log.i(TAG, "Deleting item with id $itemId")
-        val dao = LocalRoomDb.getInstance(activity).getKulmkappDao()
-        dao.deleteKulmkappItem(itemId)
-        Log.i(TAG, dao.loadAllKulmkappItems().toString())
+        val dao = LocalRoomDb.getInstance(activity).getFridgeDao()
+        dao.deleteFridgeItem(itemId)
+        Log.i(TAG, dao.loadAllFridgeItems().toString())
         // refresh
-        notifyDataSetChanged()
     }
 
 }

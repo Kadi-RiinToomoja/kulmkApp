@@ -1,6 +1,5 @@
 package com.example.kulmkapp.ui.fridge
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,14 +8,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kulmkapp.databinding.FragmentFridgeBinding
 import com.example.kulmkapp.logic.IngredientsList
-import com.example.kulmkapp.room.KulmkappDao
-import com.example.kulmkapp.room.KulmkappItemEntity
-import com.example.kulmkapp.room.LocalRoomDb
+import com.example.kulmkapp.logic.room.FridgeDao
+import com.example.kulmkapp.logic.room.LocalRoomDb
 
 class FridgeFragment : Fragment() {
 
@@ -26,9 +24,11 @@ class FridgeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    val TAG = "fridge fragment"
+    private lateinit var fridgeAdapter: FridgeAdapter
+    val model: FridgeViewModel by viewModels()
+    private lateinit var dao: FridgeDao
 
-    private lateinit var dao: KulmkappDao // 123
+    val TAG = "fridge fragment"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +45,7 @@ class FridgeFragment : Fragment() {
             onClickOpenAdd()
         }
 
-        dao = LocalRoomDb.getInstance(requireContext()).getKulmkappDao()
+        dao = LocalRoomDb.getInstance(requireContext()).getFridgeDao()
 
         val textView: TextView = binding.textNotifications
         notificationsViewModel.text.observe(viewLifecycleOwner) {
@@ -67,7 +67,7 @@ class FridgeFragment : Fragment() {
         val activity = this.activity
         if (activity != null) {
             Log.i(TAG, "setting up recycler view")
-            var kulmkappItems = dao.loadAllKulmkappItems()
+            var kulmkappItems = dao.loadAllFridgeItems()
 
             val fridgeAdapter = FridgeAdapter(kulmkappItems, activity)
             binding.fridgeRecyclerView.adapter = fridgeAdapter
@@ -97,10 +97,17 @@ class FridgeFragment : Fragment() {
     fun readIngredientsList(){
         var activity = this.activity
         if(activity!=null){
-            val dao = LocalRoomDb.getInstance(activity).getKulmkappDao()
+            val dao = LocalRoomDb.getInstance(activity).getFridgeDao()
             val classObject = IngredientsList(activity, dao)
             classObject.readIngredientsIfNeeded()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        model.refresh()
+        fridgeAdapter.data = model.fridgeArray
+        fridgeAdapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {

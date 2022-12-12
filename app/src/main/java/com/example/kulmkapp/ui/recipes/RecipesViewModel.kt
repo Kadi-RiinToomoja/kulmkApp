@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.kulmkapp.room.LocalRoomDb
-import com.example.kulmkapp.room.RecipeEntity
+import com.example.kulmkapp.logic.room.LocalRoomDb
+import com.example.kulmkapp.logic.room.RecipeEntity
 
 class RecipesViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -16,7 +16,7 @@ class RecipesViewModel(application: Application) : AndroidViewModel(application)
     fun refresh() {
         // Reload dataset from DB, put it in in-memory list
         //recipeArray = listOf<RecipeEntity>(RecipeEntity(0, "example title", ""), RecipeEntity(1, "asfaf title", ""))
-        recipeArray = db.getKulmkappDao().loadAllRecipes()
+        recipeArray = db.getFridgeDao().loadAllRecipes()
     }
 
     private val _text = MutableLiveData<String>().apply {

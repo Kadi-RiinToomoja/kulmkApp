@@ -1,11 +1,11 @@
-package com.example.kulmkapp.room
+package com.example.kulmkapp.logic.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
-@Entity(tableName = "KulmkappItems")
-class KulmkappItemEntity(
+@Entity(tableName = "FridgeItems")
+class FridgeItemEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val customName: String,

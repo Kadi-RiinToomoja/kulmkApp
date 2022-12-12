@@ -6,12 +6,12 @@ import android.net.Uri
 import android.os.ParcelFileDescriptor.open
 import android.util.Log
 import com.example.kulmkapp.R
-import com.example.kulmkapp.room.IngredientEntity
-import com.example.kulmkapp.room.KulmkappDao
+import com.example.kulmkapp.logic.room.IngredientEntity
+import com.example.kulmkapp.logic.room.FridgeDao
 import java.io.File
 import java.io.InputStream
 
-class IngredientsList(val activity : Activity, val dao: KulmkappDao) {
+class IngredientsList(val activity : Activity, val dao: FridgeDao) {
     val TAG = "read ingredients list"
 
 

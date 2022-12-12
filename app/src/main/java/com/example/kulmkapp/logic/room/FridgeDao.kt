@@ -1,9 +1,9 @@
-package com.example.kulmkapp.room
+package com.example.kulmkapp.logic.room
 
 import androidx.room.*
 
 @Dao
-interface KulmkappDao {
+interface FridgeDao {
 
     // Ingredients
 
@@ -22,16 +22,16 @@ interface KulmkappDao {
     @Query("DELETE FROM Ingredients WHERE id==:ingredientId")
     fun deleteIngredient(ingredientId: Int)
 
-    // KulmkappItems
+    // FridgeItems
 
-    @Query("SELECT * FROM KulmkappItems")
-    fun loadAllKulmkappItems(): List<KulmkappItemEntity>
+    @Query("SELECT * FROM FridgeItems")
+    fun loadAllFridgeItems(): List<FridgeItemEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertKulmkappItem(vararg kulmkappItem: KulmkappItemEntity)
+    fun insertFridgeItem(vararg kulmkappItem: FridgeItemEntity)
 
-    @Query("DELETE FROM KulmkappItems WHERE id==:id")
-    fun deleteKulmkappItem(id: Int)
+    @Query("DELETE FROM FridgeItems WHERE id==:id")
+    fun deleteFridgeItem(id: Int)
 
     // Recipes
 
