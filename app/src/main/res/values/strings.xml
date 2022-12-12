@@ -13,4 +13,5 @@
     <string name="select_date">Select date</string>
     <string name="cancel">Cancel</string>
     <string name="add_product">Add product to fridge</string>
+    <string name="fridge_item_delete_button">Delete</string>
 </resources>

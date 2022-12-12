@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kulmkapp.databinding.FragmentFridgeBinding
 import com.example.kulmkapp.logic.IngredientsList
+import com.example.kulmkapp.room.KulmkappDao
 import com.example.kulmkapp.room.KulmkappItemEntity
 import com.example.kulmkapp.room.LocalRoomDb
 
@@ -26,6 +27,8 @@ class FridgeFragment : Fragment() {
     private val binding get() = _binding!!
 
     val TAG = "fridge fragment"
+
+    private lateinit var dao: KulmkappDao // 123
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,11 +45,16 @@ class FridgeFragment : Fragment() {
             onClickOpenAdd()
         }
 
+        dao = LocalRoomDb.getInstance(requireContext()).getKulmkappDao()
+
         val textView: TextView = binding.textNotifications
         notificationsViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         this.setHasOptionsMenu(false)
+
+        //addToDbTest() // lisab hoopis MainActivity-s db-sse ja siin ainult võtab
+
         setupRecyclerView()
         return root
     }
@@ -56,23 +64,18 @@ class FridgeFragment : Fragment() {
         //FridgeAdapter.FridgeItemClickListener { p -> openRecipeDetailsActivity(p) }
         //kas me tahame et midagi avaneks kui klikkida ühele fridge itemile
 
-        var activity = this.activity
+        val activity = this.activity
         if (activity != null) {
             Log.i(TAG, "setting up recycler view")
-            val dao = LocalRoomDb.getInstance(activity).getKulmkappDao()
             var kulmkappItems = dao.loadAllKulmkappItems()
 
-            val item1 = KulmkappItemEntity(1, "piim", 0, 1.0.toFloat(), 1, null)
-            val item2 = KulmkappItemEntity(2, "leib", 0, 1.0.toFloat(), 1, null)
-            kulmkappItems = listOf(item1, item2)
-
-            val fridgeAdapter = FridgeAdapter(kulmkappItems)
-
+            val fridgeAdapter = FridgeAdapter(kulmkappItems, activity)
             binding.fridgeRecyclerView.adapter = fridgeAdapter
             binding.fridgeRecyclerView.layoutManager = LinearLayoutManager(this.context)
         }
         Log.i(TAG, "setUpRecyclerView method ends")
     }
+
 
     fun onClickOpenAdd() {
         val newFragment: DialogFragment = FridgeDialogFragment()

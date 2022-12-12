@@ -1,19 +1,23 @@
 package com.example.kulmkapp.ui.fridge
 
+import android.app.Activity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kulmkapp.R
 import com.example.kulmkapp.room.KulmkappItemEntity
+import com.example.kulmkapp.room.LocalRoomDb
+import com.example.kulmkapp.ui.fridge.FridgeFragment
 
 class FridgeAdapter(
-    var data: List<KulmkappItemEntity>
+    var data: List<KulmkappItemEntity>,
+    var activity: Activity
 ) : RecyclerView.Adapter<FridgeAdapter.FridgeItemViewHolder>() {
-
 
     val TAG = "fridge adapter class"
     fun interface FridgeItemClickListener {
@@ -25,6 +29,7 @@ class FridgeAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FridgeItemViewHolder {
         Log.i(TAG, "oncreateviewholder called")
         val view = LayoutInflater.from(parent.context).inflate(R.layout.single_fridge_item, parent, false)
+
         return FridgeItemViewHolder(view)
     }
 
@@ -39,10 +44,25 @@ class FridgeAdapter(
             //model.chooseImage(recipe, pic, 200)//kordaja määrab pildi suurust
 
             //setOnClickListener { listener.onRecipeClick(recipe) }
+            val deleteButton: Button = this.findViewById(R.id.fridge_item_delete_button)
+            deleteButton.setOnClickListener{
+                deleteItemFromFridge(fridgeItem.id)
+            }
         }
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
+
+    private fun deleteItemFromFridge(itemId: Int) {
+        // delete item
+        Log.i(TAG, "Deleting item with id $itemId")
+        val dao = LocalRoomDb.getInstance(activity).getKulmkappDao()
+        dao.deleteKulmkappItem(itemId)
+        Log.i(TAG, dao.loadAllKulmkappItems().toString())
+        // refresh
+        notifyDataSetChanged()
+    }
+
 }
