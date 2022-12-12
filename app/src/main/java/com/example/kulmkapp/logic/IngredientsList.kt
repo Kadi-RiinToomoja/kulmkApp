@@ -40,6 +40,8 @@ class IngredientsList(val activity : Activity, val dao: KulmkappDao) {
             val ingredientEntity = IngredientEntity(id.toInt(), name)
             dao.insertIngredient(ingredientEntity)
         }
+
+        filestream.close()
     }
 }
 
