@@ -57,7 +57,7 @@ class FridgeAdapter(
         // delete item
         Log.i(TAG, "Deleting item with id $itemId")
         val dao = LocalRoomDb.getInstance(activity).getFridgeDao()
-        dao.deleteFridgeItem(itemId)
+        dao.deleteFridgeOrShoppingListItem(itemId)
         Log.i(TAG, dao.loadAllFridgeItems().toString())
         // refresh
         data = dao.loadAllFridgeItems();

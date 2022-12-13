@@ -77,6 +77,7 @@ class FridgeFragment : Fragment() {
             Log.i(TAG, "setting up recycler view")
             var kulmkappItems = dao.loadAllFridgeItems()
 
+            //miks adapteril val ees on
             val fridgeAdapter = FridgeAdapter(kulmkappItems, activity)
             binding.fridgeRecyclerView.adapter = fridgeAdapter
             binding.fridgeRecyclerView.layoutManager = LinearLayoutManager(this.context)

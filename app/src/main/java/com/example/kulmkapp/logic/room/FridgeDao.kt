@@ -24,14 +24,17 @@ interface FridgeDao {
 
     // FridgeItems
 
-    @Query("SELECT * FROM FridgeItems")
+    @Query("SELECT * FROM FridgeItems WHERE isInFridge==1")
     fun loadAllFridgeItems(): List<FridgeItemEntity>
 
+    @Query("SELECT * FROM FridgeItems WHERE isInFridge==0")
+    fun loadAllShoppingListItems(): List<FridgeItemEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertFridgeItem(vararg kulmkappItem: FridgeItemEntity)
+    fun insertFridgeOrShoppingListItem(vararg kulmkappItem: FridgeItemEntity)
 
     @Query("DELETE FROM FridgeItems WHERE id==:id")
-    fun deleteFridgeItem(id: Int)
+    fun deleteFridgeOrShoppingListItem(id: Int)
 
     // Recipes
 

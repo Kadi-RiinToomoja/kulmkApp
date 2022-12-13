@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         val item1 = FridgeItemEntity(1, "piim", 0, 1.0.toFloat(), 1, null)
         val item2 = FridgeItemEntity(2, "leib", 0, 1.0.toFloat(), 1, null)
 
-        dao.insertFridgeItem(item1)
-        dao.insertFridgeItem(item2)
+        dao.insertFridgeOrShoppingListItem(item1)
+        dao.insertFridgeOrShoppingListItem(item2)
     }
 }

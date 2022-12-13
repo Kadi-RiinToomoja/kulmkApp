@@ -1,13 +1,20 @@
 package com.example.kulmkapp.ui.shoppingList
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kulmkapp.databinding.FragmentShoppingListBinding
+import com.example.kulmkapp.logic.room.FridgeDao
+import com.example.kulmkapp.logic.room.LocalRoomDb
+import com.example.kulmkapp.ui.fridge.FridgeAdapter
+import com.example.kulmkapp.ui.fridge.FridgeViewModel
 
 class ShoppingListFragment : Fragment() {
 
@@ -17,23 +24,49 @@ class ShoppingListFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private var shoppingListAdapter = activity?.let { ShoppingListAdapter(dao, it) }
+    val homeViewModel: ShoppingListViewModel by viewModels()
+    private lateinit var dao: FridgeDao
+
+    val TAG = "shopping list fragment"
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(ShoppingListViewModel::class.java)
+        //val homeViewModel =
+          //  ViewModelProvider(this).get(ShoppingListViewModel::class.java)
 
         _binding = FragmentShoppingListBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        dao = LocalRoomDb.getInstance(requireContext()).getFridgeDao()
 
         val textView: TextView = binding.textHome
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         this.setHasOptionsMenu(false)
+
+        setupRecyclerView()
+
         return root
+    }
+
+    private fun setupRecyclerView() {
+        Log.i(TAG, "recyclerView start")
+
+        val activity = this.activity
+        if (activity != null) {
+            Log.i(TAG, "setting up recycler view")
+            var shoppingListItems = dao.loadAllShoppingListItems()
+
+            shoppingListAdapter = ShoppingListAdapter(dao,  activity)
+            binding.shoppingListRecyclerView.adapter = shoppingListAdapter
+            binding.shoppingListRecyclerView.layoutManager = LinearLayoutManager(this.context)
+        }
+        Log.i(TAG, "setUpRecyclerView method ends")
     }
 
     override fun onDestroyView() {
