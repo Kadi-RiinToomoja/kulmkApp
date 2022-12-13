@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.kulmkapp.databinding.FragmentRecipeDetailsBinding
 import com.example.kulmkapp.databinding.FragmentRecipesBinding
-import com.example.kulmkapp.room.RecipeEntity
+import com.example.kulmkapp.logic.room.RecipeEntity
 
 class RecipeDetailsFragment : Fragment() {
     private var _binding: FragmentRecipeDetailsBinding? = null

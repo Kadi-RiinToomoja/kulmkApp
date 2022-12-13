@@ -1,4 +1,4 @@
-package com.example.kulmkapp.room
+package com.example.kulmkapp.logic.room
 
 import android.content.Context
 import androidx.room.Database
@@ -8,12 +8,12 @@ import androidx.room.TypeConverters
 
 @TypeConverters(DateTypeConverter::class)
 @Database(
-    entities = [IngredientEntity::class, KulmkappItemEntity::class, RecipeEntity::class, RecipeIngredientEntity::class],
-    version = 5
+    entities = [IngredientEntity::class, FridgeItemEntity::class, RecipeEntity::class, RecipeIngredientEntity::class],
+    version = 6
 )
 abstract class LocalRoomDb : RoomDatabase() {
 
-    abstract fun getKulmkappDao(): KulmkappDao
+    abstract fun getFridgeDao(): FridgeDao
 
     companion object {
         private lateinit var kulmkappDb: LocalRoomDb

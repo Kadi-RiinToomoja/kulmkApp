@@ -1,4 +1,4 @@
-package com.example.kulmkapp.room
+package com.example.kulmkapp.logic.room
 import androidx.room.TypeConverter
 import java.util.*
 

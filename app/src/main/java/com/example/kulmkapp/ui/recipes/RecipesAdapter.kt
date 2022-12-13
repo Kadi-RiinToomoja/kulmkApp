@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kulmkapp.R
-import com.example.kulmkapp.room.RecipeEntity
+import com.example.kulmkapp.logic.room.RecipeEntity
 
 class RecipesAdapter(var data: List<RecipeEntity> =  listOf(),
                      private var listener: RecipeClickListener

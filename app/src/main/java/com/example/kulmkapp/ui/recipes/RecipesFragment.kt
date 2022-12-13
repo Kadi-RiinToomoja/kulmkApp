@@ -17,7 +17,7 @@ import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kulmkapp.R
 import com.example.kulmkapp.databinding.FragmentRecipesBinding
-import com.example.kulmkapp.room.RecipeEntity
+import com.example.kulmkapp.logic.room.RecipeEntity
 
 class RecipesFragment : Fragment() {
 
