@@ -38,6 +38,8 @@ class FridgeAdapter(
 
         holder.itemView.apply {
             this.findViewById<TextView>(R.id.fridgeItemName).text = fridgeItem.customName
+            this.findViewById<TextView>(R.id.fridgeItemDate).text = fridgeItem.expireDate
+            this.findViewById<TextView>(R.id.fridgeItemAmount).text = fridgeItem.amount.toString()
             //var pic = this.findViewById<ImageView>(R.id.recipeThumbnail)
             //model.chooseImage(recipe, pic, 200)//kordaja määrab pildi suurust
 
@@ -57,10 +59,12 @@ class FridgeAdapter(
         // delete item
         Log.i(TAG, "Deleting item with id $itemId")
         val dao = LocalRoomDb.getInstance(activity).getFridgeDao()
+
         dao.deleteFridgeOrShoppingListItem(itemId)
-        Log.i(TAG, dao.loadAllFridgeItems().toString())
+        Log.i(TAG, dao.getAllFridgeItems().toString())
+
         // refresh
-        data = dao.loadAllFridgeItems();
+        data = dao.getAllFridgeItems();
         notifyDataSetChanged()
     }
 

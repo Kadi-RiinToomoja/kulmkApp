@@ -1,5 +1,6 @@
 package com.example.kulmkapp.logic.room
 
+import android.util.Log
 import androidx.room.*
 
 @Dao
@@ -8,13 +9,13 @@ interface FridgeDao {
     // Ingredients
 
     @Query("SELECT * FROM Ingredients")
-    fun loadAllIngredients(): List<IngredientEntity>
+    fun getAllIngredients(): List<IngredientEntity>
 
     @Query("SELECT * FROM Ingredients WHERE id==:ingredientId")
-    fun loadSingleIngredientById(ingredientId: Int): IngredientEntity
+    fun getSingleIngredientById(ingredientId: Int): IngredientEntity
 
     @Query("SELECT * FROM Ingredients WHERE name like :ingredientName || '%'")
-    fun loadIngredientsLikeName(ingredientName: String): List<IngredientEntity>
+    fun getIngredientsLikeName(ingredientName: String): List<IngredientEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertIngredient(vararg ingredient: IngredientEntity)
@@ -25,13 +26,16 @@ interface FridgeDao {
     // FridgeItems
 
     @Query("SELECT * FROM FridgeItems WHERE isInFridge==1")
-    fun loadAllFridgeItems(): List<FridgeItemEntity>
+    fun getAllFridgeItems(): List<FridgeItemEntity>
+
+    @Query("SELECT * FROM FridgeItems WHERE id==:itemId")
+    fun getSingleFridgeItemById(itemId: Int): FridgeItemEntity
 
     @Query("SELECT * FROM FridgeItems WHERE isInFridge==0")
-    fun loadAllShoppingListItems(): List<FridgeItemEntity>
+    fun getAllShoppingListItems(): List<FridgeItemEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertFridgeOrShoppingListItem(vararg kulmkappItem: FridgeItemEntity)
+    fun insertFridgeOrShoppingListItem(vararg fridgeItem: FridgeItemEntity)
 
     @Query("DELETE FROM FridgeItems WHERE id==:id")
     fun deleteFridgeOrShoppingListItem(id: Int)
@@ -39,7 +43,7 @@ interface FridgeDao {
     // Recipes
 
     @Query("SELECT * FROM Recipes")
-    fun loadAllRecipes(): List<RecipeEntity>
+    fun getAllRecipes(): List<RecipeEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipe(vararg recipe: RecipeEntity)
@@ -48,7 +52,7 @@ interface FridgeDao {
     fun updateRecipe(id: Int, recipeUrl: String)
 
     @Query("SELECT * FROM RecipeIngredients WHERE recipeId == :id")
-    fun loadAllIngredientsForRecipe(vararg id: Int): List<RecipeIngredientEntity>
+    fun getAllIngredientsForRecipe(vararg id: Int): List<RecipeIngredientEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipeIngredient(vararg recipe: RecipeIngredientEntity)
@@ -63,6 +67,36 @@ interface FridgeDao {
     @Transaction
     fun deleteRecipeAndItsIngredients(id : Int) {
         deleteRecipe(id)
-        deleteRecipeIngredients(id)
+        deleteRecipeIngredients(id) // kustutabki kõik selle recipega seotud sest mitu tükki on selle id-ga
     }
+
+    // KeyValue
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertKeyValue(vararg keyValue: KeyValueEntity)
+
+    @Query("DELETE FROM KeyValue WHERE `key`==:KEY")
+    fun deleteKeyValue(KEY: String)
+
+    @Query("UPDATE KeyValue SET value = :VALUE WHERE `key` = :KEY")
+    fun updateKeyValue(KEY: String, VALUE: String)
+
+    @Query("SELECT COUNT(value) FROM KeyValue WHERE `key` = :KEY")
+    fun getHowManyRowsKeyValue(KEY: String) : Int
+
+    @Transaction
+    fun addKeyValue(keyValue: KeyValueEntity){ // kontrollib kas selline key on juba tabelis ja kui on siis kirjutab üle, vastasel juhul lisab
+        if (getHowManyRowsKeyValue(keyValue.key) == 0) {
+            insertKeyValue(keyValue)
+            Log.i("MyFridgeDAO", "Inserting new key ${keyValue.key} with value ${keyValue.value}")
+        } else {
+            updateKeyValue(keyValue.key, keyValue.value)
+            Log.i("MyFridgeDAO", "Updating key ${keyValue.key} with value ${keyValue.value}")
+        }
+    }
+
+    @Query("SELECT * FROM KeyValue WHERE `key`==:KEY")
+    fun getValueByKey(KEY: String): KeyValueEntity
+
+
 }

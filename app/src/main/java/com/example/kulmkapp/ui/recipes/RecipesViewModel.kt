@@ -16,7 +16,7 @@ class RecipesViewModel(application: Application) : AndroidViewModel(application)
     fun refresh() {
         // Reload dataset from DB, put it in in-memory list
         //recipeArray = listOf<RecipeEntity>(RecipeEntity(0, "example title", ""), RecipeEntity(1, "asfaf title", ""))
-        recipeArray = db.getFridgeDao().loadAllRecipes()
+        recipeArray = db.getFridgeDao().getAllRecipes()
     }
 
     private val _text = MutableLiveData<String>().apply {

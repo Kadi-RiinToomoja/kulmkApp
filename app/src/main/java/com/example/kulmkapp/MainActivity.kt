@@ -11,7 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.kulmkapp.databinding.ActivityMainBinding
 import com.example.kulmkapp.logic.IngredientsList
 import com.example.kulmkapp.logic.room.*
-import com.example.kulmkapp.ui.recipes.SpoonacularAPI
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,7 +41,8 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        addToDbTest() // lisab db-sse kaks asja mida näeb hetkel ainult fridges
+        //addToDbTest() // lisab db-sse kaks asja mida näeb hetkel ainult fridges
+        //testFridgeItems()
 
         IngredientsList(this, dao).readIngredientsIfNeeded() // adds 1k top ingredients to database
 
@@ -52,17 +53,28 @@ class MainActivity : AppCompatActivity() {
         val moos = IngredientEntity(10, "Moos")
         dao.insertIngredient(moos)
 
-        val items = dao.loadAllIngredients()
+        val items = dao.getAllIngredients()
         for (item in items) {
             Log.i("$TAG TestDB", item.name)
         }
     }
 
     fun addToDbTest() {
-        val item1 = FridgeItemEntity(1, "piim", 0, 1.0.toFloat(), 1, null)
-        val item2 = FridgeItemEntity(2, "leib", 0, 1.0.toFloat(), 1, null)
+        val item1 = FridgeItemEntity(1, "piim uus", 0, 1.0.toFloat(), 1, null)
+        val item2 = FridgeItemEntity(-2, "leib uus", 0, 1.0.toFloat(), 1, null)
 
         dao.insertFridgeOrShoppingListItem(item1)
         dao.insertFridgeOrShoppingListItem(item2)
+    }
+
+    fun testFridgeItems(){
+        val f1 = FridgeItemEntity(0,"apple uus", 0, 1f, 1, null)
+        val f2 = FridgeItemEntity(0,"orange uus", 1, 1f, 1, null)
+        dao.insertFridgeOrShoppingListItem(f1)
+        dao.insertFridgeOrShoppingListItem(f2)
+
+        dao.getAllFridgeItems().forEach{
+            Log.i(TAG, "${it.customName} ${it.id}")
+        }
     }
 }

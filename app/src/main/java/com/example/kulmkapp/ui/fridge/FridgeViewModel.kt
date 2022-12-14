@@ -4,10 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
-import com.example.kulmkapp.logic.room.RecipeEntity
 
 class FridgeViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -18,7 +16,7 @@ class FridgeViewModel(application: Application) : AndroidViewModel(application) 
     fun refresh() {
         // Reload dataset from DB, put it in in-memory list
         //recipeArray = listOf<RecipeEntity>(RecipeEntity(0, "example title", ""), RecipeEntity(1, "asfaf title", ""))
-        fridgeArray = dao.loadAllFridgeItems()
+        fridgeArray = dao.getAllFridgeItems()
     }
 
     private val _text = MutableLiveData<String>().apply {

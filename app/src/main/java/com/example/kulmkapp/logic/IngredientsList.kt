@@ -1,15 +1,9 @@
 package com.example.kulmkapp.logic
 
 import android.app.Activity
-import android.content.res.AssetManager
-import android.net.Uri
-import android.os.ParcelFileDescriptor.open
 import android.util.Log
-import com.example.kulmkapp.R
 import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.FridgeDao
-import java.io.File
-import java.io.InputStream
 
 class IngredientsList(val activity : Activity, val dao: FridgeDao) {
     val TAG = "read ingredients list"
@@ -18,7 +12,7 @@ class IngredientsList(val activity : Activity, val dao: FridgeDao) {
     fun readIngredientsIfNeeded(){
         Log.i(TAG, "test reading ingredients list")
 
-        val existingIngredientEntities = dao.loadAllIngredients()
+        val existingIngredientEntities = dao.getAllIngredients()
         if(existingIngredientEntities.size==0){
             Log.i(TAG, "reading ingredients")
             readIngredients()
@@ -40,7 +34,7 @@ class IngredientsList(val activity : Activity, val dao: FridgeDao) {
             val ingredientEntity = IngredientEntity(id.toInt(), name)
             dao.insertIngredient(ingredientEntity)
         }
-
+        dao.insertIngredient(IngredientEntity(-1, "Other"))
         filestream.close()
     }
 }

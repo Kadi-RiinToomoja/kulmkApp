@@ -8,13 +8,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kulmkapp.databinding.FragmentShoppingListBinding
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.LocalRoomDb
-import com.example.kulmkapp.ui.fridge.FridgeAdapter
-import com.example.kulmkapp.ui.fridge.FridgeViewModel
 
 class ShoppingListFragment : Fragment() {
 
@@ -60,7 +57,7 @@ class ShoppingListFragment : Fragment() {
         val activity = this.activity
         if (activity != null) {
             Log.i(TAG, "setting up recycler view")
-            var shoppingListItems = dao.loadAllShoppingListItems()
+            var shoppingListItems = dao.getAllShoppingListItems()
 
             shoppingListAdapter = ShoppingListAdapter(dao,  activity)
             binding.shoppingListRecyclerView.adapter = shoppingListAdapter

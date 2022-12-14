@@ -12,7 +12,6 @@ import com.example.kulmkapp.R
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
-import com.example.kulmkapp.ui.fridge.FridgeAdapter
 
 class ShoppingListAdapter(var dao: FridgeDao,var activity: Activity): RecyclerView.Adapter<ShoppingListAdapter.ShoppingListItemViewHolder>() {
 
@@ -55,9 +54,9 @@ class ShoppingListAdapter(var dao: FridgeDao,var activity: Activity): RecyclerVi
         Log.i(TAG, "Deleting item with id $itemId")
         val dao = LocalRoomDb.getInstance(activity).getFridgeDao()
         dao.deleteFridgeOrShoppingListItem(itemId)
-        Log.i(TAG, dao.loadAllShoppingListItems().toString())
+        Log.i(TAG, dao.getAllShoppingListItems().toString())
         // refresh
-        data = dao.loadAllShoppingListItems();
+        data = dao.getAllShoppingListItems();
         notifyDataSetChanged()
     }
 }
