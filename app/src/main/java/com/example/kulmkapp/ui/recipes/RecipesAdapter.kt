@@ -1,15 +1,24 @@
 package com.example.kulmkapp.ui.recipes
 
+import android.app.Application
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kulmkapp.R
 import com.example.kulmkapp.logic.room.RecipeEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.net.URL
 
 class RecipesAdapter(
     var data: List<RecipeEntity> = listOf(),
+    var app: Application,
     private var listener: RecipeClickListener
 ) : RecyclerView.Adapter<RecipesAdapter.RecipeViewHolder>() {
 
@@ -32,7 +41,19 @@ class RecipesAdapter(
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = data[position]
         holder.itemView.apply {
-            this.findViewById<TextView>(R.id.recipeTitleTextView).text = recipe.title
+            this.findViewById<TextView>(R.id.recipeTitleText).text = recipe.title
+            this.findViewById<TextView>(R.id.recipeUsedIngredientsText).text = recipe.title
+            this.findViewById<TextView>(R.id.recipeMissingIngredients).text = recipe.title
+
+
+            recipe.imgUrl?.let {
+                CoroutineScope(Dispatchers.IO).launch {
+                    var bmp = BitmapFactory.decodeStream(URL(it).openConnection().getInputStream())
+                    withContext(Dispatchers.Main) {
+                        findViewById<ImageView>(R.id.recipeImage).setImageBitmap(bmp)
+                    }
+                }
+            }
             setOnClickListener { listener.onRecipeClick(recipe) }
         }
     }

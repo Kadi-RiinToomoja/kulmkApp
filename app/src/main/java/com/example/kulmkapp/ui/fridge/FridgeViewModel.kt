@@ -20,7 +20,7 @@ class FridgeViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is fridge Fragment"
+        value = "Select items for recipes"
     }
     val text: LiveData<String> = _text
 }

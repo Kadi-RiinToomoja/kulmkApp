@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kulmkapp.R
 import com.example.kulmkapp.databinding.FragmentRecipesBinding
 import com.example.kulmkapp.logic.room.FridgeDao
@@ -71,10 +71,20 @@ class RecipesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val recipeClickListener = RecipesAdapter.RecipeClickListener { recipe -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(recipe.recipeUrl))) }
-        recipesAdapter = RecipesAdapter(model.recipeArray, recipeClickListener)
+        val recipeClickListener = RecipesAdapter.RecipeClickListener { recipe ->
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(recipe.recipeUrl)
+                )
+            )
+        }
+        recipesAdapter = RecipesAdapter(
+            model.recipeArray,
+            activity?.application!!, recipeClickListener
+        )
         binding.recyclerviewRecipelist.adapter = recipesAdapter
-        binding.recyclerviewRecipelist.layoutManager = GridLayoutManager(context, 2)
+        binding.recyclerviewRecipelist.layoutManager = LinearLayoutManager(context)
     }
 
     override fun onDestroyView() {

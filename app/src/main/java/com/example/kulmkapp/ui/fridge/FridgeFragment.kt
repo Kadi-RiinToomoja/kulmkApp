@@ -10,9 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kulmkapp.R
 import com.example.kulmkapp.databinding.FragmentFridgeBinding
@@ -20,7 +18,6 @@ import com.example.kulmkapp.logic.IngredientsList
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
-import com.example.kulmkapp.ui.recipes.RecipesFragment
 
 class FridgeFragment : Fragment() {
 
@@ -50,7 +47,7 @@ class FridgeFragment : Fragment() {
 
         dao = LocalRoomDb.getInstance(requireContext()).getFridgeDao()
 
-        val textView: TextView = binding.textNotifications
+        val textView: TextView = binding.textFridge
         notificationsViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }

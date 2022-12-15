@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kulmkapp.R
 import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class FridgeAdapter(
     var data: List<FridgeItemEntity>,
@@ -20,6 +21,7 @@ class FridgeAdapter(
 
     val TAG = "fridge adapter class"
     var itemsChecked = mutableListOf<FridgeItemEntity>();
+
     fun interface FridgeItemClickListener {
         fun onFridgeItemClick(recipe: FridgeItemEntity)
     }
@@ -28,7 +30,8 @@ class FridgeAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FridgeItemViewHolder {
         Log.i(TAG, "oncreateviewholder called")
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.single_fridge_item, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.single_fridge_item, parent, false)
 
         return FridgeItemViewHolder(view)
     }
@@ -47,14 +50,20 @@ class FridgeAdapter(
 
             //setOnClickListener { listener.onRecipeClick(recipe) }
             this.findViewById<CheckBox>(R.id.fridgeItemCheckBox).apply {
-                this.setOnClickListener{
+                this.setOnClickListener {
                     val checked = this.isChecked
                     if (checked) itemsChecked.add(fridgeItem)
                     else itemsChecked.remove(fridgeItem)
+                    activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)?.isEnabled =
+                        itemsChecked.isNotEmpty()
+                    activity.findViewById<TextView>(R.id.text_fridge)?.visibility =
+                        if (itemsChecked.isEmpty()) View.VISIBLE else View.GONE
+
+
                 }
             }
             val deleteButton: Button = this.findViewById(R.id.fridge_item_delete_button)
-            deleteButton.setOnClickListener{
+            deleteButton.setOnClickListener {
                 // delete from list if selected
                 itemsChecked.remove(fridgeItem)
                 deleteItemFromFridge(fridgeItem.id)
