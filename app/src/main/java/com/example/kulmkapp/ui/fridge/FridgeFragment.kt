@@ -10,11 +10,17 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.kulmkapp.R
 import com.example.kulmkapp.databinding.FragmentFridgeBinding
 import com.example.kulmkapp.logic.IngredientsList
 import com.example.kulmkapp.logic.room.FridgeDao
+import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
+import com.example.kulmkapp.ui.recipes.RecipesFragment
 
 class FridgeFragment : Fragment() {
 
@@ -77,6 +83,9 @@ class FridgeFragment : Fragment() {
             binding.fridgeAddButton.setOnClickListener {
                 onClickOpenAdd(fridgeAdapter)
             }
+            binding.fridgeSearchRecipe.setOnClickListener {
+                openRecipes(fridgeAdapter.itemsChecked)
+            }
         }
         Log.i(TAG, "setUpRecyclerView method ends")
     }
@@ -85,6 +94,12 @@ class FridgeFragment : Fragment() {
     fun onClickOpenAdd(fridgeAdapter: FridgeAdapter) {
         val newFragment: DialogFragment = FridgeDialogFragment(fridgeAdapter)
         newFragment.show(this.parentFragmentManager, "fridge_dialog_fragment")
+    }
+
+    fun openRecipes(fridgeItems: MutableList<FridgeItemEntity>) {
+        val bundle = Bundle()
+        bundle.putIntegerArrayList("fridgeIDs", ArrayList(fridgeItems.map { it.id }))
+        findNavController().navigate(R.id.action_open_recipes, bundle)
     }
 
     fun readIngredientsList() {

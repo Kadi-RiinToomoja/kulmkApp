@@ -2,8 +2,8 @@ package com.example.kulmkapp.ui.recipes
 
 import android.content.Context
 import android.util.Log
-import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.FridgeDao
+import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.RecipeEntity
 import com.example.kulmkapp.logic.room.RecipeIngredientEntity
 import com.koushikdutta.ion.Ion
@@ -22,13 +22,13 @@ object SpoonacularAPI {
                 if (e != null) {
                     Log.e("Error", "Something was wrong! ${e.message}")
                 } else {
-                    var ids: MutableList<Int> = mutableListOf()
+                    val ids: MutableList<Int> = mutableListOf()
                     result.forEach {
-                        var recipeId = it.asJsonObject.get("id").asInt
+                        val recipeId = it.asJsonObject.get("id").asInt
                         ids.add(recipeId)
-                        var recipeName = it.asJsonObject.get("title").asString
+                        val recipeName = it.asJsonObject.get("title").asString
 
-                        var usedIngredients = mutableListOf<IngredientEntity>()
+                        val usedIngredients = mutableListOf<IngredientEntity>()
                         it.asJsonObject.get("usedIngredients").asJsonArray.forEach { ingredient ->
                             usedIngredients.add(
                                 IngredientEntity(
@@ -38,7 +38,7 @@ object SpoonacularAPI {
                             )
                         }
 
-                        var missedIngredients = mutableListOf<IngredientEntity>()
+                        val missedIngredients = mutableListOf<IngredientEntity>()
                         it.asJsonObject.get("missedIngredients").asJsonArray.forEach { ingredient ->
                             missedIngredients.add(
                                 IngredientEntity(
@@ -48,7 +48,7 @@ object SpoonacularAPI {
                             )
                         }
 
-                        var imageUrl = it.asJsonObject.get("image").asString
+                        val imageUrl = it.asJsonObject.get("image").asString
 
                         // insert data
                         dao.insertRecipe(RecipeEntity(recipeId, recipeName, imageUrl, null))
@@ -87,8 +87,8 @@ object SpoonacularAPI {
                     Log.e("Error", "Something was wrong! ${e.message}")
                 } else {
                     result.forEach {
-                        var recipeId = it.asJsonObject.get("id").asInt
-                        var recipeUrl = it.asJsonObject.get("sourceUrl").asString
+                        val recipeId = it.asJsonObject.get("id").asInt
+                        val recipeUrl = it.asJsonObject.get("sourceUrl").asString
 
                         // insert data
                         dao.updateRecipe(recipeId, recipeUrl)

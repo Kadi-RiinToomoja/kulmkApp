@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kulmkapp.R
@@ -18,6 +19,7 @@ class FridgeAdapter(
 ) : RecyclerView.Adapter<FridgeAdapter.FridgeItemViewHolder>() {
 
     val TAG = "fridge adapter class"
+    var itemsChecked = mutableListOf<FridgeItemEntity>();
     fun interface FridgeItemClickListener {
         fun onFridgeItemClick(recipe: FridgeItemEntity)
     }
@@ -44,8 +46,17 @@ class FridgeAdapter(
             //model.chooseImage(recipe, pic, 200)//kordaja määrab pildi suurust
 
             //setOnClickListener { listener.onRecipeClick(recipe) }
+            this.findViewById<CheckBox>(R.id.fridgeItemCheckBox).apply {
+                this.setOnClickListener{
+                    val checked = this.isChecked
+                    if (checked) itemsChecked.add(fridgeItem)
+                    else itemsChecked.remove(fridgeItem)
+                }
+            }
             val deleteButton: Button = this.findViewById(R.id.fridge_item_delete_button)
             deleteButton.setOnClickListener{
+                // delete from list if selected
+                itemsChecked.remove(fridgeItem)
                 deleteItemFromFridge(fridgeItem.id)
             }
         }

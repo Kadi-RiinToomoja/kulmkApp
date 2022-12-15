@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
 
         IngredientsList(this, dao).readIngredientsIfNeeded() // adds 1k top ingredients to database
 
-        //SpoonacularAPI.getRecipes(applicationContext, "apples,+flour,+sugar", dao)
     }
 
     private fun testDB() {

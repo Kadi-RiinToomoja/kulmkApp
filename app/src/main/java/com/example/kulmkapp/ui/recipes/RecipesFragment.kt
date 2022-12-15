@@ -3,20 +3,20 @@ package com.example.kulmkapp.ui.recipes
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kulmkapp.R
 import com.example.kulmkapp.databinding.FragmentRecipesBinding
+import com.example.kulmkapp.logic.room.FridgeDao
+import com.example.kulmkapp.logic.room.LocalRoomDb
 import com.example.kulmkapp.logic.room.RecipeEntity
 
 class RecipesFragment : Fragment() {
@@ -28,6 +28,7 @@ class RecipesFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var recipesAdapter: RecipesAdapter
     val model: RecipesViewModel by viewModels()
+    private lateinit var dao: FridgeDao
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,11 +41,23 @@ class RecipesFragment : Fragment() {
         _binding = FragmentRecipesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        dao = LocalRoomDb.getInstance(requireContext()).getFridgeDao()
+
         val textView: TextView = binding.textDashboard
         dashboardViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         this.setHasOptionsMenu(false)
+
+        // find recipes by ids
+        val ids = arguments?.getIntegerArrayList("fridgeIDs")
+        ids?.apply {
+            val items = dao.getAllFridgeItems().filter { ids.contains(it.id) }
+            val query = items.joinToString(",+") { it.customName }
+            Log.d("RecipeFragment", query)
+            //SpoonacularAPI.getRecipes(requireContext(), query, dao)
+        }
+
         setupRecyclerView()
         return root
     }

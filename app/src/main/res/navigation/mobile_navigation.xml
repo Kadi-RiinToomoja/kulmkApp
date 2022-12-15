@@ -15,7 +15,14 @@
         android:id="@+id/navigation_fridge"
         android:name="com.example.kulmkapp.ui.fridge.FridgeFragment"
         android:label="@string/fridge_string"
-        tools:layout="@layout/fragment_fridge" />
+        tools:layout="@layout/fragment_fridge" >
+        <action
+            android:id="@+id/action_open_recipes"
+            app:destination="@id/navigation_recipes"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/navigation_fridge"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_recipes"
