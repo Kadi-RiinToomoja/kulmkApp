@@ -10,7 +10,7 @@ import com.koushikdutta.ion.Ion
 
 object SpoonacularAPI {
 
-    fun getRecipes(context: Context, query: String, dao: FridgeDao) {
+    fun getRecipes(context: Context, query: String, dao: FridgeDao, adapter: RecipesAdapter) {
         Ion.with(context)
             .load("https://api.spoonacular.com/recipes/findByIngredients")
             .setHeader("x-api-key", "40a02b1a97644f4aaf69b9f2902f0b5b")
@@ -22,6 +22,8 @@ object SpoonacularAPI {
                 if (e != null) {
                     Log.e("Error", "Something was wrong! ${e.message}")
                 } else {
+                    // get rid of old recipes
+                    dao.deleteAllRecipes()
                     val ids: MutableList<Int> = mutableListOf()
                     result.forEach {
                         val recipeId = it.asJsonObject.get("id").asInt
@@ -71,6 +73,9 @@ object SpoonacularAPI {
                     }
                     // links to recipes
                     getRecipesSources(context, ids, dao)
+                    // notify changes
+                    adapter.data = dao.getAllRecipes()
+                    adapter.notifyDataSetChanged()
                 }
             }
     }

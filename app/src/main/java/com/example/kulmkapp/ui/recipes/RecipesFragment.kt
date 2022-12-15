@@ -48,17 +48,18 @@ class RecipesFragment : Fragment() {
             textView.text = it
         }
         this.setHasOptionsMenu(false)
+        setupRecyclerView()
 
         // find recipes by ids
         val ids = arguments?.getIntegerArrayList("fridgeIDs")
+        Log.d("RecipeFragment", ids.toString())
         ids?.apply {
             val items = dao.getAllFridgeItems().filter { ids.contains(it.id) }
             val query = items.joinToString(",+") { it.customName }
             Log.d("RecipeFragment", query)
-            //SpoonacularAPI.getRecipes(requireContext(), query, dao)
+            //SpoonacularAPI.getRecipes(requireContext(), query, dao, recipesAdapter)
         }
 
-        setupRecyclerView()
         return root
     }
 
