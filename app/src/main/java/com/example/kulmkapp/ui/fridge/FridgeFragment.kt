@@ -90,7 +90,7 @@ class FridgeFragment : Fragment() {
 
 
     fun onClickOpenAdd(fridgeAdapter: FridgeAdapter) {
-        val newFragment: DialogFragment = FridgeDialogFragment(fridgeAdapter)
+        val newFragment: DialogFragment = AddFridgeDialogFragment(fridgeAdapter)
         newFragment.show(this.parentFragmentManager, "fridge_dialog_fragment")
     }
 

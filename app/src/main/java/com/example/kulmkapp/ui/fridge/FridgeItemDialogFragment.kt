@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentManager
 import com.example.kulmkapp.R
 import com.example.kulmkapp.logic.room.LocalRoomDb
 
-class AddFridgeItemDialogFragment : DialogFragment() {
+class FridgeItemDialogFragment : DialogFragment() {
 
     private var TAG = "MyFridgeItemDialogFragment"
 

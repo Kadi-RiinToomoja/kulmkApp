@@ -20,7 +20,7 @@ import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 
 
-class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() {
+class AddFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() {
 
     private val TAG = "MyFridgeDialogFragment"
     private lateinit var dao: FridgeDao
@@ -124,6 +124,7 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
 
         textview.let {
             textview.setOnClickListener(View.OnClickListener {
+                Log.i(TAG, "set on click listener called")
                 // Initialize dialog
                 var dialog = this.context?.let { it1 -> Dialog(it1) }
 
@@ -173,13 +174,19 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
                         }
                     }
 
-                    override fun afterTextChanged(s: Editable) {}
+                    override fun afterTextChanged(s: Editable) {
+                        Log.i(TAG, "after text changed called")
+                    }
                 })
                 listView.onItemClickListener =
                     AdapterView.OnItemClickListener { parent, view, position, id -> // when item selected from list
                         // set selected item on textView
                         if (adapter != null) {
-                            textview!!.setText(adapter.getItem(position)!!)
+                            val selectedFoodType = adapter.getItem(position)
+                            textview!!.setText(selectedFoodType)
+                            Log.i(TAG, "selected item $selectedFoodType")
+                            addItemView.findViewById<TextView>(R.id.customName).text = selectedFoodType
+
                         }
                         // Dismiss dialog
                         dialog!!.dismiss()
