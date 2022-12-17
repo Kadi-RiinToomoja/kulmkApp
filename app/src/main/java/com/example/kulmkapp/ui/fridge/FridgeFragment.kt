@@ -82,7 +82,6 @@ class FridgeFragment : Fragment() {
             }
             binding.fridgeSearchRecipe.setOnClickListener {
                 openRecipes(fridgeAdapter.itemsChecked)
-                openRecipes(fridgeAdapter.itemsChecked)
             }
         }
         Log.i(TAG, "setUpRecyclerView method ends")

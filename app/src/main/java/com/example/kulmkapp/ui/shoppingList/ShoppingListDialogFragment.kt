@@ -65,8 +65,6 @@ class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter): 
                                         null
                                     )
                                 )
-
-
                                 shoppingListAdapter.data = dao.getAllShoppingListItems()
                                 shoppingListAdapter.notifyDataSetChanged()
                             }
@@ -104,13 +102,6 @@ class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter): 
         // initialize array list
         var arrayList: ArrayList<String> = ArrayList(ingredientsList.map { it.name })
 
-
-
-
-        // set value in array list
-        //arrayList.add("DSA Self Paced")
-        //arrayList.add("Complete Interview Prep")
-
         textview.let {
             textview.setOnClickListener(View.OnClickListener {
                 Log.i(TAG, "set on click listener called")
@@ -119,14 +110,8 @@ class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter): 
 
                 // set custom dialog
                 dialog!!.setContentView(R.layout.dialog_searchable_spinner)
-
-                // set custom height and width
-                dialog.window!!.setLayout(650, 800) // see oile hea
-
-                // set transparent background
+                //dialog.window!!.setLayout(650, 800) // see oile hea
                 dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-                // show dialog
                 dialog.show()
 
                 // Initialize and assign variable
@@ -175,16 +160,11 @@ class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter): 
                             textview!!.setText(selectedFoodType)
                             Log.i(TAG, "selected item $selectedFoodType")
                             addItemView.findViewById<TextView>(R.id.customName).text = selectedFoodType
-
                         }
                         // Dismiss dialog
-                        dialog!!.dismiss()
+                        dialog.dismiss()
                     }
             })
         }
     }
-
-
-
-
 }

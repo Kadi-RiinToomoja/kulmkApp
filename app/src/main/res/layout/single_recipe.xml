@@ -7,7 +7,8 @@
 
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:background="#07BA87"
+
+    android:background="@color/glass"
     android:gravity="center_horizontal">
 
     <ImageView
