@@ -113,7 +113,7 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
         var dialog: Dialog?
 
         val inflater = requireActivity().layoutInflater;
-        val addItemView = inflater.inflate(R.layout.add_item, null)
+        val addItemView = inflater.inflate(R.layout.add_item_fridge, null)
 
         // assign variable
         textview = addItemView.findViewById(R.id.testView)
