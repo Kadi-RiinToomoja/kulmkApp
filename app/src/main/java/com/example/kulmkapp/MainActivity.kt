@@ -9,9 +9,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.kulmkapp.databinding.ActivityMainBinding
-import com.example.kulmkapp.logic.IngredientsList
+import com.example.kulmkapp.logic.IngredientsListReader
 import com.example.kulmkapp.logic.room.*
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         //addToDbTest() // lisab db-sse kaks asja mida näeb hetkel ainult fridges
         //testFridgeItems()
 
-        IngredientsList(this, dao).readIngredientsIfNeeded() // adds 1k top ingredients to database
+        IngredientsListReader(this, dao).readIngredientsIfNeeded() // adds 1k top ingredients to database
 
     }
 

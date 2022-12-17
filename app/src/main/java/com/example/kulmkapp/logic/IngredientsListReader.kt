@@ -5,7 +5,7 @@ import android.util.Log
 import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.FridgeDao
 
-class IngredientsList(val activity : Activity, val dao: FridgeDao) {
+class IngredientsListReader(val activity : Activity, val dao: FridgeDao) {
     val TAG = "read ingredients list"
 
 

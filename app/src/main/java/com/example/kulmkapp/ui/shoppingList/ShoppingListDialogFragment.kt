@@ -2,14 +2,10 @@ package com.example.kulmkapp.ui.shoppingList
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.*
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import com.example.kulmkapp.R
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
@@ -33,15 +29,13 @@ class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter): 
                 val inflater = requireActivity().layoutInflater;
                 val addItemView = inflater.inflate(R.layout.add_item_shopping_list, null)
 
-
-
                 builder.setView(addItemView)
 
                     .setPositiveButton(
                         R.string.add,
                         DialogInterface.OnClickListener { dialog, id ->
                             val itemName =
-                                addItemView.findViewById<TextView>(R.id.itemName).text
+                                addItemView.findViewById<TextView>(R.id.customName).text
                             val itemTypeId: Int = 0//addItemView.findViewById<12345>(...)
                             val amount = addItemView.findViewById<EditText>(R.id.itemAmount).text
 
