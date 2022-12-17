@@ -13,4 +13,6 @@ class FridgeItemEntity(
     val amount: Float?,
     val isInFridge: Int, // is in fridge 1, is not 0, doesn't go there -1
     val expireDate: String?,
-)
+){
+    override fun toString(): String {return customName}
+}

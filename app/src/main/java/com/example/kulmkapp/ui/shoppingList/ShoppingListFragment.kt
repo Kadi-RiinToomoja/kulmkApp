@@ -67,9 +67,12 @@ class ShoppingListFragment : Fragment() {
             binding.shoppingListRecyclerView.layoutManager = LinearLayoutManager(this.context)
 
             binding.shoppingListAddButton.setOnClickListener {
-
                 onClickOpenAdd(shoppingListAdapter!!)//siin vist ei tohiks neid 2 hüüumärki olla
             }
+            binding.shoppingListMoveToFridgeButton.setOnClickListener {
+                Log.i(TAG, "moving items from shopping list to fridge: ${shoppingListAdapter!!.itemsChecked.toString()}")
+            }
+
         }
         Log.i(TAG, "setUpRecyclerView method ends")
     }
