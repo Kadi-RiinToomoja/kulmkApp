@@ -3,12 +3,19 @@ package com.example.kulmkapp.ui.shoppingList
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.view.View
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.example.kulmkapp.R
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
+import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 
 
@@ -17,17 +24,21 @@ class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter): 
 
         private val TAG = "MyShoppinglistDialogFragment"
         private lateinit var dao: FridgeDao
+        private lateinit var ingredientsList: List<IngredientEntity>
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             return activity?.let {
 
                 dao = LocalRoomDb.getInstance(requireContext()).getFridgeDao()
+                ingredientsList = dao.getAllIngredients()
 
                 val builder = AlertDialog.Builder(it)
                 builder.setTitle("Add product to shopping list")
 
                 val inflater = requireActivity().layoutInflater;
                 val addItemView = inflater.inflate(R.layout.add_item_shopping_list, null)
+
+                //showSearchDialog(addItemView)
 
                 builder.setView(addItemView)
 
@@ -84,6 +95,94 @@ class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter): 
 
             alertDialog.show()
         }
+
+    //https://www.geeksforgeeks.org/how-to-implement-custom-searchable-spinner-in-android/
+    fun showSearchDialog(addItemView: View) {
+        // assign variable
+        var textview: TextView = addItemView.findViewById(R.id.foodTypeSpinner)
+
+        // initialize array list
+        var arrayList: ArrayList<String> = ArrayList(ingredientsList.map { it.name })
+
+
+
+
+        // set value in array list
+        //arrayList.add("DSA Self Paced")
+        //arrayList.add("Complete Interview Prep")
+
+        textview.let {
+            textview.setOnClickListener(View.OnClickListener {
+                Log.i(TAG, "set on click listener called")
+                // Initialize dialog
+                var dialog = this.context?.let { it1 -> Dialog(it1) }
+
+                // set custom dialog
+                dialog!!.setContentView(R.layout.dialog_searchable_spinner)
+
+                // set custom height and width
+                dialog.window!!.setLayout(650, 800) // see oile hea
+
+                // set transparent background
+                dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                // show dialog
+                dialog.show()
+
+                // Initialize and assign variable
+                val editText = dialog.findViewById<EditText>(R.id.edit_text)
+                val listView = dialog.findViewById<ListView>(R.id.list_view)
+
+                // Initialize array adapter
+                val adapter = this.context?.let { it1 ->
+                    ArrayAdapter(
+                        it1, android.R.layout.simple_list_item_1,
+                        arrayList
+                    )
+                }
+
+                // set adapter
+                listView.adapter = adapter
+                editText.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                        if (adapter != null) {
+                            adapter.filter.filter(s)
+                        }
+                    }
+
+                    override fun afterTextChanged(s: Editable) {
+                        Log.i(TAG, "after text changed called")
+                    }
+                })
+                listView.onItemClickListener =
+                    AdapterView.OnItemClickListener { parent, view, position, id -> // when item selected from list
+                        // set selected item on textView
+                        if (adapter != null) {
+                            val selectedFoodType = adapter.getItem(position)
+                            textview!!.setText(selectedFoodType)
+                            Log.i(TAG, "selected item $selectedFoodType")
+                            addItemView.findViewById<TextView>(R.id.customName).text = selectedFoodType
+
+                        }
+                        // Dismiss dialog
+                        dialog!!.dismiss()
+                    }
+            })
+        }
+    }
 
 
 
