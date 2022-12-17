@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kulmkapp.R
 import com.example.kulmkapp.databinding.FragmentFridgeBinding
-import com.example.kulmkapp.logic.IngredientsList
+import com.example.kulmkapp.logic.IngredientsListReader
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
@@ -82,6 +82,7 @@ class FridgeFragment : Fragment() {
             }
             binding.fridgeSearchRecipe.setOnClickListener {
                 openRecipes(fridgeAdapter.itemsChecked)
+                openRecipes(fridgeAdapter.itemsChecked)
             }
         }
         Log.i(TAG, "setUpRecyclerView method ends")
@@ -89,7 +90,7 @@ class FridgeFragment : Fragment() {
 
 
     fun onClickOpenAdd(fridgeAdapter: FridgeAdapter) {
-        val newFragment: DialogFragment = FridgeDialogFragment(fridgeAdapter)
+        val newFragment: DialogFragment = AddFridgeDialogFragment(fridgeAdapter)
         newFragment.show(this.parentFragmentManager, "fridge_dialog_fragment")
     }
 
@@ -103,7 +104,7 @@ class FridgeFragment : Fragment() {
         var activity = this.activity
         if (activity != null) {
             val dao = LocalRoomDb.getInstance(activity).getFridgeDao()
-            val classObject = IngredientsList(activity, dao)
+            val classObject = IngredientsListReader(activity, dao)
             classObject.readIngredientsIfNeeded()
         }
     }

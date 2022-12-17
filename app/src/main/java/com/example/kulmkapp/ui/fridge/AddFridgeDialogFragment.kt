@@ -14,14 +14,13 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.example.kulmkapp.R
-import com.example.kulmkapp.logic.IngredientsList
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 
 
-class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() {
+class AddFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() {
 
     private val TAG = "MyFridgeDialogFragment"
     private lateinit var dao: FridgeDao
@@ -52,8 +51,8 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
                 .setPositiveButton(R.string.add,
                     DialogInterface.OnClickListener { dialog, id ->
                         val itemName =
-                            addItemView.findViewById<TextView>(R.id.itemName).text
-                        val itemType: String = addItemView.findViewById<TextView>(R.id.testView).text.toString()
+                            addItemView.findViewById<TextView>(R.id.customName).text
+                        val itemType: String = addItemView.findViewById<TextView>(R.id.foodTypeSpinner).text.toString()
                         val amount = addItemView.findViewById<EditText>(R.id.itemAmount).text
                         val dateString = addItemView.findViewById<TextView>(R.id.dateText).text
                         //val dateString = dao.getValueByKey("addToFridgeDate").value
@@ -111,7 +110,7 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
     //https://www.geeksforgeeks.org/how-to-implement-custom-searchable-spinner-in-android/
     fun showSearchDialog(addItemView: View) {
         // assign variable
-        var textview: TextView = addItemView.findViewById(R.id.testView)
+        var textview: TextView = addItemView.findViewById(R.id.foodTypeSpinner)
 
         // initialize array list
         var arrayList: ArrayList<String> = ArrayList(ingredientsList.map { it.name })
@@ -125,6 +124,7 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
 
         textview.let {
             textview.setOnClickListener(View.OnClickListener {
+                Log.i(TAG, "set on click listener called")
                 // Initialize dialog
                 var dialog = this.context?.let { it1 -> Dialog(it1) }
 
@@ -174,13 +174,19 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
                         }
                     }
 
-                    override fun afterTextChanged(s: Editable) {}
+                    override fun afterTextChanged(s: Editable) {
+                        Log.i(TAG, "after text changed called")
+                    }
                 })
                 listView.onItemClickListener =
                     AdapterView.OnItemClickListener { parent, view, position, id -> // when item selected from list
                         // set selected item on textView
                         if (adapter != null) {
-                            textview!!.setText(adapter.getItem(position)!!)
+                            val selectedFoodType = adapter.getItem(position)
+                            textview!!.setText(selectedFoodType)
+                            Log.i(TAG, "selected item $selectedFoodType")
+                            addItemView.findViewById<TextView>(R.id.customName).text = selectedFoodType
+
                         }
                         // Dismiss dialog
                         dialog!!.dismiss()

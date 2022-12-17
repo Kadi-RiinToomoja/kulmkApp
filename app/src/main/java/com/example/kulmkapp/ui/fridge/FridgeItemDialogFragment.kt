@@ -35,7 +35,7 @@ class FridgeItemDialogFragment : DialogFragment() {
                 val itemName = item.customName
                 val itemType = item.itemType
                 val itemDate = item.expireDate
-                addItemDetailsView.findViewById<TextView>(R.id.itemName).text = itemName
+                addItemDetailsView.findViewById<TextView>(R.id.customName).text = itemName
                 addItemDetailsView.findViewById<TextView>(R.id.dateText).text = itemDate.toString()
                 // itemType see mis listis on selle spineeri asjaga
             }
