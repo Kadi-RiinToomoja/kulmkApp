@@ -7,7 +7,8 @@ import androidx.room.PrimaryKey
 class RecipeIngredientEntity (
     @PrimaryKey
     var id: Int,
-    var recipeId: Int
+    var recipeId: Int,
+    var usesIngredient: Boolean
         ){
-    constructor() : this(0,0)
+    constructor() : this(0,0, true)
 }

@@ -10,13 +10,13 @@ import com.koushikdutta.ion.Ion
 
 object SpoonacularAPI {
 
+    // example query: apples,+flour,+sugar
     fun getRecipes(context: Context, query: String, dao: FridgeDao, adapter: RecipesAdapter) {
         Ion.with(context)
             .load("https://api.spoonacular.com/recipes/findByIngredients")
             .setHeader("x-api-key", "40a02b1a97644f4aaf69b9f2902f0b5b")
-            //?ingredients=apples,+flour,+sugar&number=2
             .addQuery("ingredients", query)
-            .addQuery("number", "2")
+            .addQuery("number", "10")
             .asJsonArray()
             .setCallback { e, result ->
                 if (e != null) {
@@ -55,32 +55,40 @@ object SpoonacularAPI {
                         // insert data
                         dao.insertRecipe(RecipeEntity(recipeId, recipeName, imageUrl, null))
 
-                        usedIngredients.forEach { item ->
-                            dao.insertIngredient(item)
-                            dao.insertRecipeIngredient(RecipeIngredientEntity(recipeId, item.id))
-
-                        }
-                        missedIngredients.forEach { item ->
-                            dao.insertIngredient(item)
-                            dao.insertRecipeIngredient(RecipeIngredientEntity(recipeId, item.id))
-                        }
-
                         Log.d(
                             "SpoonacularResponse",
                             "$recipeId $recipeName"
                         )
 
+                        usedIngredients.forEach { item ->
+                            Log.d(
+                                "SpoonacularResponse",
+                                "usedIngredient ${item.name}"
+                            )
+                            dao.insertIngredient(item)
+                            dao.insertRecipeIngredient(RecipeIngredientEntity(item.id, recipeId, true))
+
+                        }
+                        missedIngredients.forEach { item ->
+                            Log.d(
+                                "SpoonacularResponse",
+                                "missedIngredient ${item.name}"
+                            )
+                            dao.insertIngredient(item)
+                            dao.insertRecipeIngredient(RecipeIngredientEntity(item.id, recipeId, false))
+                        }
+
+
+
                     }
                     // links to recipes
-                    getRecipesSources(context, ids, dao)
-                    // notify changes
-                    adapter.data = dao.getAllRecipes()
-                    adapter.notifyDataSetChanged()
+                    getRecipesSources(context, ids, dao, adapter)
+
                 }
             }
     }
 
-    fun getRecipesSources(context: Context, ids: List<Int>, dao: FridgeDao) {
+    fun getRecipesSources(context: Context, ids: List<Int>, dao: FridgeDao, adapter: RecipesAdapter) {
         Ion.with(context)
             .load("https://api.spoonacular.com/recipes/informationBulk")
             .setHeader("x-api-key", "40a02b1a97644f4aaf69b9f2902f0b5b")
@@ -104,6 +112,11 @@ object SpoonacularAPI {
                         )
                     }
                 }
+                // notify changes
+                adapter.dataRecipes = dao.getAllRecipes()
+                adapter.dataIDs = dao.getAllIngredientsAllRecipes()
+                adapter.dataIngredients = dao.getAllIngredients()
+                adapter.notifyDataSetChanged()
             }
     }
 }

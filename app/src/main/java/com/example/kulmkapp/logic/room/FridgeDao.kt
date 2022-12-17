@@ -51,6 +51,9 @@ interface FridgeDao {
     @Query("UPDATE Recipes SET recipeUrl = :recipeUrl WHERE id = :id")
     fun updateRecipe(id: Int, recipeUrl: String)
 
+    @Query("SELECT * FROM RecipeIngredients")
+    fun getAllIngredientsAllRecipes(): List<RecipeIngredientEntity>
+
     @Query("SELECT * FROM RecipeIngredients WHERE recipeId == :id")
     fun getAllIngredientsForRecipe(vararg id: Int): List<RecipeIngredientEntity>
 
