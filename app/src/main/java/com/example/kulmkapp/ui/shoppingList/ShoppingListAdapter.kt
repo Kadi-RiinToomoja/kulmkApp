@@ -17,13 +17,18 @@ class ShoppingListAdapter(var dao: FridgeDao,var activity: Activity): RecyclerVi
 
     val TAG = "shopping list adapter class"
 
-    val item1 = FridgeItemEntity(44, "juust", 22, 1.0.toFloat(), 0, null)
-    val item2 = FridgeItemEntity(45, "vorst", 23, 1.0.toFloat(), 0, null)
-    var data = listOf(item1, item2)//dao.loadAllShoppingListItems()
+    var data = dao.getAllShoppingListItems()
 
     inner class ShoppingListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingListItemViewHolder {
+        val item1 = FridgeItemEntity(44, "igavene juust", 22, 1.0.toFloat(), 0, null)
+        val item2 = FridgeItemEntity(45, "igavene vorst", 23, 1.0.toFloat(), 0, null)
+        dao.insertFridgeOrShoppingListItem(item1)
+        dao.insertFridgeOrShoppingListItem(item2)
+        data = dao.getAllShoppingListItems()
+
+
         Log.i(TAG, "oncreateviewholder called")
         val view = LayoutInflater.from(parent.context).inflate(R.layout.single_shoppinglist_item, parent, false)
 
@@ -40,6 +45,7 @@ class ShoppingListAdapter(var dao: FridgeDao,var activity: Activity): RecyclerVi
 
             val deleteButton: Button = this.findViewById(R.id.shoppingList_item_delete_button)
             deleteButton.setOnClickListener{
+                Log.i("deleting from shopping list", "${shoppingListItem.customName}")
                 deleteItemFromShoppingList(shoppingListItem.id)
             }
         }
@@ -51,12 +57,15 @@ class ShoppingListAdapter(var dao: FridgeDao,var activity: Activity): RecyclerVi
 
     private fun deleteItemFromShoppingList(itemId: Int) {
         // delete item
+        Log.i(TAG, "shopping list has this number of elements before deleting: ${data.size}")
+        Log.i(TAG, "shopping list elements: "+dao.getAllShoppingListItems().toString())
         Log.i(TAG, "Deleting item with id $itemId")
         val dao = LocalRoomDb.getInstance(activity).getFridgeDao()
         dao.deleteFridgeOrShoppingListItem(itemId)
         Log.i(TAG, dao.getAllShoppingListItems().toString())
         // refresh
         data = dao.getAllShoppingListItems();
+        Log.i(TAG, "shopping list has this number of elements after deleting: ${data.size}")
         notifyDataSetChanged()
     }
 }
