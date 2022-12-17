@@ -4,7 +4,11 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -30,12 +34,14 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
             builder.setTitle("Add product to fridge")
 
             val inflater = requireActivity().layoutInflater;
-            val addItemView = inflater.inflate(R.layout.add_item, null)
+            val addItemView = inflater.inflate(R.layout.add_item_fridge, null)
 
             val dateChangeButton = addItemView.findViewById<Button>(R.id.dateChangeButton)
             dateChangeButton.setOnClickListener {
                 showDatePickerDialog(addItemView)
             }
+            // Kadi test
+            showSearchDialog()
 
             builder.setView(addItemView)
 
@@ -99,26 +105,97 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
         alertDialog.show()
     }
 
-    fun showSearchDialog(context: Context) {
-        val items = listOf("SSS", "rrra", "dsfoksdfn")
-        val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, items)
+    fun showSearchDialog() {
+        Log.i("Toidu tyyp", "olen funktsioonis")
 
-        val searchSpinner = Spinner(context)
-        searchSpinner.adapter = adapter
+        var textview: TextView? = null
+        var arrayList: ArrayList<String>?
+        var dialog: Dialog?
 
-        val builder = androidx.appcompat.app.AlertDialog.Builder(context)
-            .setTitle("Search")
-            .setView(searchSpinner)
-            .setPositiveButton("Search") { dialog, _ ->
-                val selectedItem = searchSpinner.selectedItem as String
-                // Perform search with the selected item
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.cancel()
-            }
+        val inflater = requireActivity().layoutInflater;
+        val addItemView = inflater.inflate(R.layout.add_item, null)
 
-        builder.show()
+        // assign variable
+        textview = addItemView.findViewById(R.id.testView)
+
+        // initialize array list
+        arrayList = ArrayList()
+
+        // set value in array list
+        arrayList.add("DSA Self Paced")
+        arrayList.add("Complete Interview Prep")
+        arrayList.add("Amazon SDE Test Series")
+        arrayList.add("Compiler Design")
+        arrayList.add("Git & Github")
+        arrayList.add("Python foundation")
+        arrayList.add("Operating systems")
+        arrayList.add("Theory of Computation")
+        textview?.let {
+            textview.setOnClickListener(View.OnClickListener {
+                // Initialize dialog
+                dialog = this.context?.let { it1 -> Dialog(it1) }
+
+                Log.i("Toidu tyyp", "jõuan siia ka")
+
+                // set custom dialog
+                dialog!!.setContentView(R.layout.dialog_searchable_spinner)
+
+                // set custom height and width
+                dialog!!.window!!.setLayout(650, 800)
+
+                // set transparent background
+                dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                // show dialog
+                dialog!!.show()
+
+                // Initialize and assign variable
+                val editText = dialog!!.findViewById<EditText>(R.id.edit_text)
+                val listView = dialog!!.findViewById<ListView>(R.id.list_view)
+
+                // Initialize array adapter
+                val adapter = this.context?.let { it1 ->
+                    ArrayAdapter(
+                        it1, android.R.layout.simple_list_item_1,
+                        arrayList
+                    )
+                }
+
+                // set adapter
+                listView.adapter = adapter
+                editText.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                    }
+                    override fun onTextChanged(
+                        s: CharSequence,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                        if (adapter != null) {
+                            adapter.filter.filter(s)
+                        }
+                    }
+                    override fun afterTextChanged(s: Editable) {}
+                })
+                listView.onItemClickListener =
+                    AdapterView.OnItemClickListener { parent, view, position, id -> // when item selected from list
+                        // set selected item on textView
+                        if (adapter != null) {
+                            textview!!.setText(adapter.getItem(position))
+                        }
+
+                        // Dismiss dialog
+                        dialog!!.dismiss()
+                    }
+            })
+        }
+        Log.i("Toidu tyyp", "lopp")
     }
 
 }
