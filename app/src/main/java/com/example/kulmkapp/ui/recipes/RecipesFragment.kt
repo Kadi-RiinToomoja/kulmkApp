@@ -43,10 +43,6 @@ class RecipesFragment : Fragment() {
 
         dao = LocalRoomDb.getInstance(requireContext()).getFridgeDao()
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         this.setHasOptionsMenu(false)
         setupRecyclerView()
 
@@ -57,7 +53,7 @@ class RecipesFragment : Fragment() {
             val items = dao.getAllFridgeItems().filter { ids.contains(it.id) }
             val query = items.joinToString(",+") { it.customName }
             Log.d("RecipeFragment", query)
-            //SpoonacularAPI.getRecipes(requireContext(), query, dao, recipesAdapter)
+            SpoonacularAPI.getRecipes(requireContext(), query, dao, recipesAdapter)
         }
 
         return root
@@ -66,7 +62,9 @@ class RecipesFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         model.refresh()
-        recipesAdapter.data = model.recipeArray
+        recipesAdapter.dataRecipes = model.recipeArray
+        recipesAdapter.dataIDs = model.idArray
+        recipesAdapter.dataIngredients = model.ingredientArray
         recipesAdapter.notifyDataSetChanged()
     }
 
@@ -81,6 +79,8 @@ class RecipesFragment : Fragment() {
         }
         recipesAdapter = RecipesAdapter(
             model.recipeArray,
+            model.idArray,
+            model.ingredientArray,
             activity?.application!!, recipeClickListener
         )
         binding.recyclerviewRecipelist.adapter = recipesAdapter
@@ -90,6 +90,7 @@ class RecipesFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        this.getArguments()?.clear()
     }
 
     private fun openRecipeDetails(recipe: RecipeEntity) {
