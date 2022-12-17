@@ -2,7 +2,6 @@ package com.example.kulmkapp.ui.fridge
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -41,7 +40,7 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
                 showDatePickerDialog(addItemView)
             }
             // Kadi test
-            showSearchDialog()
+            showSearchDialog(addItemView)
 
             builder.setView(addItemView)
 
@@ -57,8 +56,7 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
                         // kontrolli kas kõik väljad on täidetud, kui pole siis alert et täida koik
                         if (itemName.isEmpty() || amount.isEmpty() || dateString.isEmpty()) {
                             showAlertDialog()
-                        }
-                        else { // lisa asjad fridgesse
+                        } else { // lisa asjad fridgesse
                             dao.insertFridgeOrShoppingListItem(
                                 FridgeItemEntity(
                                     0,
@@ -105,21 +103,16 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
         alertDialog.show()
     }
 
-    fun showSearchDialog() {
+    fun showSearchDialog(addItemView: View) {
         Log.i("Toidu tyyp", "olen funktsioonis")
 
-        var textview: TextView? = null
-        var arrayList: ArrayList<String>?
-        var dialog: Dialog?
 
-        val inflater = requireActivity().layoutInflater;
-        val addItemView = inflater.inflate(R.layout.add_item_fridge, null)
 
         // assign variable
-        textview = addItemView.findViewById(R.id.testView)
+        var textview: TextView = addItemView.findViewById(R.id.testView)
 
         // initialize array list
-        arrayList = ArrayList()
+        var arrayList: ArrayList<String> = ArrayList()
 
         // set value in array list
         arrayList.add("DSA Self Paced")
@@ -130,10 +123,10 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
         arrayList.add("Python foundation")
         arrayList.add("Operating systems")
         arrayList.add("Theory of Computation")
-        textview?.let {
+        textview.let {
             textview.setOnClickListener(View.OnClickListener {
                 // Initialize dialog
-                dialog = this.context?.let { it1 -> Dialog(it1) }
+                var dialog = this.context?.let { it1 -> Dialog(it1) }
 
                 Log.i("Toidu tyyp", "jõuan siia ka")
 
@@ -171,6 +164,7 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
                         after: Int
                     ) {
                     }
+
                     override fun onTextChanged(
                         s: CharSequence,
                         start: Int,
@@ -181,6 +175,7 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
                             adapter.filter.filter(s)
                         }
                     }
+
                     override fun afterTextChanged(s: Editable) {}
                 })
                 listView.onItemClickListener =
