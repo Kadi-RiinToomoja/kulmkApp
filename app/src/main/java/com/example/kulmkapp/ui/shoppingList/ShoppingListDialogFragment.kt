@@ -33,8 +33,6 @@ class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter): 
                 val inflater = requireActivity().layoutInflater;
                 val addItemView = inflater.inflate(R.layout.add_item_shopping_list, null)
 
-
-
                 builder.setView(addItemView)
 
                     .setPositiveButton(

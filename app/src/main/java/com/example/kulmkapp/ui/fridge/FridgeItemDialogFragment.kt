@@ -40,9 +40,6 @@ class FridgeItemDialogFragment : DialogFragment() {
                 // itemType see mis listis on selle spineeri asjaga
             }
 
-
-
-
             builder.setView(addItemDetailsView)
                 // Add action buttons
                 .setPositiveButton(R.string.select_date,
