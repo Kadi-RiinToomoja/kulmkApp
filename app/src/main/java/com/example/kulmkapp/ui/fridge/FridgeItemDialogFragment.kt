@@ -27,7 +27,7 @@ class FridgeItemDialogFragment : DialogFragment() {
             val dao = LocalRoomDb.getInstance(requireActivity()).getFridgeDao()
             val inflater = requireActivity().layoutInflater;
 
-            val addItemDetailsView: View = inflater.inflate(R.layout.add_item, null)
+            val addItemDetailsView: View = inflater.inflate(R.layout.add_item_fridge, null)
             val itemId = savedInstanceState?.getInt("itemId")
 
             itemId?.let {

@@ -34,7 +34,7 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
             builder.setTitle("Add product to fridge")
 
             val inflater = requireActivity().layoutInflater;
-            val addItemView = inflater.inflate(R.layout.add_item, null)
+            val addItemView = inflater.inflate(R.layout.add_item_fridge, null)
 
             val dateChangeButton = addItemView.findViewById<Button>(R.id.dateChangeButton)
             dateChangeButton.setOnClickListener {
