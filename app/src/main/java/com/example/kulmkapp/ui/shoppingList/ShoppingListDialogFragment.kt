@@ -54,7 +54,7 @@ class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter): 
                                     FridgeItemEntity(
                                         0,
                                         itemName.toString(),
-                                        -1, //tüübi id-d pole kuna tüüpi ei tea
+                                        "", //tüüpi pole kuna tüüpi ei tea
                                         amount.toString().toFloat(),
                                         0,
                                         null

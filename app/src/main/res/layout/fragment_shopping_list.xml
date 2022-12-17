@@ -48,7 +48,7 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:enabled="false"
-        android:src="@drawable/dark_recipe"
+        android:src="@drawable/dark_fridge"
         app:backgroundTint="#03A9F4"
         app:layout_constraintBottom_toTopOf="@+id/shoppingListAddButton"
         app:layout_constraintEnd_toEndOf="parent" />

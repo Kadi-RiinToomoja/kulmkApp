@@ -59,16 +59,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun addToDbTest() {
-        val item1 = FridgeItemEntity(1, "piim uus", 0, 1.0.toFloat(), 1, null)
-        val item2 = FridgeItemEntity(-2, "leib uus", 0, 1.0.toFloat(), 1, null)
+        val item1 = FridgeItemEntity(1, "piim uus", "milk", 1.0.toFloat(), 1, null)
+        val item2 = FridgeItemEntity(-2, "leib uus", "bread", 1.0.toFloat(), 1, null)
 
         dao.insertFridgeOrShoppingListItem(item1)
         dao.insertFridgeOrShoppingListItem(item2)
     }
 
     fun testFridgeItems(){
-        val f1 = FridgeItemEntity(0,"apple uus", 0, 1f, 1, null)
-        val f2 = FridgeItemEntity(0,"orange uus", 1, 1f, 1, null)
+        val f1 = FridgeItemEntity(0,"apple uus", "apple", 1f, 1, null)
+        val f2 = FridgeItemEntity(0,"orange uus", "orange", 1f, 1, null)
         dao.insertFridgeOrShoppingListItem(f1)
         dao.insertFridgeOrShoppingListItem(f2)
 

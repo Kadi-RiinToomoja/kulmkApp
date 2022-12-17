@@ -53,7 +53,7 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
                     DialogInterface.OnClickListener { dialog, id ->
                         val itemName =
                             addItemView.findViewById<TextView>(R.id.itemName).text
-                        val itemTypeId: Int = 0//addItemView.findViewById<12345>(...)
+                        val itemType: String = addItemView.findViewById<TextView>(R.id.testView).text.toString()
                         val amount = addItemView.findViewById<EditText>(R.id.itemAmount).text
                         val dateString = addItemView.findViewById<TextView>(R.id.dateText).text
                         //val dateString = dao.getValueByKey("addToFridgeDate").value
@@ -66,7 +66,7 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
                                 FridgeItemEntity(
                                     0,
                                     itemName.toString(),
-                                    itemTypeId,
+                                    itemType,
                                     amount.toString().toFloat(),
                                     1,
                                     dateString.toString()
