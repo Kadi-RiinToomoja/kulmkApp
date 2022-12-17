@@ -24,8 +24,8 @@ class ShoppingListAdapter(var dao: FridgeDao,var activity: Activity): RecyclerVi
     inner class ShoppingListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingListItemViewHolder {
-        val item1 = FridgeItemEntity(44, "igavene juust", 22, 1.0.toFloat(), 0, null)
-        val item2 = FridgeItemEntity(45, "igavene vorst", 23, 1.0.toFloat(), 0, null)
+        val item1 = FridgeItemEntity(44, "igavene juust", "cheese", 1.0.toFloat(), 0, null)
+        val item2 = FridgeItemEntity(45, "igavene vorst", "sausage", 1.0.toFloat(), 0, null)
         dao.insertFridgeOrShoppingListItem(item1)
         dao.insertFridgeOrShoppingListItem(item2)
         data = dao.getAllShoppingListItems()

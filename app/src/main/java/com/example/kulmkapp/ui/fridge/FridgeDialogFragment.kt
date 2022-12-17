@@ -48,7 +48,7 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
                     DialogInterface.OnClickListener { dialog, id ->
                         val itemName =
                             addItemView.findViewById<TextView>(R.id.itemName).text
-                        val itemTypeId: Int = 0//addItemView.findViewById<12345>(...)
+                        val itemType: String = addItemView.findViewById<TextView>(R.id.testView).text.toString()
                         val amount = addItemView.findViewById<EditText>(R.id.itemAmount).text
                         val dateString = addItemView.findViewById<TextView>(R.id.dateText).text
                         //val dateString = dao.getValueByKey("addToFridgeDate").value
@@ -61,7 +61,7 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
                                 FridgeItemEntity(
                                     0,
                                     itemName.toString(),
-                                    itemTypeId,
+                                    itemType,
                                     amount.toString().toFloat(),
                                     1,
                                     dateString.toString()
@@ -115,14 +115,10 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
         var arrayList: ArrayList<String> = ArrayList()
 
         // set value in array list
-        arrayList.add("DSA Self Paced")
-        arrayList.add("Complete Interview Prep")
-        arrayList.add("Amazon SDE Test Series")
-        arrayList.add("Compiler Design")
-        arrayList.add("Git & Github")
-        arrayList.add("Python foundation")
-        arrayList.add("Operating systems")
-        arrayList.add("Theory of Computation")
+        arrayList.add("Cheese")
+        arrayList.add("Dough")
+        arrayList.add("Apple")
+        arrayList.add("Meat")
         textview.let {
             textview.setOnClickListener(View.OnClickListener {
                 // Initialize dialog

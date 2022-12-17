@@ -33,8 +33,7 @@ class FridgeItemDialogFragment : DialogFragment() {
             itemId?.let {
                 val item = dao.getSingleFridgeItemById(itemId)
                 val itemName = item.customName
-                val itemTypeId = item.idInList
-                val itemType = dao.getSingleIngredientById(itemTypeId).name
+                val itemType = item.itemType
                 val itemDate = item.expireDate
                 addItemDetailsView.findViewById<TextView>(R.id.itemName).text = itemName
                 addItemDetailsView.findViewById<TextView>(R.id.dateText).text = itemDate.toString()
