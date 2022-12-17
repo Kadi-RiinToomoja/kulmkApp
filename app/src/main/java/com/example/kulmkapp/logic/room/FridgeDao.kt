@@ -8,6 +8,7 @@ interface FridgeDao {
 
     // Ingredients
 
+
     @Query("SELECT * FROM Ingredients")
     fun getAllIngredients(): List<IngredientEntity>
 

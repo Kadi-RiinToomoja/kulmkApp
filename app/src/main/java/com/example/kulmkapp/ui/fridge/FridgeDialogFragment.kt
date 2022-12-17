@@ -14,8 +14,10 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.example.kulmkapp.R
+import com.example.kulmkapp.logic.IngredientsList
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
+import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 
 
@@ -23,11 +25,14 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
 
     private val TAG = "MyFridgeDialogFragment"
     private lateinit var dao: FridgeDao
+    private lateinit var ingredientsList: List<IngredientEntity>
+
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
 
             dao = LocalRoomDb.getInstance(requireContext()).getFridgeDao()
+            ingredientsList = dao.getAllIngredients()
 
             val builder = AlertDialog.Builder(it)
             builder.setTitle("Add product to fridge")
@@ -103,48 +108,41 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
         alertDialog.show()
     }
 
+    //https://www.geeksforgeeks.org/how-to-implement-custom-searchable-spinner-in-android/
     fun showSearchDialog(addItemView: View) {
-        Log.i("Toidu tyyp", "olen funktsioonis")
-
-
-
         // assign variable
         var textview: TextView = addItemView.findViewById(R.id.testView)
 
         // initialize array list
-        var arrayList: ArrayList<String> = ArrayList()
+        var arrayList: ArrayList<String> = ArrayList(ingredientsList.map { it.name })
+
+
+
 
         // set value in array list
-        arrayList.add("DSA Self Paced")
-        arrayList.add("Complete Interview Prep")
-        arrayList.add("Amazon SDE Test Series")
-        arrayList.add("Compiler Design")
-        arrayList.add("Git & Github")
-        arrayList.add("Python foundation")
-        arrayList.add("Operating systems")
-        arrayList.add("Theory of Computation")
+        //arrayList.add("DSA Self Paced")
+        //arrayList.add("Complete Interview Prep")
+
         textview.let {
             textview.setOnClickListener(View.OnClickListener {
                 // Initialize dialog
                 var dialog = this.context?.let { it1 -> Dialog(it1) }
 
-                Log.i("Toidu tyyp", "jõuan siia ka")
-
                 // set custom dialog
                 dialog!!.setContentView(R.layout.dialog_searchable_spinner)
 
                 // set custom height and width
-                dialog!!.window!!.setLayout(650, 800)
+                dialog.window!!.setLayout(650, 800) // see oile hea
 
                 // set transparent background
-                dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
                 // show dialog
-                dialog!!.show()
+                dialog.show()
 
                 // Initialize and assign variable
-                val editText = dialog!!.findViewById<EditText>(R.id.edit_text)
-                val listView = dialog!!.findViewById<ListView>(R.id.list_view)
+                val editText = dialog.findViewById<EditText>(R.id.edit_text)
+                val listView = dialog.findViewById<ListView>(R.id.list_view)
 
                 // Initialize array adapter
                 val adapter = this.context?.let { it1 ->
@@ -182,15 +180,13 @@ class FridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() 
                     AdapterView.OnItemClickListener { parent, view, position, id -> // when item selected from list
                         // set selected item on textView
                         if (adapter != null) {
-                            textview!!.setText(adapter.getItem(position))
+                            textview!!.setText(adapter.getItem(position)!!)
                         }
-
                         // Dismiss dialog
                         dialog!!.dismiss()
                     }
             })
         }
-        Log.i("Toidu tyyp", "lopp")
     }
 
 }
