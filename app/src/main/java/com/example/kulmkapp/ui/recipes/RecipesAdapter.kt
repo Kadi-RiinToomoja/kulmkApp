@@ -1,7 +1,6 @@
 package com.example.kulmkapp.ui.recipes
 
 import android.app.Application
-import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +17,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.net.URL
 
 class RecipesAdapter(
     var dataRecipes: List<RecipeEntity> = listOf(),
@@ -54,20 +52,25 @@ class RecipesAdapter(
 
             var usedIngredients = mutableListOf<IngredientEntity>()
             Log.d("RecipesAdapter", dataIDs.size.toString())
+            Log.d("RecipesAdapter", dataIDs.filter { it.recipeId == recipe.id }.size.toString())
+            Log.d("RecipesAdapter", dataIDs.filter { it.recipeId == recipe.id && it.usesIngredient}.size.toString())
+            Log.d("RecipesAdapter", dataIDs.filter { it.recipeId == recipe.id && !it.usesIngredient}.size.toString())
 
             for (ids in dataIDs.filter { it.recipeId == recipe.id && it.usesIngredient }) {
-                Log.d("RecipesAdapter", ids.id.toString() + " " + ids.recipeId.toString())
+                Log.d("RecipesAdapter", ids.ingredientId.toString() + " " + ids.recipeId.toString())
 
-                var ingredient = dataIngredients.find { it.id == ids.id }
+                var ingredient = dataIngredients.find { it.id == ids.ingredientId }
                 if (ingredient != null) {
+                    Log.d("RecipesAdapter USED", recipe.title + " " + ingredient.name)
                     usedIngredients.add(ingredient)
                 }
             }
             var missedIngredients = mutableListOf<IngredientEntity>()
             for (ids in dataIDs.filter { it.recipeId == recipe.id && !it.usesIngredient }) {
-                Log.d("RecipesAdapter", ids.id.toString() + " " + ids.recipeId.toString())
-                var ingredient = dataIngredients.find { it.id == ids.id }
+                Log.d("RecipesAdapter", ids.ingredientId.toString() + " " + ids.recipeId.toString())
+                var ingredient = dataIngredients.find { it.id == ids.ingredientId }
                 if (ingredient != null) {
+                    Log.d("RecipesAdapter USED", recipe.title + " " + ingredient.name)
                     missedIngredients.add(ingredient)
                 }
             }
