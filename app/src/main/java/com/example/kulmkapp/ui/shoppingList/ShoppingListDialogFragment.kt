@@ -19,31 +19,33 @@ import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 
 
-class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter): DialogFragment() {
+class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter) : DialogFragment() {
 
 
-        private val TAG = "MyShoppinglistDialogFragment"
-        private lateinit var dao: FridgeDao
-        private lateinit var ingredientsList: List<IngredientEntity>
+    private val TAG = "MyShoppinglistDialogFragment"
+    private lateinit var dao: FridgeDao
+    private lateinit var ingredientsList: List<IngredientEntity>
 
-        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            return activity?.let {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return activity?.let {
 
-                dao = LocalRoomDb.getInstance(requireContext()).getFridgeDao()
-                ingredientsList = dao.getAllIngredients()
+            dao = LocalRoomDb.getInstance(requireContext()).getFridgeDao()
+            ingredientsList = dao.getAllIngredients()
 
-                val builder = AlertDialog.Builder(it)
-                builder.setTitle("Add product to shopping list")
+            val builder = AlertDialog.Builder(it)
+            builder.setTitle("Add product to shopping list")
 
-                val inflater = requireActivity().layoutInflater;
-                val addItemView = inflater.inflate(R.layout.add_item_shopping_list, null)
+            val inflater = requireActivity().layoutInflater;
+            val addItemView = inflater.inflate(R.layout.add_item_shopping_list, null)
 
                 showSearchDialog(addItemView)
 
-                builder.setView(addItemView)
+            builder.setView(addItemView)
 
-                    .setPositiveButton(
-                        R.string.add,
+                .setPositiveButton(
+                    R.string.add,
+                    null
+                )/*
                         DialogInterface.OnClickListener { dialog, id ->
                             val itemName =
                                 addItemView.findViewById<TextView>(R.id.customName).text
@@ -68,31 +70,73 @@ class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter): 
                                 shoppingListAdapter.data = dao.getAllShoppingListItems()
                                 shoppingListAdapter.notifyDataSetChanged()
                             }
-                        })
-                    .setNegativeButton(
-                        R.string.cancel,
-                        DialogInterface.OnClickListener { dialog, id ->
-                            getDialog()?.cancel()
-                        })
-                builder.create()
-            } ?: throw IllegalStateException("Activity cannot be null")
+                        })*/
+                .setNegativeButton(
+                    R.string.cancel,
+                    DialogInterface.OnClickListener { dialog, id ->
+                        getDialog()?.cancel()
+                    })
+            var newDialog = builder.create()
+            // kontrolli kas kõik väljad on täidetud, kui pole siis alert et täida koik
+            dialogPositiveButtonOnClick(newDialog, addItemView)
+            newDialog
+        } ?: throw IllegalStateException("Activity cannot be null")
+    }
+
+    private fun dialogPositiveButtonOnClick(dialog: AlertDialog, addItemView: View) {
+        dialog.setOnShowListener(DialogInterface.OnShowListener {
+            val button: Button = (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
+            button.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(view: View?) {
+                    val itemName =
+                        addItemView.findViewById<TextView>(R.id.customName).text
+                    val itemType: String =
+                        addItemView.findViewById<TextView>(R.id.foodTypeSpinner).text.toString()
+                    val amount = addItemView.findViewById<EditText>(R.id.itemAmount).text
+
+                    // kontrolli kas kõik väljad on täidetud, kui pole siis alert et täida koik
+                    if (itemName.isEmpty() || amount.isEmpty() || itemType.isEmpty()) {
+                        val toast =
+                            Toast.makeText(context, "Not all fields are filled.", Toast.LENGTH_LONG)
+                        toast.show()
+                        //showAlertDialog()
+                    } else { // lisa asjad fridgesse
+                        dao.insertFridgeOrShoppingListItem(
+                            FridgeItemEntity(
+                                0,
+                                itemName.toString(),
+                                itemType,
+                                amount.toString().toFloat(),
+                                0,
+                                null
+                            )
+                        )
+
+                        shoppingListAdapter.data = dao.getAllFridgeItems()
+                        shoppingListAdapter.notifyDataSetChanged()
+                        //Dismiss once everything is OK.
+                        dialog.dismiss()
+                    }
+                }
+            })
+        })
+    }
+
+
+    fun showAlertDialog() {
+        val alertDialog = AlertDialog.Builder(requireContext()).create()
+        alertDialog.setTitle("Error")
+        alertDialog.setMessage("Not all fields were filled.")
+        //alertDialog.setIcon(R.drawable.welcome)
+
+        alertDialog.setButton(
+            AlertDialog.BUTTON_POSITIVE, "OK"
+        ) { dialog, which ->
+            // tee midagi kui vajutab erroril ok
         }
 
-
-        fun showAlertDialog() {
-            val alertDialog = AlertDialog.Builder(requireContext()).create()
-            alertDialog.setTitle("Error")
-            alertDialog.setMessage("Not all fields were filled.")
-            //alertDialog.setIcon(R.drawable.welcome)
-
-            alertDialog.setButton(
-                AlertDialog.BUTTON_POSITIVE, "OK"
-            ) { dialog, which ->
-                // tee midagi kui vajutab erroril ok
-            }
-
-            alertDialog.show()
-        }
+        alertDialog.show()
+    }
 
     //https://www.geeksforgeeks.org/how-to-implement-custom-searchable-spinner-in-android/
     fun showSearchDialog(addItemView: View) {
@@ -159,7 +203,9 @@ class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter): 
                             val selectedFoodType = adapter.getItem(position)
                             textview!!.setText(selectedFoodType)
                             Log.i(TAG, "selected item $selectedFoodType")
-                            addItemView.findViewById<TextView>(R.id.customName).text = selectedFoodType
+                            addItemView.findViewById<TextView>(R.id.customName).text =
+                                selectedFoodType
+
                         }
                         // Dismiss dialog
                         dialog.dismiss()

@@ -47,41 +47,61 @@ class AddFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment
             showSearchDialog(addItemView)
 
             builder.setView(addItemView)
-
-                .setPositiveButton(R.string.add,
-                    DialogInterface.OnClickListener { dialog, id ->
-                        val itemName =
-                            addItemView.findViewById<TextView>(R.id.customName).text
-                        val itemType: String = addItemView.findViewById<TextView>(R.id.foodTypeSpinner).text.toString()
-                        val amount = addItemView.findViewById<EditText>(R.id.itemAmount).text
-                        val dateString = addItemView.findViewById<TextView>(R.id.dateText).text
-                        //val dateString = dao.getValueByKey("addToFridgeDate").value
-
-                        // kontrolli kas kõik väljad on täidetud, kui pole siis alert et täida koik
-                        if (itemName.isEmpty() || amount.isEmpty() || dateString.isEmpty()) {
-                            showAlertDialog()
-                        } else { // lisa asjad fridgesse
-                            dao.insertFridgeOrShoppingListItem(
-                                FridgeItemEntity(
-                                    0,
-                                    itemName.toString(),
-                                    itemType,
-                                    amount.toString().toFloat(),
-                                    1,
-                                    dateString.toString()
-                                )
-                            )
-
-                            fridgeAdapter.data = dao.getAllFridgeItems()
-                            fridgeAdapter.notifyDataSetChanged()
-                        }
-                    })
-                .setNegativeButton(R.string.cancel,
-                    DialogInterface.OnClickListener { dialog, id ->
+                .setPositiveButton(R.string.add, null)
+                .setNegativeButton(R.string.cancel, { dialog, id ->
                         getDialog()?.cancel()
                     })
-            builder.create()
+            var newDialog = builder.create()
+
+            // kontrolli kas kõik väljad on täidetud, kui pole siis alert et täida koik
+            dialogPositiveButtonOnClick(newDialog, addItemView)
+            newDialog
         } ?: throw IllegalStateException("Activity cannot be null")
+
+    }
+
+    private fun dialogPositiveButtonOnClick(
+        dialog: AlertDialog,
+        addItemView: View
+    ) {
+        dialog.setOnShowListener(DialogInterface.OnShowListener {
+            val button: Button = (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
+            button.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(view: View?) {
+                    // TODO Do something
+                    val itemName =
+                        addItemView.findViewById<TextView>(R.id.customName).text
+                    val itemType: String =
+                        addItemView.findViewById<TextView>(R.id.foodTypeSpinner).text.toString()
+                    val amount = addItemView.findViewById<EditText>(R.id.itemAmount).text
+                    val dateString = addItemView.findViewById<TextView>(R.id.dateText).text
+                    //val dateString = dao.getValueByKey("addToFridgeDate").value
+
+                    // kontrolli kas kõik väljad on täidetud, kui pole siis alert et täida koik
+                    if (itemName.isEmpty() || amount.isEmpty() || dateString.isEmpty() || itemType.isEmpty()) {
+                        val toast = Toast.makeText(context, "Not all fields are filled.", Toast.LENGTH_LONG)
+                        toast.show()
+                        //showAlertDialog()
+                    } else { // lisa asjad fridgesse
+                        dao.insertFridgeOrShoppingListItem(
+                            FridgeItemEntity(
+                                0,
+                                itemName.toString(),
+                                itemType,
+                                amount.toString().toFloat(),
+                                1,
+                                dateString.toString()
+                            )
+                        )
+
+                        fridgeAdapter.data = dao.getAllFridgeItems()
+                        fridgeAdapter.notifyDataSetChanged()
+                        //Dismiss once everything is OK.
+                        dialog.dismiss()
+                    }
+                }
+            })
+        })
     }
 
     fun showDatePickerDialog(addItemView: View) {
@@ -95,7 +115,7 @@ class AddFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment
     fun showAlertDialog() {
         val alertDialog = AlertDialog.Builder(requireContext()).create()
         alertDialog.setTitle("Error")
-        alertDialog.setMessage("Not all fields were filled.")
+        alertDialog.setMessage("Not all fields are filled.")
         //alertDialog.setIcon(R.drawable.welcome)
 
         alertDialog.setButton(
