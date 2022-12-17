@@ -5,10 +5,11 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "RecipeIngredients")
 class RecipeIngredientEntity (
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var id: Int,
+    var ingredientId: Int,
     var recipeId: Int,
     var usesIngredient: Boolean
         ){
-    constructor() : this(0,0, true)
+    constructor() : this(0,0,0, true)
 }

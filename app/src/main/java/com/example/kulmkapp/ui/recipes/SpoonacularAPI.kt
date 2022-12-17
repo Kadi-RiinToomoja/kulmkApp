@@ -66,7 +66,7 @@ object SpoonacularAPI {
                                 "usedIngredient ${item.name}"
                             )
                             dao.insertIngredient(item)
-                            dao.insertRecipeIngredient(RecipeIngredientEntity(item.id, recipeId, true))
+                            dao.insertRecipeIngredient(RecipeIngredientEntity(0, item.id, recipeId, true))
 
                         }
                         missedIngredients.forEach { item ->
@@ -75,7 +75,7 @@ object SpoonacularAPI {
                                 "missedIngredient ${item.name}"
                             )
                             dao.insertIngredient(item)
-                            dao.insertRecipeIngredient(RecipeIngredientEntity(item.id, recipeId, false))
+                            dao.insertRecipeIngredient(RecipeIngredientEntity(0, item.id, recipeId, false))
                         }
 
 
