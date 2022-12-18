@@ -19,6 +19,9 @@ import com.example.kulmkapp.logic.IngredientsListReader
 import com.example.kulmkapp.logic.room.*
 import com.example.kulmkapp.ui.AlarmReceiver
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,8 +34,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        //source: https://www.droidcon.com/2022/09/27/everything-you-need-to-know-about-adding-notifications-with-alarm-manager-in-android/
-        testAlarm()
+        CoroutineScope(Dispatchers.Default).launch {
+            //source: https://www.droidcon.com/2022/09/27/everything-you-need-to-know-about-adding-notifications-with-alarm-manager-in-android/
+            testAlarm()
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

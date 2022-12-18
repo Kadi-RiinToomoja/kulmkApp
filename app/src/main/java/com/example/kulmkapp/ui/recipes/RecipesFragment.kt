@@ -18,6 +18,9 @@ import com.example.kulmkapp.databinding.FragmentRecipesBinding
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.LocalRoomDb
 import com.example.kulmkapp.logic.room.RecipeEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class RecipesFragment : Fragment() {
 
@@ -53,7 +56,9 @@ class RecipesFragment : Fragment() {
             val items = dao.getAllFridgeItems().filter { ids.contains(it.id) }
             val query = items.joinToString(",+") { it.itemType }
             Log.d("RecipeFragment", query)
-            SpoonacularAPI.getRecipes(requireContext(), query, dao, recipesAdapter)
+            CoroutineScope(Dispatchers.IO).launch {
+                SpoonacularAPI.getRecipes(requireContext(), query, dao, recipesAdapter)
+            }
         }
 
         return root
