@@ -39,7 +39,6 @@ class FridgeAdapter(
         mListener = listener
     }
 
-
     override fun getItemCount(): Int {
         return data.size
     }
@@ -56,16 +55,16 @@ class FridgeAdapter(
         refreshData()
     }
 
-        fun refreshData() {
-            data = sortItemsByDateAscending(dao.getAllFridgeItems())
-            notifyDataSetChanged()
-        }
+    fun refreshData() {
+        data = sortItemsByDateAscending(dao.getAllFridgeItems())
+        notifyDataSetChanged()
+    }
 
 
-        fun sortItemsByDateAscending(data: List<FridgeItemEntity>): List<FridgeItemEntity> {
-            Log.i(TAG, "sort items by date")
-            val newData = data.sortedWith(Comparator { i1, i2 ->
-                val sdf = SimpleDateFormat("dd/MM/yyyy")
+    fun sortItemsByDateAscending(data: List<FridgeItemEntity>): List<FridgeItemEntity> {
+        Log.i(TAG, "sort items by date")
+        val newData = data.sortedWith(Comparator { i1, i2 ->
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
 
                 var expD1 = i1.expireDate
                 var expD2 = i2.expireDate
@@ -106,22 +105,6 @@ class FridgeAdapter(
                         listener.onItemClick(adapterPosition)
                     }
                 }
-            }
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FridgeItemViewHolder {
-            Log.i(TAG, "oncreateviewholder called")
-            val view =
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.single_fridge_item, parent, false)
-
-            return FridgeItemViewHolder(view, mListener)
-        }
-
-
-        override fun onBindViewHolder(holder: FridgeItemViewHolder, position: Int) {
-            Log.i(TAG, "onbindviewholder called")
-            val fridgeItem = data[position]
 
             holder.itemView.apply {
                 this.findViewById<TextView>(R.id.fridgeItemName).text = fridgeItem.customName
@@ -162,4 +145,54 @@ class FridgeAdapter(
             }
         }
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FridgeItemViewHolder {
+        Log.i(TAG, "oncreateviewholder called")
+        val view =
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.single_fridge_item, parent, false)
+
+        return FridgeItemViewHolder(view, mListener)
+    }
+
+
+    override fun onBindViewHolder(holder: FridgeItemViewHolder, position: Int) {
+        Log.i(TAG, "onbindviewholder called")
+        val fridgeItem = data[position]
+
+        holder.itemView.apply {
+            this.findViewById<TextView>(R.id.fridgeItemName).text = fridgeItem.customName
+            this.findViewById<TextView>(R.id.fridgeItemDate).text = fridgeItem.expireDate
+            this.findViewById<TextView>(R.id.fridgeItemAmount).text =
+                fridgeItem.amount.toString()
+
+            this.findViewById<CheckBox>(R.id.fridgeItemCheckBox).apply {
+                this.setOnClickListener {
+                    val checked = this.isChecked
+                    if (checked) itemsChecked.add(fridgeItem)
+                    else itemsChecked.remove(fridgeItem)
+
+                    if (itemsChecked.isEmpty()) {
+                        activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)
+                            ?.getBackground()
+                            ?.mutate()
+                            ?.setTint(ContextCompat.getColor(context, R.color.disabled))
+                    } else {
+                        activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)
+                            ?.getBackground()
+                            ?.mutate()
+                            ?.setTint(ContextCompat.getColor(context, R.color.yellow_orange))
+                    }
+
+                }
+            }
+
+            val deleteButton: Button = this.findViewById(R.id.fridge_item_delete_button)
+            deleteButton.setOnClickListener {
+                deleteItemFromFridge(fridgeItem.id)
+            }
+        }
+    }
+
+}
 
