@@ -97,7 +97,7 @@ class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter) :
                     // kontrolli kas kõik väljad on täidetud, kui pole siis alert et täida koik
                     if (itemName.isEmpty() || amount.isEmpty() || itemType.isEmpty()) {
                         val toast =
-                            Toast.makeText(context, "Not all fields are filled.", Toast.LENGTH_LONG)
+                            Toast.makeText(context, getString(R.string.fields_not_filled), Toast.LENGTH_LONG)
                         toast.show()
                         //showAlertDialog()
                     } else { // lisa asjad fridgesse
@@ -126,7 +126,7 @@ class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter) :
     fun showAlertDialog() {
         val alertDialog = AlertDialog.Builder(requireContext()).create()
         alertDialog.setTitle("Error")
-        alertDialog.setMessage("Not all fields were filled.")
+        alertDialog.setMessage(getString(R.string.fields_not_filled))
         //alertDialog.setIcon(R.drawable.welcome)
 
         alertDialog.setButton(

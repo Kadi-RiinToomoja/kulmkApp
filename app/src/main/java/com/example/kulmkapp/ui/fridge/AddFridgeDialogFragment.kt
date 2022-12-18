@@ -10,6 +10,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
@@ -79,7 +80,7 @@ class AddFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment
 
                     // kontrolli kas kõik väljad on täidetud, kui pole siis alert et täida koik
                     if (itemName.isEmpty() || amount.isEmpty() || dateString.isEmpty() || itemType.isEmpty()) {
-                        val toast = Toast.makeText(context, "Not all fields are filled.", Toast.LENGTH_LONG)
+                        val toast = Toast.makeText(context, getString(R.string.fields_not_filled), Toast.LENGTH_LONG)
                         toast.show()
                         //showAlertDialog()
                     } else { // lisa asjad fridgesse
@@ -115,7 +116,7 @@ class AddFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment
     fun showAlertDialog() {
         val alertDialog = AlertDialog.Builder(requireContext()).create()
         alertDialog.setTitle("Error")
-        alertDialog.setMessage("Not all fields are filled.")
+        alertDialog.setMessage(getString(R.string.fields_not_filled))
         //alertDialog.setIcon(R.drawable.welcome)
 
         alertDialog.setButton(
@@ -135,13 +136,6 @@ class AddFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment
         // initialize array list
         var arrayList: ArrayList<String> = ArrayList(ingredientsList.map { it.name })
 
-
-
-
-        // set value in array list
-        //arrayList.add("DSA Self Paced")
-        //arrayList.add("Complete Interview Prep")
-
         textview.let {
             textview.setOnClickListener(View.OnClickListener {
                 Log.i(TAG, "set on click listener called")
@@ -152,7 +146,7 @@ class AddFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment
                 dialog!!.setContentView(R.layout.dialog_searchable_spinner)
 
                 // set custom height and width
-                dialog.window!!.setLayout(650, 800) // see oile hea
+                dialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT) // see oile hea
 
                 // set transparent background
                 dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

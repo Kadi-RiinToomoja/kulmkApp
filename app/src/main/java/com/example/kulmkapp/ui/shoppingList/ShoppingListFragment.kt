@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kulmkapp.databinding.FragmentShoppingListBinding
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.LocalRoomDb
+
 
 class ShoppingListFragment : Fragment() {
 
@@ -69,6 +71,12 @@ class ShoppingListFragment : Fragment() {
             binding.shoppingListMoveToFridgeButton.setOnClickListener {
                 Log.i(TAG, "moving items from shopping list to fridge: ${shoppingListAdapter!!.itemsChecked.toString()}")
             }
+
+            val dividerItemDecoration = DividerItemDecoration(
+                binding.shoppingListRecyclerView.context,
+                (binding.shoppingListRecyclerView.layoutManager as LinearLayoutManager).getOrientation()
+            )
+            binding.shoppingListRecyclerView.addItemDecoration(dividerItemDecoration)
 
         }
         Log.i(TAG, "setUpRecyclerView method ends")

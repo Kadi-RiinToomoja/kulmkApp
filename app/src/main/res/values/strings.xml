@@ -18,4 +18,5 @@
     <string name="fridge_change_date_button">Change Date</string>
     <string name="fridge_item_name_hint_text">Choose a date</string>
     <string name="select_type">Select food type</string>
+    <string name="fields_not_filled">Please fill out all fields.</string>
 </resources>
