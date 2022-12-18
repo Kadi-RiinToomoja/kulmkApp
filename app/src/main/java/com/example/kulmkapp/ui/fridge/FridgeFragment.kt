@@ -114,8 +114,6 @@ class FridgeFragment : Fragment() {
         newFragment.show(this.parentFragmentManager, "add_to_fridge_dialog_fragment")
     }
 
-
-
     fun openRecipes(fridgeItems: MutableList<FridgeItemEntity>) {
         val bundle = Bundle()
         bundle.putIntegerArrayList("fridgeIDs", ArrayList(fridgeItems.map { it.id }))

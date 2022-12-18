@@ -38,7 +38,6 @@ class FridgeAdapter(
         mListener = listener
     }
 
-
     override fun getItemCount(): Int {
         return data.size
     }
@@ -90,16 +89,13 @@ class FridgeAdapter(
         return newData
     }
 
-    inner class FridgeItemViewHolder(itemView: View, listener: OnItemClickListener) :
-        RecyclerView.ViewHolder(itemView) {
-        inner class FridgeItemViewHolder(
-            itemView: View,
-            listener: OnItemClickListener
-        ) : RecyclerView.ViewHolder(itemView) {
-            init {
-                itemView.setOnClickListener {
-                    listener.onItemClick(adapterPosition)
-                }
+    inner class FridgeItemViewHolder(
+        itemView: View,
+        listener: OnItemClickListener
+    ) : RecyclerView.ViewHolder(itemView) {
+        init {
+            itemView.setOnClickListener {
+                listener.onItemClick(adapterPosition)
             }
         }
     }
@@ -147,8 +143,6 @@ class FridgeAdapter(
 
             val deleteButton: Button = this.findViewById(R.id.fridge_item_delete_button)
             deleteButton.setOnClickListener {
-                // delete from list if selected
-                //itemsChecked.remove(fridgeItem)
                 deleteItemFromFridge(fridgeItem.id)
             }
         }
