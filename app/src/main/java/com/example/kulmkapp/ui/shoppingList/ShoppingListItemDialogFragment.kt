@@ -19,7 +19,10 @@ import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 
 
-class ShoppingListItemDialogFragment(val shoppingListItem: FridgeItemEntity, val shoppingListAdapter: ShoppingListAdapter) :
+class ShoppingListItemDialogFragment(
+    val shoppingListItem: FridgeItemEntity,
+    val shoppingListAdapter: ShoppingListAdapter
+) :
     DialogFragment() {
 
     private val TAG = "MyShoppinglistItemDialogFragment"
@@ -38,9 +41,12 @@ class ShoppingListItemDialogFragment(val shoppingListItem: FridgeItemEntity, val
             val inflater = requireActivity().layoutInflater;
             val itemDetailsView = inflater.inflate(R.layout.add_item_shopping_list, null)
 
-            itemDetailsView.findViewById<TextView>(R.id.customName).text = shoppingListItem.customName
-            itemDetailsView.findViewById<TextView>(R.id.foodTypeSpinner).text = shoppingListItem.itemType
-            itemDetailsView.findViewById<TextView>(R.id.itemAmount).text = shoppingListItem.amount.toString()
+            itemDetailsView.findViewById<TextView>(R.id.customName).text =
+                shoppingListItem.customName
+            itemDetailsView.findViewById<TextView>(R.id.foodTypeSpinner).text =
+                shoppingListItem.itemType
+            itemDetailsView.findViewById<TextView>(R.id.itemAmount).text =
+                shoppingListItem.amount.toString()
 
             showSearchDialog(itemDetailsView)
 
@@ -88,15 +94,12 @@ class ShoppingListItemDialogFragment(val shoppingListItem: FridgeItemEntity, val
                     toast.show()
 
                 } else { // lisa asjad shopping listi
-                    dao.insertFridgeOrShoppingListItem(
-                        FridgeItemEntity(
-                            0,
-                            itemName.toString(),
-                            itemType,
-                            amount.toFloat(),
-                            0,
-                            null
-                        )
+                    dao.updateFridgeItem(
+                        shoppingListItem.id,
+                        itemName.toString(),
+                        itemType,
+                        amount.toFloat(),
+                        null.toString()
                     )
 
                     shoppingListAdapter.data = dao.getAllShoppingListItems()
@@ -105,22 +108,6 @@ class ShoppingListItemDialogFragment(val shoppingListItem: FridgeItemEntity, val
                 }
             }
         }
-    }
-
-
-    fun showAlertDialog() {
-        val alertDialog = AlertDialog.Builder(requireContext()).create()
-        alertDialog.setTitle(getString(R.string.error_title))
-        alertDialog.setMessage(getString(R.string.fields_not_filled))
-        //alertDialog.setIcon(R.drawable.welcome)
-
-        alertDialog.setButton(
-            AlertDialog.BUTTON_POSITIVE, "OK"
-        ) { dialog, which ->
-            // tee midagi kui vajutab erroril ok
-        }
-
-        alertDialog.show()
     }
 
     //https://www.geeksforgeeks.org/how-to-implement-custom-searchable-spinner-in-android/
