@@ -70,7 +70,6 @@ class FridgeFragment : Fragment() {
 
             fridgeAdapter = FridgeAdapter(kulmkappItems, activity)
             binding.fridgeRecyclerView.adapter = fridgeAdapter
-
             binding.fridgeRecyclerView.layoutManager = LinearLayoutManager(this.context)
 
             binding.fridgeAddButton.setOnClickListener {

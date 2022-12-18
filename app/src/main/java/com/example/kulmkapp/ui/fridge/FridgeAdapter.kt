@@ -26,15 +26,16 @@ class FridgeAdapter(
         fun onItemClick(position: Int)
     }
 
-    fun setOnItemClickListener (listener: OnItemClickListener){
-        Log.i(TAG, "setOnItemClickListener")
+    fun setOnItemClickListener(listener: OnItemClickListener) {
         mListener = listener
     }
 
-    inner class FridgeItemViewHolder(itemView: View, listener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
+    inner class FridgeItemViewHolder(
+        itemView: View,
+        listener: OnItemClickListener
+    ) : RecyclerView.ViewHolder(itemView) {
         init {
-            itemView.setOnClickListener{
-                Log.i(TAG, "Adapter pos: $adapterPosition")
+            itemView.setOnClickListener {
                 listener.onItemClick(adapterPosition)
             }
         }
@@ -45,7 +46,6 @@ class FridgeAdapter(
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.single_fridge_item, parent, false)
 
-        Log.i(TAG, mListener.toString())
         return FridgeItemViewHolder(view, mListener)
     }
 

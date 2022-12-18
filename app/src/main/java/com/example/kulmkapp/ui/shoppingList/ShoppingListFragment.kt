@@ -14,7 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kulmkapp.R
 import com.example.kulmkapp.databinding.FragmentShoppingListBinding
 import com.example.kulmkapp.logic.room.FridgeDao
+import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
+import com.example.kulmkapp.ui.fridge.FridgeAdapter
+import com.example.kulmkapp.ui.fridge.FridgeItemDialogFragment
 
 
 class ShoppingListFragment : Fragment() {
@@ -25,7 +28,7 @@ class ShoppingListFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private var shoppingListAdapter = activity?.let { ShoppingListAdapter(dao, it) }
+    private lateinit var shoppingListAdapter : ShoppingListAdapter
     val homeViewModel: ShoppingListViewModel by viewModels()
     private lateinit var dao: FridgeDao
 
@@ -36,18 +39,11 @@ class ShoppingListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        //val homeViewModel =
-          //  ViewModelProvider(this).get(ShoppingListViewModel::class.java)
-
         _binding = FragmentShoppingListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         dao = LocalRoomDb.getInstance(requireContext()).getFridgeDao()
 
-        /*val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }*/
         this.setHasOptionsMenu(false)
 
         setupRecyclerView()
@@ -61,9 +57,9 @@ class ShoppingListFragment : Fragment() {
         val activity = this.activity
         if (activity != null) {
             Log.i(TAG, "setting up recycler view")
-            var shoppingListItems = dao.getAllShoppingListItems()
+            val shoppingListItems = dao.getAllShoppingListItems()
 
-            shoppingListAdapter = ShoppingListAdapter(dao,  activity)
+            shoppingListAdapter = ShoppingListAdapter(shoppingListItems,  activity)
             binding.shoppingListRecyclerView.adapter = shoppingListAdapter
             binding.shoppingListRecyclerView.layoutManager = LinearLayoutManager(this.context)
 
@@ -73,6 +69,14 @@ class ShoppingListFragment : Fragment() {
             binding.shoppingListMoveToFridgeButton.setOnClickListener {
                 askIfWantsToMoveCheckedItemsToFridge()
             }
+
+            shoppingListAdapter!!.setOnItemClickListener(object : ShoppingListAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    Log.i(TAG, "fridgeAdapter.setOnItemClickListener")
+                    Log.i(TAG, position.toString())
+                    onShoppingListItemClick(shoppingListAdapter.data[position])
+                }
+            })
 
             val dividerItemDecoration = DividerItemDecoration(
                 binding.shoppingListRecyclerView.context,
@@ -104,7 +108,7 @@ class ShoppingListFragment : Fragment() {
 
     private fun moveSelectedItemsToFridge() {
 
-       shoppingListAdapter?.let{
+        shoppingListAdapter.let{
             val itemsToMove = it.itemsChecked
             Log.i(TAG, "moving items from shopping list to fridge: ${itemsToMove}")
             itemsToMove.forEach {
@@ -127,6 +131,12 @@ class ShoppingListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun onShoppingListItemClick(shoppingListItem: FridgeItemEntity) {
+        Log.i(TAG, "onFrigeItemClick ${shoppingListItem.customName}, $shoppingListItem")
+        val newFragment: DialogFragment = ShoppingListItemDialogFragment(shoppingListItem, shoppingListAdapter)
+        newFragment.show(this.parentFragmentManager, "fridge_item_info_dialog_fragment")
     }
 
     fun onClickOpenAdd(shoppingListAdapter: ShoppingListAdapter) {
