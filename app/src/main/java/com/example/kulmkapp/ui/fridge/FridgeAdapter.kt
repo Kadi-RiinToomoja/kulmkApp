@@ -73,14 +73,14 @@ class FridgeAdapter(
                     if (checked) itemsChecked.add(fridgeItem)
                     else itemsChecked.remove(fridgeItem)
 
-                    if (itemsChecked.isEmpty()){
-                        activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)?.getBackground()
+                    if (itemsChecked.isEmpty()) {
+                        activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)
+                            ?.getBackground()
                             ?.mutate()
                             ?.setTint(ContextCompat.getColor(context, R.color.disabled))
-                    }
-
-                    else {
-                        activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)?.getBackground()
+                    } else {
+                        activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)
+                            ?.getBackground()
                             ?.mutate()
                             ?.setTint(ContextCompat.getColor(context, R.color.brown_orange))
                     }
@@ -111,52 +111,56 @@ class FridgeAdapter(
 
         // refresh
         data = dao.getAllFridgeItems();
-    fun refreshData() {
-        data = sortItemsByDateAscending(dao.getAllFridgeItems())
-        notifyDataSetChanged()
     }
 
-    fun sortItemsByDateAscending(data: List<FridgeItemEntity>): List<FridgeItemEntity> {
-        Log.i(TAG, "sort items by date")
-        val newData = data.sortedWith(Comparator { i1, i2 ->
-            val sdf = SimpleDateFormat("dd/MM/yyyy")
-
-            var expD1 = i1.expireDate
-            var expD2 = i2.expireDate
-            if (expD1 == null) {
-                expD1 = "01/01/0000"
-            }
-            if (expD2 == null) {
-                expD2 = "01/01/0000"
-            }
-
-            val firstDate: Date = sdf.parse(expD1)
-            val secondDate: Date = sdf.parse(expD2)
-
-            var cmp = 0
-            if (firstDate.before(secondDate))
-                cmp = -1
-            if (firstDate.after(secondDate))
-                cmp = 1
+        fun refreshData() {
+            data = sortItemsByDateAscending(dao.getAllFridgeItems())
+            notifyDataSetChanged()
+        }
 
 
-            cmp
-        })
-        return newData
-    }
+        fun sortItemsByDateAscending(data: List<FridgeItemEntity>): List<FridgeItemEntity> {
+            Log.i(TAG, "sort items by date")
+            val newData = data.sortedWith(Comparator { i1, i2 ->
+                val sdf = SimpleDateFormat("dd/MM/yyyy")
 
-    inner class FridgeItemViewHolder(itemView: View, listener: OnItemClickListener) :
-        RecyclerView.ViewHolder(itemView) {
-        inner class FridgeItemViewHolder(
-            itemView: View,
-            listener: OnItemClickListener
-        ) : RecyclerView.ViewHolder(itemView) {
-            init {
-                itemView.setOnClickListener {
-                    listener.onItemClick(adapterPosition)
+                var expD1 = i1.expireDate
+                var expD2 = i2.expireDate
+                if (expD1 == null) {
+                    expD1 = "01/01/0000"
+                }
+                if (expD2 == null) {
+                    expD2 = "01/01/0000"
+                }
+
+                val firstDate: Date = sdf.parse(expD1)
+                val secondDate: Date = sdf.parse(expD2)
+
+                var cmp = 0
+                if (firstDate.before(secondDate))
+                    cmp = -1
+                if (firstDate.after(secondDate))
+                    cmp = 1
+
+
+                cmp
+            })
+            return newData
+        }
+
+        inner class FridgeItemViewHolder(itemView: View, listener: OnItemClickListener) :
+            RecyclerView.ViewHolder(itemView) {
+            inner class FridgeItemViewHolder(
+                itemView: View,
+                listener: OnItemClickListener
+            ) : RecyclerView.ViewHolder(itemView) {
+                init {
+                    itemView.setOnClickListener {
+                        listener.onItemClick(adapterPosition)
+                    }
                 }
             }
-        }}
+        }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FridgeItemViewHolder {
             Log.i(TAG, "oncreateviewholder called")
@@ -225,7 +229,5 @@ class FridgeAdapter(
         }
 
 
-
-
-
     }
+
