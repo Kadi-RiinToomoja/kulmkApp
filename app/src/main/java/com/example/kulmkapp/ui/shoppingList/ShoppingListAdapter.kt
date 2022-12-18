@@ -1,7 +1,8 @@
 package com.example.kulmkapp.ui.shoppingList
 
 import android.app.Activity
-import android.graphics.Paint
+import android.app.AlertDialog
+import android.provider.Settings.Global.getString
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kulmkapp.R
-import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -101,9 +101,28 @@ class ShoppingListAdapter(var data: List<FridgeItemEntity>, var activity: Activi
             deleteButton.setOnClickListener {
                 Log.i("deleting from shopping list", "${shoppingListItem.customName}")
                 itemsChecked.remove(shoppingListItem)
-                deleteItemFromShoppingList(shoppingListItem.id)
+                askIfWantsToDeleteItemFromShoppingList(shoppingListItem.id)
+                //deleteItemFromShoppingList(shoppingListItem.id)
             }
         }
+    }
+
+    fun askIfWantsToDeleteItemFromShoppingList(id: Int) {
+        val alertDialog = AlertDialog.Builder(this.activity).create()
+        alertDialog.setTitle(R.string.question_title)
+        alertDialog.setMessage(this.activity.getText(R.string.delete_from_shopping_list))
+
+        alertDialog.setButton(
+            AlertDialog.BUTTON_POSITIVE, this.activity.getText(R.string.answer_yes)
+        ) { dialog, which ->
+            deleteItemFromShoppingList(id)
+        }
+        alertDialog.setButton(
+            AlertDialog.BUTTON_NEGATIVE, this.activity.getText(R.string.answer_no)
+        ) { dialog, which ->
+        }
+
+        alertDialog.show()
     }
 
     override fun getItemCount(): Int {

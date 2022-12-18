@@ -1,8 +1,8 @@
 package com.example.kulmkapp.ui.fridge
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.icu.text.SimpleDateFormat
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -149,9 +149,29 @@ class FridgeAdapter(
                 deleteButton.setOnClickListener {
                     // delete from list if selected
                     //itemsChecked.remove(fridgeItem)
-                    deleteItemFromFridge(fridgeItem.id)
+                    askIfWantsToDeleteItemFromFridge(fridgeItem.id)
+                    //deleteItemFromFridge(fridgeItem.id)
                 }
             }
         }
+
+    fun askIfWantsToDeleteItemFromFridge(id: Int) {
+        val alertDialog = AlertDialog.Builder(this.activity).create()
+        alertDialog.setTitle(R.string.question_title)
+        alertDialog.setMessage(this.activity.getText(R.string.delete_from_fridge))
+
+        alertDialog.setButton(
+            AlertDialog.BUTTON_POSITIVE, this.activity.getText(R.string.answer_yes)
+        ) { dialog, which ->
+            deleteItemFromFridge(id)
+        }
+        alertDialog.setButton(
+            AlertDialog.BUTTON_NEGATIVE, this.activity.getText(R.string.answer_no)
+        ) { dialog, which ->
+        }
+
+        alertDialog.show()
+    }
+
     }
 
