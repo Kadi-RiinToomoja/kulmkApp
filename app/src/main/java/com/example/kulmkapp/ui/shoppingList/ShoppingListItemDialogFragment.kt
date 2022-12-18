@@ -10,7 +10,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.example.kulmkapp.R
@@ -20,11 +19,10 @@ import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 
 
-class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter) :
+class ShoppingListItemDialogFragment(val shoppingListItem: FridgeItemEntity, val shoppingListAdapter: ShoppingListAdapter) :
     DialogFragment() {
 
-
-    private val TAG = "MyAddToShoppinglistDialogFragment"
+    private val TAG = "MyShoppinglistItemDialogFragment"
     private lateinit var dao: FridgeDao
     private lateinit var ingredientsList: List<IngredientEntity>
 
@@ -35,17 +33,21 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
             ingredientsList = dao.getAllIngredients()
 
             val builder = AlertDialog.Builder(it)
-            builder.setTitle("Add product to shopping list")
+            builder.setTitle("Details")
 
             val inflater = requireActivity().layoutInflater;
-            val addItemView = inflater.inflate(R.layout.add_item_shopping_list, null)
+            val itemDetailsView = inflater.inflate(R.layout.add_item_shopping_list, null)
 
-            showSearchDialog(addItemView)
+            itemDetailsView.findViewById<TextView>(R.id.customName).text = shoppingListItem.customName
+            itemDetailsView.findViewById<TextView>(R.id.foodTypeSpinner).text = shoppingListItem.itemType
+            itemDetailsView.findViewById<TextView>(R.id.itemAmount).text = shoppingListItem.amount.toString()
 
-            builder.setView(addItemView)
+            showSearchDialog(itemDetailsView)
+
+            builder.setView(itemDetailsView)
 
                 .setPositiveButton(
-                    R.string.add,
+                    R.string.change,
                     null
                 )
                 .setNegativeButton(
@@ -53,9 +55,10 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
                     DialogInterface.OnClickListener { dialog, id ->
                         getDialog()?.cancel()
                     })
+
             var newDialog = builder.create()
             // kontrolli kas kõik väljad on täidetud, kui pole siis alert et täida koik
-            dialogPositiveButtonOnClick(newDialog, addItemView)
+            dialogPositiveButtonOnClick(newDialog, itemDetailsView)
             newDialog
         } ?: throw IllegalStateException("Activity cannot be null")
     }
@@ -104,6 +107,22 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
         }
     }
 
+
+    fun showAlertDialog() {
+        val alertDialog = AlertDialog.Builder(requireContext()).create()
+        alertDialog.setTitle("Error")
+        alertDialog.setMessage(getString(R.string.fields_not_filled))
+        //alertDialog.setIcon(R.drawable.welcome)
+
+        alertDialog.setButton(
+            AlertDialog.BUTTON_POSITIVE, "OK"
+        ) { dialog, which ->
+            // tee midagi kui vajutab erroril ok
+        }
+
+        alertDialog.show()
+    }
+
     //https://www.geeksforgeeks.org/how-to-implement-custom-searchable-spinner-in-android/
     fun showSearchDialog(addItemView: View) {
         // assign variable
@@ -113,14 +132,14 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
         var arrayList: ArrayList<String> = ArrayList(ingredientsList.map { it.name })
 
         textview.let {
-            textview.setOnClickListener {
+            textview.setOnClickListener(View.OnClickListener {
                 Log.i(TAG, "set on click listener called")
                 // Initialize dialog
                 var dialog = this.context?.let { it1 -> Dialog(it1) }
 
                 // set custom dialog
                 dialog!!.setContentView(R.layout.dialog_searchable_spinner)
-                dialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT) // see oile hea
+                //dialog.window!!.setLayout(650, 800) // see oile hea
                 dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 dialog.show()
 
@@ -176,7 +195,7 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
                         // Dismiss dialog
                         dialog.dismiss()
                     }
-            }
+            })
         }
     }
 }

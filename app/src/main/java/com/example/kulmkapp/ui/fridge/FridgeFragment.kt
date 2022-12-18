@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.kulmkapp.R
 import com.example.kulmkapp.databinding.FragmentFridgeBinding
 import com.example.kulmkapp.logic.IngredientsListReader
 import com.example.kulmkapp.logic.room.FridgeDao
@@ -50,10 +52,6 @@ class FridgeFragment : Fragment() {
 
         dao = LocalRoomDb.getInstance(requireContext()).getFridgeDao()
 
-        val textView: TextView = binding.textFridge
-        notificationsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         this.setHasOptionsMenu(false)
 
         setupRecyclerViewAndButton()
@@ -71,14 +69,14 @@ class FridgeFragment : Fragment() {
 
             fridgeAdapter = FridgeAdapter(dao, activity)
             binding.fridgeRecyclerView.adapter = fridgeAdapter
-
             binding.fridgeRecyclerView.layoutManager = LinearLayoutManager(this.context)
 
             binding.fridgeAddButton.setOnClickListener {
                 onClickOpenAdd(fridgeAdapter)
             }
             binding.fridgeSearchRecipe.setOnClickListener {
-                openRecipes(fridgeAdapter.itemsChecked)
+                if (fridgeAdapter.itemsChecked.isNotEmpty()) openRecipes(fridgeAdapter.itemsChecked)
+                else Toast.makeText(this.context,getString(R.string.choose_items_for_recipe),Toast.LENGTH_SHORT).show()
             }
 
             fridgeAdapter.setOnItemClickListener(object : FridgeAdapter.OnItemClickListener {
@@ -117,10 +115,9 @@ class FridgeFragment : Fragment() {
 
 
     fun openRecipes(fridgeItems: MutableList<FridgeItemEntity>) {
-
-    //val bundle = Bundle()
-        //bundle.putIntegerArrayList("fridgeIDs", ArrayList(fridgeItems.map { it.id }))
-        //findNavController().navigate(R.id.action_open_recipes, bundle)
+        val bundle = Bundle()
+        bundle.putIntegerArrayList("fridgeIDs", ArrayList(fridgeItems.map { it.id }))
+        findNavController().navigate(R.id.action_open_recipes, bundle)
     }
 
     fun readIngredientsList() {
