@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_recipes">Recipes</string>
-    <string name="title_shopping_list">Shopping list</string>
+    <string name="title_shopping_list">Shopping List</string>
     <string name="fridge_string">Fridge</string>
     <string name="app_name">KulmkApp</string>
     <string name="title_home">Home</string>
@@ -21,7 +21,7 @@
     <string name="select_type">Select food type</string>
     <string name="fields_not_filled">Please fill out all fields.</string>
     <string name="choose_items_for_recipe">Please choose items for recipe</string>
-    <string name="are_you_sure_move_to_fridge">Are you sure you want to move checked items to fridge?</string>
+    <string name="are_you_sure_move_to_fridge">Are you sure you want to move selected items to fridge?</string>
     <string name="question_title">Question</string>///question on vb vale sõna
     <string name="answer_yes">YES</string>
     <string name="answer_no">NO</string>

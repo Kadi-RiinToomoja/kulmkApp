@@ -22,9 +22,8 @@ class ShoppingListAdapter(var data: List<FridgeItemEntity>, var activity: Activi
 
     val TAG = "shopping list adapter class"
     var itemsChecked = mutableListOf<FridgeItemEntity>();
-    var setOfCheckBoxes =
-        mutableSetOf<CheckBox>() //vb saaks ka ilma aga ma ei oska. ilma oleks muidugi parem kui saaks
-    private lateinit var mListener: ShoppingListAdapter.OnItemClickListener
+    var setOfCheckBoxes = mutableSetOf<CheckBox>()
+    private lateinit var mListener: OnItemClickListener
 
     interface OnItemClickListener {
         fun onItemClick(position: Int)
@@ -79,7 +78,9 @@ class ShoppingListAdapter(var data: List<FridgeItemEntity>, var activity: Activi
                     if (checked) {
                         itemsChecked.add(shoppingListItem)
                     }
-                    else itemsChecked.remove(shoppingListItem)
+                    else {
+                        itemsChecked.remove(shoppingListItem)
+                    }
 
 
                     Log.i(TAG, "items checked are: $itemsChecked")
