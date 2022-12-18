@@ -1,6 +1,7 @@
 package com.example.kulmkapp.ui.fridge
 
 import android.app.Activity
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kulmkapp.R
 import com.example.kulmkapp.logic.room.FridgeItemEntity
@@ -64,10 +66,19 @@ class FridgeAdapter(
                     val checked = this.isChecked
                     if (checked) itemsChecked.add(fridgeItem)
                     else itemsChecked.remove(fridgeItem)
-                    activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)?.isEnabled =
-                        itemsChecked.isNotEmpty()
-                    activity.findViewById<TextView>(R.id.text_fridge)?.visibility =
-                        if (itemsChecked.isEmpty()) View.VISIBLE else View.GONE
+
+                    if (itemsChecked.isEmpty()){
+                        activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)?.getBackground()
+                            ?.mutate()
+                            ?.setTint(ContextCompat.getColor(context, R.color.disabled))
+                    }
+
+                    else {
+                        activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)?.getBackground()
+                            ?.mutate()
+                            ?.setTint(ContextCompat.getColor(context, R.color.purple_200))
+                    }
+
                 }
             }
 

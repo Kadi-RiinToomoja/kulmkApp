@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <!-- secondary buttons-->
+    <color name="purple_200">#CA6C34</color>
+    <!--'disabled' buttons-->
+    <color name="disabled">#81746D</color>
+    <color name="purple_500">#E36920</color>
+    <color name="purple_700">#EFA710</color>
+    <color name="teal_200">#DCAD90</color>
+    <color name="teal_700">#684F40</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="glass">#4B03DAC5</color>
+    <color name="glass">#FFC107</color>
 </resources>

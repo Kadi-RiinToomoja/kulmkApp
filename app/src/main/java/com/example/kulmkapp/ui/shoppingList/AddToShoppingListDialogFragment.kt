@@ -10,6 +10,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.example.kulmkapp.R
@@ -119,7 +120,7 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
 
                 // set custom dialog
                 dialog!!.setContentView(R.layout.dialog_searchable_spinner)
-                //dialog.window!!.setLayout(650, 800) // see oile hea
+                dialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT) // see oile hea
                 dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 dialog.show()
 

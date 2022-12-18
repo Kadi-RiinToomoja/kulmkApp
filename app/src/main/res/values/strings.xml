@@ -20,6 +20,7 @@
     <string name="fridge_item_name_hint_text">Choose a date</string>
     <string name="select_type">Select food type</string>
     <string name="fields_not_filled">Please fill out all fields.</string>
+    <string name="choose_items_for_recipe">Please choose items for recipe</string>
     <string name="are_you_sure_move_to_fridge">Are you sure you want to move checked items to fridge?</string>
     <string name="question_title">Question</string>///question on vb vale sõna
     <string name="answer_yes">YES</string>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -48,10 +49,6 @@ class FridgeFragment : Fragment() {
 
         dao = LocalRoomDb.getInstance(requireContext()).getFridgeDao()
 
-        val textView: TextView = binding.textFridge
-        notificationsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         this.setHasOptionsMenu(false)
 
         setupRecyclerViewAndButton()
@@ -76,7 +73,8 @@ class FridgeFragment : Fragment() {
                 onClickOpenAdd(fridgeAdapter)
             }
             binding.fridgeSearchRecipe.setOnClickListener {
-                openRecipes(fridgeAdapter.itemsChecked)
+                if (fridgeAdapter.itemsChecked.isNotEmpty()) openRecipes(fridgeAdapter.itemsChecked)
+                else Toast.makeText(this.context,getString(R.string.choose_items_for_recipe),Toast.LENGTH_SHORT).show()
             }
 
             fridgeAdapter.setOnItemClickListener(object : FridgeAdapter.OnItemClickListener {
