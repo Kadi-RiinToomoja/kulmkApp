@@ -77,12 +77,13 @@ class MainActivity : AppCompatActivity() {
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
-        c.set(year, month, day, 9, 0, 0)
+        //c.set(year, month, day, 9, 0, 0)
 
         // add alarm to next day if past 9
         if(c.before(Calendar.getInstance())) {
-            c.add(Calendar.DAY_OF_MONTH, 1)
+            //c.add(Calendar.DAY_OF_MONTH, 1)
         }
+        c.add(Calendar.MINUTE, 1)
 
 
 
@@ -93,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, expiringItems.size.toString())
 
 
-        var alarmDesc = expiringItems.size.toString() + " items expiring today!"
+        var alarmDesc = getString(R.string.notification_message, expiringItems.size)
 
         setAlarm(NotificationEntity(0, alarmDesc, Date(c.timeInMillis), 0, false, ""))
     }

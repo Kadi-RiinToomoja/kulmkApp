@@ -29,7 +29,7 @@ class FridgeItemDialogFragment(val fridgeItem: FridgeItemEntity, val fridgeAdapt
             ingredientsList = dao.getAllIngredients()
 
             val builder = AlertDialog.Builder(it)
-            builder.setTitle("Details")
+            builder.setTitle(getString(R.string.item_change_title))
 
             val inflater = requireActivity().layoutInflater;
             val itemDetailsView: View = inflater.inflate(R.layout.add_item_fridge, null)

@@ -35,7 +35,7 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
             ingredientsList = dao.getAllIngredients()
 
             val builder = AlertDialog.Builder(it)
-            builder.setTitle("Add product to shopping list")
+            builder.setTitle(getString(R.string.add_product_shopping))
 
             val inflater = requireActivity().layoutInflater;
             val addItemView = inflater.inflate(R.layout.add_item_shopping_list, null)

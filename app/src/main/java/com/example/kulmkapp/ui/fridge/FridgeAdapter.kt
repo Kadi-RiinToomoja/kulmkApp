@@ -2,7 +2,6 @@ package com.example.kulmkapp.ui.fridge
 
 import android.app.Activity
 import android.icu.text.SimpleDateFormat
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,6 @@ import com.example.kulmkapp.logic.room.LocalRoomDb
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.ParseException
 import java.util.*
-import kotlin.Comparator
 
 class FridgeAdapter(
     var dao: FridgeDao, var activity: Activity
@@ -66,81 +64,41 @@ class FridgeAdapter(
         val newData = data.sortedWith(Comparator { i1, i2 ->
             val sdf = SimpleDateFormat("dd/MM/yyyy")
 
-                var expD1 = i1.expireDate
-                var expD2 = i2.expireDate
-                if (expD1 == null) {
-                    expD1 = "01/01/0000"
-                }
-                if (expD2 == null) {
-                    expD2 = "01/01/0000"
-                }
-                try {
-                    val firstDate: Date = sdf.parse(expD1)
-                    val secondDate: Date = sdf.parse(expD2)
-                    var cmp = 0
-                    if (firstDate.before(secondDate))
-                        cmp = -1
-                    if (firstDate.after(secondDate))
-                        cmp = 1
-                    cmp
-                } catch (e: ParseException) {
-                    -1
-                }
+            var expD1 = i1.expireDate
+            var expD2 = i2.expireDate
+            if (expD1 == null) {
+                expD1 = "01/01/0000"
+            }
+            if (expD2 == null) {
+                expD2 = "01/01/0000"
+            }
+            try {
+                val firstDate: Date = sdf.parse(expD1)
+                val secondDate: Date = sdf.parse(expD2)
+                var cmp = 0
+                if (firstDate.before(secondDate))
+                    cmp = -1
+                if (firstDate.after(secondDate))
+                    cmp = 1
+                cmp
+            } catch (e: ParseException) {
+                -1
+            }
 
 
+        })
+        return newData
+    }
 
-
-            })
-            return newData
-        }
-
-        inner class FridgeItemViewHolder(itemView: View, listener: OnItemClickListener) :
-            RecyclerView.ViewHolder(itemView) {
-            inner class FridgeItemViewHolder(
-                itemView: View,
-                listener: OnItemClickListener
-            ) : RecyclerView.ViewHolder(itemView) {
-                init {
-                    itemView.setOnClickListener {
-                        listener.onItemClick(adapterPosition)
-                    }
-                }
-
-            holder.itemView.apply {
-                this.findViewById<TextView>(R.id.fridgeItemName).text = fridgeItem.customName
-                this.findViewById<TextView>(R.id.fridgeItemDate).text = fridgeItem.expireDate
-                if(fridgeItem.expireDate.equals("UNDEFINED")) {
-                    this.findViewById<TextView>(R.id.fridgeItemDate).setTextColor(Color.RED)
-                }
-                this.findViewById<TextView>(R.id.fridgeItemAmount).text =
-                    fridgeItem.amount.toString()
-
-                this.findViewById<CheckBox>(R.id.fridgeItemCheckBox).apply {
-                    this.setOnClickListener {
-                        val checked = this.isChecked
-                        if (checked) itemsChecked.add(fridgeItem)
-                        else itemsChecked.remove(fridgeItem)
-
-                        if (itemsChecked.isEmpty()) {
-                            activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)
-                                ?.getBackground()
-                                ?.mutate()
-                                ?.setTint(ContextCompat.getColor(context, R.color.disabled))
-                        } else {
-                            activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)
-                                ?.getBackground()
-                                ?.mutate()
-                                ?.setTint(ContextCompat.getColor(context, R.color.yellow_orange))
-                        }
-
-                    }
-                }
-
-                val deleteButton: Button = this.findViewById(R.id.fridge_item_delete_button)
-                deleteButton.setOnClickListener {
-                    // delete from list if selected
-                    //itemsChecked.remove(fridgeItem)
-                    deleteItemFromFridge(fridgeItem.id)
+    inner class FridgeItemViewHolder(itemView: View, listener: OnItemClickListener) :
+        RecyclerView.ViewHolder(itemView) {
+        inner class FridgeItemViewHolder(
+            itemView: View,
+            listener: OnItemClickListener
+        ) : RecyclerView.ViewHolder(itemView) {
+            init {
+                itemView.setOnClickListener {
+                    listener.onItemClick(adapterPosition)
                 }
             }
         }

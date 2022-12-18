@@ -33,7 +33,7 @@ class ShoppingListItemDialogFragment(val shoppingListItem: FridgeItemEntity, val
             ingredientsList = dao.getAllIngredients()
 
             val builder = AlertDialog.Builder(it)
-            builder.setTitle("Details")
+            builder.setTitle(getString(R.string.item_change_title))
 
             val inflater = requireActivity().layoutInflater;
             val itemDetailsView = inflater.inflate(R.layout.add_item_shopping_list, null)
@@ -110,7 +110,7 @@ class ShoppingListItemDialogFragment(val shoppingListItem: FridgeItemEntity, val
 
     fun showAlertDialog() {
         val alertDialog = AlertDialog.Builder(requireContext()).create()
-        alertDialog.setTitle("Error")
+        alertDialog.setTitle(getString(R.string.error_title))
         alertDialog.setMessage(getString(R.string.fields_not_filled))
         //alertDialog.setIcon(R.drawable.welcome)
 

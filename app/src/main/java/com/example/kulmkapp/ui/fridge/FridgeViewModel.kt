@@ -19,8 +19,4 @@ class FridgeViewModel(application: Application) : AndroidViewModel(application) 
         fridgeArray = dao.getAllFridgeItems()
     }
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "Select items for recipes"
-    }
-    val text: LiveData<String> = _text
 }

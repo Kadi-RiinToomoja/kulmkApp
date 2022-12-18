@@ -2,13 +2,11 @@ package com.example.kulmkapp.ui
 
 import android.app.PendingIntent
 import android.app.PendingIntent.*
-import android.app.TaskInfo
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.startForegroundService
 import com.example.kulmkapp.MainActivity
 import com.example.kulmkapp.R
 import com.example.kulmkapp.logic.room.NotificationEntity
@@ -17,16 +15,16 @@ import com.example.kulmkapp.logic.room.NotificationEntity
 class AlarmReceiver : BroadcastReceiver() {
     private var notificationManager: NotificationManagerCompat? = null
 
-    override fun onReceive(p0: Context?, p1: Intent?) {
-        val notificationEntity = p1?.getParcelableExtra("task_info") as? NotificationEntity
+    override fun onReceive(context: Context?, intent: Intent?) {
+        val notificationEntity = intent?.getParcelableExtra("task_info") as? NotificationEntity
         // tapResultIntent gets executed when user taps the notification
-        val tapResultIntent = Intent(p0, MainActivity::class.java)
+        val tapResultIntent = Intent(context, MainActivity::class.java)
         tapResultIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        val pendingIntent: PendingIntent = getActivity( p0,0,tapResultIntent,FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        val pendingIntent: PendingIntent = getActivity( context,0,tapResultIntent,FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
 
-        val notification = p0?.let {
+        val notification = context?.let {
             NotificationCompat.Builder(it, "to_do_list")
-                .setContentTitle("Expiring Food Reminder")
+                .setContentTitle(context.resources.getString(R.string.notification_title))
                 .setContentText(notificationEntity?.description)
                 .setSmallIcon(R.drawable.dark_fridge)
                 .setAutoCancel(true)
@@ -35,7 +33,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 .build()
         }
 
-        notificationManager = p0?.let { NotificationManagerCompat.from(it) }
+        notificationManager = context?.let { NotificationManagerCompat.from(it) }
         notification?.let { notificationEntity?.let { it1 -> notificationManager?.notify(it1.id, it) } }
     }
 

@@ -14,6 +14,7 @@
     <string name="change">Change</string>
     <string name="select_date">Select date</string>
     <string name="cancel">Cancel</string>
+    <string name="add_product_shopping">Add product to shopping list</string>
     <string name="add_product">Add product to fridge</string>
     <string name="fridge_item_delete_button">Delete</string>
     <string name="fridge_change_date_button">Change Date</string>
@@ -22,11 +23,16 @@
     <string name="fields_not_filled">Please fill out all fields.</string>
     <string name="choose_items_for_recipe">Please choose items for recipe</string>
     <string name="are_you_sure_move_to_fridge">Are you sure you want to move selected items to fridge?</string>
-    <string name="question_title">Question</string>///question on vb vale sõna
+    <string name="question_title">Confirmation</string>///question on vb vale sõna
     <string name="answer_yes">YES</string>
     <string name="answer_no">NO</string>
     <string name="choose_items_to_add_to_fridge">Please select items to move to fridge</string>
     <string name="table_label_amount">Amount</string>
     <string name="table_label_item_name">Name</string>
     <string name="table_label_date">Expire date</string>
+    <string name="item_change_title">Details</string>
+    <string name="error_title">Details</string>
+    <string name="notification_title">Expiring Food Reminder</string>
+    <string name="notification_message">You have %1$d items expiring today!</string>
+
 </resources>

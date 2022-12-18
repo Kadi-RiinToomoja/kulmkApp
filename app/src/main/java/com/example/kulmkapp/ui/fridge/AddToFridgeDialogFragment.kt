@@ -35,7 +35,7 @@ class AddToFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragme
             ingredientsList = dao.getAllIngredients()
 
             val builder = AlertDialog.Builder(it)
-            builder.setTitle("Add product to fridge")
+            builder.setTitle(getString(R.string.add_product))
 
             val inflater = requireActivity().layoutInflater;
             val addItemView = inflater.inflate(R.layout.add_item_fridge, null)
@@ -117,21 +117,6 @@ class AddToFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragme
         newFragment.show(supportFragmentManager, "datePicker")
 
         Log.i(TAG, newFragment.dateString)
-    }
-
-    fun showAlertDialog() {
-        val alertDialog = AlertDialog.Builder(requireContext()).create()
-        alertDialog.setTitle("Error")
-        alertDialog.setMessage(getString(R.string.fields_not_filled))
-        //alertDialog.setIcon(R.drawable.welcome)
-
-        alertDialog.setButton(
-            AlertDialog.BUTTON_POSITIVE, "OK"
-        ) { dialog, which ->
-            // tee midagi kui vajutab erroril ok
-        }
-
-        alertDialog.show()
     }
 
     //https://www.geeksforgeeks.org/how-to-implement-custom-searchable-spinner-in-android/
