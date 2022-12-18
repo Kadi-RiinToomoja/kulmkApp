@@ -54,7 +54,7 @@
             android:id="@+id/shoppingList_item_delete_button"
             android:layout_width="64dp"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/ic_delete"
+            android:background="@android:drawable/ic_menu_close_clear_cancel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

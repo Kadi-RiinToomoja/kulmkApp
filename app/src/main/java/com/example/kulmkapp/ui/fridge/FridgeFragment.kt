@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -48,13 +49,7 @@ class FridgeFragment : Fragment() {
 
         dao = LocalRoomDb.getInstance(requireContext()).getFridgeDao()
 
-        val textView: TextView = binding.textFridge
-        notificationsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         this.setHasOptionsMenu(false)
-
-        //addToDbTest() // lisab hoopis MainActivity-s db-sse ja siin ainult võtab
 
         setupRecyclerViewAndButton()
 
@@ -64,41 +59,56 @@ class FridgeFragment : Fragment() {
 
     private fun setupRecyclerViewAndButton() {
         Log.i(TAG, "resView start")
-        //val fridgeClickListener =
-        //FridgeAdapter.FridgeItemClickListener { p -> openRecipeDetailsActivity(p) }
-        //kas me tahame et midagi avaneks kui klikkida ühele fridge itemile
 
         val activity = this.activity
         if (activity != null) {
             Log.i(TAG, "setting up recycler view")
             var kulmkappItems = dao.getAllFridgeItems()
 
-            //miks adapteril val ees on
-            val fridgeAdapter = FridgeAdapter(kulmkappItems, activity)
+            fridgeAdapter = FridgeAdapter(kulmkappItems, activity)
             binding.fridgeRecyclerView.adapter = fridgeAdapter
+
             binding.fridgeRecyclerView.layoutManager = LinearLayoutManager(this.context)
 
             binding.fridgeAddButton.setOnClickListener {
                 onClickOpenAdd(fridgeAdapter)
             }
             binding.fridgeSearchRecipe.setOnClickListener {
-                openRecipes(fridgeAdapter.itemsChecked)
+                if (fridgeAdapter.itemsChecked.isNotEmpty()) openRecipes(fridgeAdapter.itemsChecked)
+                else Toast.makeText(this.context,getString(R.string.choose_items_for_recipe),Toast.LENGTH_SHORT).show()
             }
+
+            fridgeAdapter.setOnItemClickListener(object : FridgeAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    Log.i(TAG, "fridgeAdapter.setOnItemClickListener")
+                    Log.i(TAG, position.toString())
+                    onFridgeItemClick(fridgeAdapter.data[position])
+                }
+            })
 
             val dividerItemDecoration = DividerItemDecoration(
                 binding.fridgeRecyclerView.context,
                 (binding.fridgeRecyclerView.layoutManager as LinearLayoutManager).getOrientation()
             )
+
             binding.fridgeRecyclerView.addItemDecoration(dividerItemDecoration)
 
+
         }
+
         Log.i(TAG, "setUpRecyclerView method ends")
+    }
+
+    fun onFridgeItemClick(fridgeItem: FridgeItemEntity) {
+        Log.i(TAG, "onFrigeItemClick ${fridgeItem.customName}, $fridgeAdapter")
+        val newFragment: DialogFragment = FridgeItemDialogFragment(fridgeItem, fridgeAdapter)
+        newFragment.show(this.parentFragmentManager, "fridge_item_info_dialog_fragment")
     }
 
 
     fun onClickOpenAdd(fridgeAdapter: FridgeAdapter) {
         val newFragment: DialogFragment = AddToFridgeDialogFragment(fridgeAdapter)
-        newFragment.show(this.parentFragmentManager, "fridge_dialog_fragment")
+        newFragment.show(this.parentFragmentManager, "add_to_fridge_dialog_fragment")
     }
 
     fun openRecipes(fridgeItems: MutableList<FridgeItemEntity>) {

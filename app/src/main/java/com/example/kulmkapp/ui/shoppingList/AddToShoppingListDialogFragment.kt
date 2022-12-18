@@ -10,6 +10,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.example.kulmkapp.R
@@ -19,7 +20,8 @@ import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 
 
-class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter) : DialogFragment() {
+class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter) :
+    DialogFragment() {
 
 
     private val TAG = "MyShoppinglistDialogFragment"
@@ -38,39 +40,14 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
             val inflater = requireActivity().layoutInflater;
             val addItemView = inflater.inflate(R.layout.add_item_shopping_list, null)
 
-                showSearchDialog(addItemView)
+            showSearchDialog(addItemView)
 
             builder.setView(addItemView)
 
                 .setPositiveButton(
                     R.string.add,
                     null
-                )/*
-                        DialogInterface.OnClickListener { dialog, id ->
-                            val itemName =
-                                addItemView.findViewById<TextView>(R.id.customName).text
-                            val itemTypeId: Int = 0//addItemView.findViewById<12345>(...)
-                            val amount = addItemView.findViewById<EditText>(R.id.itemAmount).text
-
-                            // kontrolli kas kõik väljad on täidetud, kui pole siis alert et täida koik
-                            if (itemName.isEmpty() || amount.isEmpty()) {
-                                showAlertDialog()
-                            }
-                            else { // lisa asjad fridgesse
-                                dao.insertFridgeOrShoppingListItem(
-                                    FridgeItemEntity(
-                                        0,
-                                        itemName.toString(),
-                                        "", //tüüpi pole kuna tüüpi ei tea
-                                        amount.toString().toFloat(),
-                                        0,
-                                        null
-                                    )
-                                )
-                                shoppingListAdapter.data = dao.getAllShoppingListItems()
-                                shoppingListAdapter.notifyDataSetChanged()
-                            }
-                        })*/
+                )
                 .setNegativeButton(
                     R.string.cancel,
                     DialogInterface.OnClickListener { dialog, id ->
@@ -92,21 +69,29 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
                         addItemView.findViewById<TextView>(R.id.customName).text
                     val itemType: String =
                         addItemView.findViewById<TextView>(R.id.foodTypeSpinner).text.toString()
-                    val amount = addItemView.findViewById<EditText>(R.id.itemAmount).text
+                    var amount = addItemView.findViewById<EditText>(R.id.itemAmount).text.toString()
 
                     // kontrolli kas kõik väljad on täidetud, kui pole siis alert et täida koik
-                    if (itemName.isEmpty() || amount.isEmpty() || itemType.isEmpty()) {
+                    if (amount.isEmpty()) {
+                        amount = "1"
+                    }
+
+                    if (itemName.isEmpty() || itemType.isEmpty()) {
                         val toast =
-                            Toast.makeText(context, getString(R.string.fields_not_filled), Toast.LENGTH_LONG)
+                            Toast.makeText(
+                                context,
+                                getString(R.string.fields_not_filled),
+                                Toast.LENGTH_LONG
+                            )
                         toast.show()
-                        //showAlertDialog()
+
                     } else { // lisa asjad fridgesse
                         dao.insertFridgeOrShoppingListItem(
                             FridgeItemEntity(
                                 0,
                                 itemName.toString(),
                                 itemType,
-                                amount.toString().toFloat(),
+                                amount.toFloat(),
                                 0,
                                 null
                             )
@@ -114,7 +99,6 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
 
                         shoppingListAdapter.data = dao.getAllShoppingListItems()
                         shoppingListAdapter.notifyDataSetChanged()
-                        //Dismiss once everything is OK.
                         dialog.dismiss()
                     }
                 }
@@ -154,7 +138,7 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
 
                 // set custom dialog
                 dialog!!.setContentView(R.layout.dialog_searchable_spinner)
-                //dialog.window!!.setLayout(650, 800) // see oile hea
+                dialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT) // see oile hea
                 dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 dialog.show()
 
