@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- secondary buttons-->
-    <color name="purple_200">#CA6C34</color>
+    <color name="brown_orange">#CA6C34</color>
     <!--'disabled' buttons-->
     <color name="disabled">#81746D</color>
-    <color name="purple_500">#E36920</color>
-    <color name="purple_700">#EFA710</color>
-    <color name="teal_200">#DCAD90</color>
-    <color name="teal_700">#684F40</color>
+    <color name="strong_orange">#E36920</color>
+    <color name="yellow_orange">#EFA710</color>
+    <color name="beige">#DCAD90</color>
+    <color name="dark_brown">#332D29</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="glass">#FFC107</color>
+    <color name="yellow">#FFC107</color>
 </resources>

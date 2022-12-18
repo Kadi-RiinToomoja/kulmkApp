@@ -76,7 +76,7 @@ class FridgeAdapter(
                     else {
                         activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)?.getBackground()
                             ?.mutate()
-                            ?.setTint(ContextCompat.getColor(context, R.color.purple_200))
+                            ?.setTint(ContextCompat.getColor(context, R.color.brown_orange))
                     }
 
                 }
