@@ -1,6 +1,7 @@
 package com.example.kulmkapp.ui.fridge
 
 import android.app.Activity
+import android.icu.text.SimpleDateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +11,19 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kulmkapp.R
+import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.util.*
+import kotlin.Comparator
 
 class FridgeAdapter(
-    var data: List<FridgeItemEntity>, var activity: Activity
+    var dao: FridgeDao, var activity: Activity
 ) : RecyclerView.Adapter<FridgeAdapter.FridgeItemViewHolder>() {
 
+
+    var data = sortItemsByDateAscending(dao.getAllFridgeItems())
     val TAG = "fridge adapter class"
     var itemsChecked = mutableListOf<FridgeItemEntity>();
     private lateinit var mListener: OnItemClickListener
@@ -29,6 +35,11 @@ class FridgeAdapter(
     fun setOnItemClickListener (listener: OnItemClickListener){
         Log.i(TAG, "setOnItemClickListener")
         mListener = listener
+    }
+
+    fun refreshData(){
+        data = sortItemsByDateAscending(dao.getAllFridgeItems())
+        notifyDataSetChanged()
     }
 
     inner class FridgeItemViewHolder(itemView: View, listener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
@@ -93,9 +104,42 @@ class FridgeAdapter(
         Log.i(TAG, dao.getAllFridgeItems().toString())
 
         // refresh
-        data = dao.getAllFridgeItems();
-        notifyDataSetChanged()
+        refreshData()
     }
+
+
+    fun sortItemsByDateAscending(data: List<FridgeItemEntity>): List<FridgeItemEntity> {
+        Log.i(TAG, "sort items by date")
+        val newData = data.sortedWith(Comparator { i1, i2 ->
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
+
+            var expD1 = i1.expireDate
+            var expD2 = i2.expireDate
+            if(expD1==null){
+                expD1 = "01/01/0000"
+            }
+            if(expD2==null){
+                expD2 = "01/01/0000"
+            }
+
+            val firstDate: Date = sdf.parse(expD1)
+            val secondDate: Date = sdf.parse(expD2)
+
+            var cmp = 0
+            if(firstDate.before(secondDate))
+                cmp = -1
+            if(firstDate.after(secondDate))
+                cmp = 1
+
+
+            cmp
+        })
+        return newData
+    }
+
+
+
+
 
 
 }

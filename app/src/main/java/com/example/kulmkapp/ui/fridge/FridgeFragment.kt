@@ -1,5 +1,6 @@
 package com.example.kulmkapp.ui.fridge
 
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,15 +11,16 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.kulmkapp.R
 import com.example.kulmkapp.databinding.FragmentFridgeBinding
 import com.example.kulmkapp.logic.IngredientsListReader
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
+import java.util.*
+import kotlin.Comparator
+import kotlin.math.exp
 
 class FridgeFragment : Fragment() {
 
@@ -66,9 +68,8 @@ class FridgeFragment : Fragment() {
         val activity = this.activity
         if (activity != null) {
             Log.i(TAG, "setting up recycler view")
-            var kulmkappItems = dao.getAllFridgeItems()
 
-            fridgeAdapter = FridgeAdapter(kulmkappItems, activity)
+            fridgeAdapter = FridgeAdapter(dao, activity)
             binding.fridgeRecyclerView.adapter = fridgeAdapter
 
             binding.fridgeRecyclerView.layoutManager = LinearLayoutManager(this.context)
@@ -113,10 +114,13 @@ class FridgeFragment : Fragment() {
         newFragment.show(this.parentFragmentManager, "add_to_fridge_dialog_fragment")
     }
 
+
+
     fun openRecipes(fridgeItems: MutableList<FridgeItemEntity>) {
-        val bundle = Bundle()
-        bundle.putIntegerArrayList("fridgeIDs", ArrayList(fridgeItems.map { it.id }))
-        findNavController().navigate(R.id.action_open_recipes, bundle)
+
+    //val bundle = Bundle()
+        //bundle.putIntegerArrayList("fridgeIDs", ArrayList(fridgeItems.map { it.id }))
+        //findNavController().navigate(R.id.action_open_recipes, bundle)
     }
 
     fun readIngredientsList() {
@@ -134,4 +138,7 @@ class FridgeFragment : Fragment() {
     }
 
 
+
 }
+
+

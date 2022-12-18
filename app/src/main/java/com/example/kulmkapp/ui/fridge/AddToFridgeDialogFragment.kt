@@ -102,8 +102,7 @@ class AddToFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragme
                             )
                         )
 
-                        fridgeAdapter.data = dao.getAllFridgeItems()
-                        fridgeAdapter.notifyDataSetChanged()
+                        fridgeAdapter.refreshData()
                         //Dismiss once everything is OK.
                         dialog.dismiss()
                     }
