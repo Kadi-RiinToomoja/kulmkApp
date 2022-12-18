@@ -24,7 +24,6 @@ class FridgeAdapter(
     var dao: FridgeDao, var activity: Activity
 ) : RecyclerView.Adapter<FridgeAdapter.FridgeItemViewHolder>() {
 
-
     var data = sortItemsByDateAscending(dao.getAllFridgeItems())
     val TAG = "fridge adapter class"
     var itemsChecked = mutableListOf<FridgeItemEntity>();
@@ -73,14 +72,14 @@ class FridgeAdapter(
                     if (checked) itemsChecked.add(fridgeItem)
                     else itemsChecked.remove(fridgeItem)
 
-                    if (itemsChecked.isEmpty()){
-                        activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)?.getBackground()
+                    if (itemsChecked.isEmpty()) {
+                        activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)
+                            ?.getBackground()
                             ?.mutate()
                             ?.setTint(ContextCompat.getColor(context, R.color.disabled))
-                    }
-
-                    else {
-                        activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)?.getBackground()
+                    } else {
+                        activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)
+                            ?.getBackground()
                             ?.mutate()
                             ?.setTint(ContextCompat.getColor(context, R.color.brown_orange))
                     }
@@ -110,7 +109,9 @@ class FridgeAdapter(
         Log.i(TAG, dao.getAllFridgeItems().toString())
 
         // refresh
-        data = dao.getAllFridgeItems();
+        data = dao.getAllFridgeItems()
+    }
+
     fun refreshData() {
         data = sortItemsByDateAscending(dao.getAllFridgeItems())
         notifyDataSetChanged()
@@ -144,88 +145,4 @@ class FridgeAdapter(
         })
         return newData
     }
-
-    inner class FridgeItemViewHolder(itemView: View, listener: OnItemClickListener) :
-        RecyclerView.ViewHolder(itemView) {
-        inner class FridgeItemViewHolder(
-            itemView: View,
-            listener: OnItemClickListener
-        ) : RecyclerView.ViewHolder(itemView) {
-            init {
-                itemView.setOnClickListener {
-                    listener.onItemClick(adapterPosition)
-                }
-            }
-        }}
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FridgeItemViewHolder {
-            Log.i(TAG, "oncreateviewholder called")
-            val view =
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.single_fridge_item, parent, false)
-
-            return FridgeItemViewHolder(view, mListener)
-        }
-
-
-        override fun onBindViewHolder(holder: FridgeItemViewHolder, position: Int) {
-            Log.i(TAG, "onbindviewholder called")
-            val fridgeItem = data[position]
-
-            holder.itemView.apply {
-                this.findViewById<TextView>(R.id.fridgeItemName).text = fridgeItem.customName
-                this.findViewById<TextView>(R.id.fridgeItemDate).text = fridgeItem.expireDate
-                this.findViewById<TextView>(R.id.fridgeItemAmount).text =
-                    fridgeItem.amount.toString()
-
-                this.findViewById<CheckBox>(R.id.fridgeItemCheckBox).apply {
-                    this.setOnClickListener {
-                        val checked = this.isChecked
-                        if (checked) itemsChecked.add(fridgeItem)
-                        else itemsChecked.remove(fridgeItem)
-
-                        if (itemsChecked.isEmpty()) {
-                            activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)
-                                ?.getBackground()
-                                ?.mutate()
-                                ?.setTint(ContextCompat.getColor(context, R.color.disabled))
-                        } else {
-                            activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)
-                                ?.getBackground()
-                                ?.mutate()
-                                ?.setTint(ContextCompat.getColor(context, R.color.purple_200))
-                        }
-
-                    }
-                }
-
-                val deleteButton: Button = this.findViewById(R.id.fridge_item_delete_button)
-                deleteButton.setOnClickListener {
-                    // delete from list if selected
-                    //itemsChecked.remove(fridgeItem)
-                    deleteItemFromFridge(fridgeItem.id)
-                }
-            }
-        }
-
-        override fun getItemCount(): Int {
-            return data.size
-        }
-
-        private fun deleteItemFromFridge(itemId: Int) {
-            // delete item
-            Log.i(TAG, "Deleting item with id $itemId")
-            val dao = LocalRoomDb.getInstance(activity).getFridgeDao()
-
-            dao.deleteFridgeOrShoppingListItem(itemId)
-            Log.i(TAG, dao.getAllFridgeItems().toString())
-
-            // refresh
-            refreshData()
-        }
-
-
-
-
-
-    }
+}
