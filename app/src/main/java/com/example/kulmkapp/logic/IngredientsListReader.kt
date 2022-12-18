@@ -4,9 +4,12 @@ import android.app.Activity
 import android.util.Log
 import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.FridgeDao
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class IngredientsListReader(val activity : Activity, val dao: FridgeDao) {
-    val TAG = "read ingredients list"
+    val TAG = "ReadIngredientsList"
 
 
     fun readIngredientsIfNeeded(){
@@ -15,7 +18,9 @@ class IngredientsListReader(val activity : Activity, val dao: FridgeDao) {
         val existingIngredientEntities = dao.getAllIngredients()
         if(existingIngredientEntities.size==0){
             Log.i(TAG, "reading ingredients")
-            readIngredients()
+            CoroutineScope(Dispatchers.IO).launch {
+                readIngredients()
+            }
         }
         else{
             Log.i(TAG, "ingredients table already has ingredients")
