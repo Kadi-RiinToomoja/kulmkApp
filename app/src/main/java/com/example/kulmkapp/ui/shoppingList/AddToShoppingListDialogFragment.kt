@@ -112,7 +112,7 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
                             )
                         )
 
-                        shoppingListAdapter.data = dao.getAllFridgeItems()
+                        shoppingListAdapter.data = dao.getAllShoppingListItems()
                         shoppingListAdapter.notifyDataSetChanged()
                         //Dismiss once everything is OK.
                         dialog.dismiss()
