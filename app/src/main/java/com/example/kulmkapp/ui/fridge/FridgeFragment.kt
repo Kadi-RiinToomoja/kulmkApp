@@ -1,5 +1,7 @@
 package com.example.kulmkapp.ui.fridge
 
+import android.icu.text.SimpleDateFormat
+
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,6 +22,9 @@ import com.example.kulmkapp.logic.IngredientsListReader
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
+import java.util.*
+import kotlin.Comparator
+import kotlin.math.exp
 
 class FridgeFragment : Fragment() {
 
@@ -63,9 +68,8 @@ class FridgeFragment : Fragment() {
         val activity = this.activity
         if (activity != null) {
             Log.i(TAG, "setting up recycler view")
-            var kulmkappItems = dao.getAllFridgeItems()
 
-            fridgeAdapter = FridgeAdapter(kulmkappItems, activity)
+            fridgeAdapter = FridgeAdapter(dao, activity)
             binding.fridgeRecyclerView.adapter = fridgeAdapter
             binding.fridgeRecyclerView.layoutManager = LinearLayoutManager(this.context)
 
@@ -110,6 +114,8 @@ class FridgeFragment : Fragment() {
         newFragment.show(this.parentFragmentManager, "add_to_fridge_dialog_fragment")
     }
 
+
+
     fun openRecipes(fridgeItems: MutableList<FridgeItemEntity>) {
         val bundle = Bundle()
         bundle.putIntegerArrayList("fridgeIDs", ArrayList(fridgeItems.map { it.id }))
@@ -131,4 +137,7 @@ class FridgeFragment : Fragment() {
     }
 
 
+
 }
+
+

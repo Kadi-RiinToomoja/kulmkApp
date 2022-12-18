@@ -29,6 +29,9 @@ interface FridgeDao {
     @Query("SELECT * FROM FridgeItems WHERE isInFridge==1")
     fun getAllFridgeItems(): List<FridgeItemEntity>
 
+    @Query("SELECT * FROM FridgeItems WHERE isInFridge==1 AND expireDate LIKE :date")
+    fun getFridgeItemsByDate(date: String): List<FridgeItemEntity>
+
     @Query("SELECT * FROM FridgeItems WHERE id==:itemId")
     fun getSingleFridgeItemById(itemId: Int): FridgeItemEntity
 

@@ -6,8 +6,8 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.icu.util.Calendar
 import android.os.Bundle
-import android.os.SystemClock
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -19,6 +19,8 @@ import com.example.kulmkapp.logic.IngredientsListReader
 import com.example.kulmkapp.logic.room.*
 import com.example.kulmkapp.ui.AlarmReceiver
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -27,19 +29,23 @@ class MainActivity : AppCompatActivity() {
     private lateinit var dao: FridgeDao // 123
     var TAG = "MyMainActivity"
 
+    override fun onPause() {
+        super.onPause()
+        //source: https://www.droidcon.com/2022/09/27/everything-you-need-to-know-about-adding-notifications-with-alarm-manager-in-android/
+        testAlarm()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //source: https://www.droidcon.com/2022/09/27/everything-you-need-to-know-about-adding-notifications-with-alarm-manager-in-android/
-        createNotificationChannel()
-        var date = Date()
-        var newDate = Date(date.time + 15000)
-        setAlarm(NotificationEntity(0, "some value", newDate, 0, false, ""))
-
         dao = LocalRoomDb.getInstance(applicationContext).getFridgeDao()
+
+        //source: https://www.droidcon.com/2022/09/27/everything-you-need-to-know-about-adding-notifications-with-alarm-manager-in-android/
+        //testAlarm()
+
 
         val navView: BottomNavigationView = binding.navView
 
@@ -62,6 +68,27 @@ class MainActivity : AppCompatActivity() {
             this,
             dao
         ).readIngredientsIfNeeded() // adds 1k top ingredients to database
+    }
+
+    private fun testAlarm() {
+        createNotificationChannel()
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        c.add(Calendar.MINUTE, 1)
+
+        var dateString = "$day/$month/$year"
+
+        var expiringItems = dao.getFridgeItemsByDate(dateString)
+        Log.d(TAG, dateString)
+        Log.d(TAG, expiringItems.size.toString())
+
+
+        var alarmDesc = expiringItems.size.toString() + " items expiring today!"
+
+        setAlarm(NotificationEntity(0, alarmDesc, Date(c.timeInMillis), 0, false, ""))
     }
 
     private fun testDB() {
@@ -120,10 +147,26 @@ class MainActivity : AppCompatActivity() {
             PendingIntent.FLAG_IMMUTABLE
         )
 
-        alarmManager.setRepeating(
+        cancelAlarmIfExists(notificationEntity.id,intent)
+
+        alarmManager.set(
             AlarmManager.RTC_WAKEUP, notificationEntity.date.time,
-            1000 * 60, pendingIntent
+            pendingIntent
         )
 
+    }
+
+    //https://stackoverflow.com/questions/25009195/how-to-edit-reset-alarm-manager
+    fun cancelAlarmIfExists(requestCode: Int, intent: Intent?) {
+        try {
+            val pendingIntent = PendingIntent.getBroadcast(
+                this, requestCode,
+                intent!!, 0
+            )
+            val am = this.getSystemService(ALARM_SERVICE) as AlarmManager
+            am.cancel(pendingIntent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
