@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kulmkapp.R
 import com.example.kulmkapp.logic.room.FridgeDao
@@ -58,12 +59,17 @@ class ShoppingListAdapter(var dao: FridgeDao,var activity: Activity): RecyclerVi
                     else itemsChecked.remove(shoppingListItem)
 
                     Log.i(TAG, "items checked are: $itemsChecked")
-                    activity.findViewById<FloatingActionButton>(R.id.shoppingListMoveToFridgeButton)?.isEnabled =
-                        itemsChecked.isNotEmpty()
-                    activity.findViewById<TextView>(R.id.text_shopping_list)?.visibility =
-                        if (itemsChecked.isEmpty()) View.VISIBLE else View.GONE
+                    if (itemsChecked.isEmpty()){
+                        activity.findViewById<FloatingActionButton>(R.id.shoppingListMoveToFridgeButton)?.background
+                            ?.mutate()
+                            ?.setTint(ContextCompat.getColor(context, R.color.disabled))
+                    }
 
-
+                    else {
+                        activity.findViewById<FloatingActionButton>(R.id.shoppingListMoveToFridgeButton)?.background
+                            ?.mutate()
+                            ?.setTint(ContextCompat.getColor(context, R.color.purple_200))
+                    }
                 }
             }
 
