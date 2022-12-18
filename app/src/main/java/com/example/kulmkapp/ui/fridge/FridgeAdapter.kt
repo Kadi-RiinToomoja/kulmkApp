@@ -92,16 +92,12 @@ class FridgeAdapter(
 
         inner class FridgeItemViewHolder(itemView: View, listener: OnItemClickListener) :
             RecyclerView.ViewHolder(itemView) {
-            inner class FridgeItemViewHolder(
-                itemView: View,
-                listener: OnItemClickListener
-            ) : RecyclerView.ViewHolder(itemView) {
+
                 init {
                     itemView.setOnClickListener {
                         listener.onItemClick(adapterPosition)
                     }
                 }
-            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FridgeItemViewHolder {
@@ -164,6 +160,7 @@ class FridgeAdapter(
             AlertDialog.BUTTON_POSITIVE, this.activity.getText(R.string.answer_yes)
         ) { dialog, which ->
             deleteItemFromFridge(id)
+            refreshData()
         }
         alertDialog.setButton(
             AlertDialog.BUTTON_NEGATIVE, this.activity.getText(R.string.answer_no)
