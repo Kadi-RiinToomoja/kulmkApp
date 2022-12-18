@@ -38,52 +38,71 @@ class FridgeAdapter(
         mListener = listener
     }
 
-    fun refreshData() {
-        data = sortItemsByDateAscending(dao.getAllFridgeItems())
-        notifyDataSetChanged()
+
+    override fun getItemCount(): Int {
+        return data.size
     }
 
-    fun sortItemsByDateAscending(data: List<FridgeItemEntity>): List<FridgeItemEntity> {
-        Log.i(TAG, "sort items by date")
-        val newData = data.sortedWith(Comparator { i1, i2 ->
-            val sdf = SimpleDateFormat("dd/MM/yyyy")
+    private fun deleteItemFromFridge(itemId: Int) {
+        // delete item
+        Log.i(TAG, "Deleting item with id $itemId")
+        val dao = LocalRoomDb.getInstance(activity).getFridgeDao()
 
-            var expD1 = i1.expireDate
-            var expD2 = i2.expireDate
-            if (expD1 == null) {
-                expD1 = "01/01/0000"
-            }
-            if (expD2 == null) {
-                expD2 = "01/01/0000"
-            }
+        dao.deleteFridgeOrShoppingListItem(itemId)
+        Log.i(TAG, dao.getAllFridgeItems().toString())
 
-            val firstDate: Date = sdf.parse(expD1)
-            val secondDate: Date = sdf.parse(expD2)
-
-            var cmp = 0
-            if (firstDate.before(secondDate))
-                cmp = -1
-            if (firstDate.after(secondDate))
-                cmp = 1
-
-
-            cmp
-        })
-        return newData
+        // refresh
+        data = dao.getAllFridgeItems();
     }
 
-    inner class FridgeItemViewHolder(itemView: View, listener: OnItemClickListener) :
-        RecyclerView.ViewHolder(itemView) {
-        inner class FridgeItemViewHolder(
-            itemView: View,
-            listener: OnItemClickListener
-        ) : RecyclerView.ViewHolder(itemView) {
-            init {
-                itemView.setOnClickListener {
-                    listener.onItemClick(adapterPosition)
+        fun refreshData() {
+            data = sortItemsByDateAscending(dao.getAllFridgeItems())
+            notifyDataSetChanged()
+        }
+
+
+        fun sortItemsByDateAscending(data: List<FridgeItemEntity>): List<FridgeItemEntity> {
+            Log.i(TAG, "sort items by date")
+            val newData = data.sortedWith(Comparator { i1, i2 ->
+                val sdf = SimpleDateFormat("dd/MM/yyyy")
+
+                var expD1 = i1.expireDate
+                var expD2 = i2.expireDate
+                if (expD1 == null) {
+                    expD1 = "01/01/0000"
+                }
+                if (expD2 == null) {
+                    expD2 = "01/01/0000"
+                }
+
+                val firstDate: Date = sdf.parse(expD1)
+                val secondDate: Date = sdf.parse(expD2)
+
+                var cmp = 0
+                if (firstDate.before(secondDate))
+                    cmp = -1
+                if (firstDate.after(secondDate))
+                    cmp = 1
+
+
+                cmp
+            })
+            return newData
+        }
+
+        inner class FridgeItemViewHolder(itemView: View, listener: OnItemClickListener) :
+            RecyclerView.ViewHolder(itemView) {
+            inner class FridgeItemViewHolder(
+                itemView: View,
+                listener: OnItemClickListener
+            ) : RecyclerView.ViewHolder(itemView) {
+                init {
+                    itemView.setOnClickListener {
+                        listener.onItemClick(adapterPosition)
+                    }
                 }
             }
-        }}
+        }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FridgeItemViewHolder {
             Log.i(TAG, "oncreateviewholder called")
@@ -120,7 +139,7 @@ class FridgeAdapter(
                             activity.findViewById<FloatingActionButton>(R.id.fridgeSearchRecipe)
                                 ?.getBackground()
                                 ?.mutate()
-                                ?.setTint(ContextCompat.getColor(context, R.color.purple_200))
+                                ?.setTint(ContextCompat.getColor(context, R.color.yellow_orange))
                         }
 
                     }
@@ -134,25 +153,5 @@ class FridgeAdapter(
                 }
             }
         }
-
-        override fun getItemCount(): Int {
-            return data.size
-        }
-
-        private fun deleteItemFromFridge(itemId: Int) {
-            // delete item
-            Log.i(TAG, "Deleting item with id $itemId")
-            val dao = LocalRoomDb.getInstance(activity).getFridgeDao()
-
-            dao.deleteFridgeOrShoppingListItem(itemId)
-            Log.i(TAG, dao.getAllFridgeItems().toString())
-
-            // refresh
-            refreshData()
-        }
-
-
-
-
-
     }
+

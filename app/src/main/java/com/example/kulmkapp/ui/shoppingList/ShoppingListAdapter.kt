@@ -1,6 +1,7 @@
 package com.example.kulmkapp.ui.shoppingList
 
 import android.app.Activity
+import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -75,8 +76,11 @@ class ShoppingListAdapter(var data: List<FridgeItemEntity>, var activity: Activi
                 this.setOnClickListener {
                     Log.i(TAG, "clicked checkbox of item $it")
                     val checked = this.isChecked
-                    if (checked) itemsChecked.add(shoppingListItem)
+                    if (checked) {
+                        itemsChecked.add(shoppingListItem)
+                    }
                     else itemsChecked.remove(shoppingListItem)
+
 
                     Log.i(TAG, "items checked are: $itemsChecked")
                     if (itemsChecked.isEmpty()){
@@ -88,7 +92,7 @@ class ShoppingListAdapter(var data: List<FridgeItemEntity>, var activity: Activi
                     else {
                         activity.findViewById<FloatingActionButton>(R.id.shoppingListMoveToFridgeButton)?.background
                             ?.mutate()
-                            ?.setTint(ContextCompat.getColor(context, R.color.purple_200))
+                            ?.setTint(ContextCompat.getColor(context, R.color.yellow_orange))
                     }
                 }
             }
