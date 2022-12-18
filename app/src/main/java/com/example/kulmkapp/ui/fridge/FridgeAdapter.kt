@@ -17,6 +17,7 @@ import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.text.ParseException
 import java.util.*
 import kotlin.Comparator
 
@@ -74,18 +75,22 @@ class FridgeAdapter(
                 if (expD2 == null) {
                     expD2 = "01/01/0000"
                 }
+                try {
+                    val firstDate: Date = sdf.parse(expD1)
+                    val secondDate: Date = sdf.parse(expD2)
+                    var cmp = 0
+                    if (firstDate.before(secondDate))
+                        cmp = -1
+                    if (firstDate.after(secondDate))
+                        cmp = 1
+                    cmp
+                } catch (e: ParseException) {
+                    -1
+                }
 
-                val firstDate: Date = sdf.parse(expD1)
-                val secondDate: Date = sdf.parse(expD2)
-
-                var cmp = 0
-                if (firstDate.before(secondDate))
-                    cmp = -1
-                if (firstDate.after(secondDate))
-                    cmp = 1
 
 
-                cmp
+
             })
             return newData
         }
@@ -121,6 +126,9 @@ class FridgeAdapter(
             holder.itemView.apply {
                 this.findViewById<TextView>(R.id.fridgeItemName).text = fridgeItem.customName
                 this.findViewById<TextView>(R.id.fridgeItemDate).text = fridgeItem.expireDate
+                if(fridgeItem.expireDate.equals("UNDEFINED")) {
+                    this.findViewById<TextView>(R.id.fridgeItemDate).setTextColor(Color.RED)
+                }
                 this.findViewById<TextView>(R.id.fridgeItemAmount).text =
                     fridgeItem.amount.toString()
 

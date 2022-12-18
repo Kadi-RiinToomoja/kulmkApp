@@ -92,7 +92,7 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
                             itemType,
                             amount.toFloat(),
                             0,
-                            null
+                            "UNDEFINED"
                         )
                     )
 
