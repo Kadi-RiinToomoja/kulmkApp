@@ -88,7 +88,7 @@ class ShoppingListFragment : Fragment() {
     }
 
     fun onClickOpenAdd(shoppingListAdapter: ShoppingListAdapter) {
-        val newFragment: DialogFragment = ShoppingListDialogFragment(shoppingListAdapter)
+        val newFragment: DialogFragment = AddToShoppingListDialogFragment(shoppingListAdapter)
         newFragment.show(this.parentFragmentManager, "shopping_list_dialog_fragment")
         Log.i(TAG, "on click open add is called")
     }

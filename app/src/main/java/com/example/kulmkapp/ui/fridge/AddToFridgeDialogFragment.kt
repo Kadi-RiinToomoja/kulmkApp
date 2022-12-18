@@ -21,7 +21,7 @@ import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 
 
-class AddFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() {
+class AddToFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() {
 
     private val TAG = "MyFridgeDialogFragment"
     private lateinit var dao: FridgeDao

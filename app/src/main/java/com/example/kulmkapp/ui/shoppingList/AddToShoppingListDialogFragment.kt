@@ -19,7 +19,7 @@ import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 
 
-class ShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter) : DialogFragment() {
+class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter) : DialogFragment() {
 
 
     private val TAG = "MyShoppinglistDialogFragment"

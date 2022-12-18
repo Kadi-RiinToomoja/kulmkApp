@@ -97,7 +97,7 @@ class FridgeFragment : Fragment() {
 
 
     fun onClickOpenAdd(fridgeAdapter: FridgeAdapter) {
-        val newFragment: DialogFragment = AddFridgeDialogFragment(fridgeAdapter)
+        val newFragment: DialogFragment = AddToFridgeDialogFragment(fridgeAdapter)
         newFragment.show(this.parentFragmentManager, "fridge_dialog_fragment")
     }
 
