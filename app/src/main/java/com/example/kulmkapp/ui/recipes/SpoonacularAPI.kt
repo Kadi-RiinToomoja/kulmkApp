@@ -24,6 +24,7 @@ object SpoonacularAPI {
                 } else {
                     // get rid of old recipes
                     dao.deleteAllRecipes()
+                    dao.deleteAllIngredientsAllRecipes()
                     val ids: MutableList<Int> = mutableListOf()
                     result.forEach {
                         val recipeId = it.asJsonObject.get("id").asInt

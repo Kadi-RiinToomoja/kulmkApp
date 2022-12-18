@@ -17,25 +17,38 @@ import com.example.kulmkapp.logic.room.LocalRoomDb
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class FridgeAdapter(
-    var data: List<FridgeItemEntity>,
-    var activity: Activity
+    var data: List<FridgeItemEntity>, var activity: Activity
 ) : RecyclerView.Adapter<FridgeAdapter.FridgeItemViewHolder>() {
 
     val TAG = "fridge adapter class"
     var itemsChecked = mutableListOf<FridgeItemEntity>();
+    private lateinit var mListener: OnItemClickListener
 
-    fun interface FridgeItemClickListener {
-        fun onFridgeItemClick(recipe: FridgeItemEntity)
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
     }
 
-    inner class FridgeItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    fun setOnItemClickListener (listener: OnItemClickListener){
+        Log.i(TAG, "setOnItemClickListener")
+        mListener = listener
+    }
+
+    inner class FridgeItemViewHolder(itemView: View, listener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
+        init {
+            itemView.setOnClickListener{
+                Log.i(TAG, "Adapter pos: $adapterPosition")
+                listener.onItemClick(adapterPosition)
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FridgeItemViewHolder {
         Log.i(TAG, "oncreateviewholder called")
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.single_fridge_item, parent, false)
 
-        return FridgeItemViewHolder(view)
+        Log.i(TAG, mListener.toString())
+        return FridgeItemViewHolder(view, mListener)
     }
 
 
@@ -47,10 +60,7 @@ class FridgeAdapter(
             this.findViewById<TextView>(R.id.fridgeItemName).text = fridgeItem.customName
             this.findViewById<TextView>(R.id.fridgeItemDate).text = fridgeItem.expireDate
             this.findViewById<TextView>(R.id.fridgeItemAmount).text = fridgeItem.amount.toString()
-            //var pic = this.findViewById<ImageView>(R.id.recipeThumbnail)
-            //model.chooseImage(recipe, pic, 200)//kordaja määrab pildi suurust
 
-            //setOnClickListener { listener.onRecipeClick(recipe) }
             this.findViewById<CheckBox>(R.id.fridgeItemCheckBox).apply {
                 this.setOnClickListener {
                     val checked = this.isChecked
@@ -71,10 +81,11 @@ class FridgeAdapter(
 
                 }
             }
+
             val deleteButton: Button = this.findViewById(R.id.fridge_item_delete_button)
             deleteButton.setOnClickListener {
                 // delete from list if selected
-                itemsChecked.remove(fridgeItem)
+                //itemsChecked.remove(fridgeItem)
                 deleteItemFromFridge(fridgeItem.id)
             }
         }
