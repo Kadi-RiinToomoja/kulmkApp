@@ -25,4 +25,8 @@
     <string name="question_title">Question</string>///question on vb vale sõna
     <string name="answer_yes">YES</string>
     <string name="answer_no">NO</string>
+    <string name="choose_items_to_add_to_fridge">Please select items to move to fridge</string>
+    <string name="table_label_amount">Amount</string>
+    <string name="table_label_item_name">Name</string>
+    <string name="table_label_date">Expire date</string>
 </resources>

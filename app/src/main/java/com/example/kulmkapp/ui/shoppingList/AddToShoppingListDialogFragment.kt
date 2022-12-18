@@ -24,7 +24,7 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
     DialogFragment() {
 
 
-    private val TAG = "MyShoppinglistDialogFragment"
+    private val TAG = "MyAddToShoppinglistDialogFragment"
     private lateinit var dao: FridgeDao
     private lateinit var ingredientsList: List<IngredientEntity>
 
@@ -61,65 +61,47 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
     }
 
     private fun dialogPositiveButtonOnClick(dialog: AlertDialog, addItemView: View) {
-        dialog.setOnShowListener(DialogInterface.OnShowListener {
-            val button: Button = (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
-            button.setOnClickListener(object : View.OnClickListener {
-                override fun onClick(view: View?) {
-                    val itemName =
-                        addItemView.findViewById<TextView>(R.id.customName).text
-                    val itemType: String =
-                        addItemView.findViewById<TextView>(R.id.foodTypeSpinner).text.toString()
-                    var amount = addItemView.findViewById<EditText>(R.id.itemAmount).text.toString()
+        dialog.setOnShowListener {
+            val button: Button = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            button.setOnClickListener {
+                val itemName =
+                    addItemView.findViewById<TextView>(R.id.customName).text
+                val itemType: String =
+                    addItemView.findViewById<TextView>(R.id.foodTypeSpinner).text.toString()
+                var amount = addItemView.findViewById<EditText>(R.id.itemAmount).text.toString()
 
-                    // kontrolli kas kõik väljad on täidetud, kui pole siis alert et täida koik
-                    if (amount.isEmpty()) {
-                        amount = "1"
-                    }
-
-                    if (itemName.isEmpty() || itemType.isEmpty()) {
-                        val toast =
-                            Toast.makeText(
-                                context,
-                                getString(R.string.fields_not_filled),
-                                Toast.LENGTH_LONG
-                            )
-                        toast.show()
-
-                    } else { // lisa asjad fridgesse
-                        dao.insertFridgeOrShoppingListItem(
-                            FridgeItemEntity(
-                                0,
-                                itemName.toString(),
-                                itemType,
-                                amount.toFloat(),
-                                0,
-                                null
-                            )
-                        )
-
-                        shoppingListAdapter.data = dao.getAllShoppingListItems()
-                        shoppingListAdapter.notifyDataSetChanged()
-                        dialog.dismiss()
-                    }
+                // kontrolli kas kõik väljad on täidetud, kui pole siis alert et täida koik
+                if (amount.isEmpty()) {
+                    amount = "1"
                 }
-            })
-        })
-    }
 
+                if (itemName.isEmpty() || itemType.isEmpty()) {
+                    val toast =
+                        Toast.makeText(
+                            context,
+                            getString(R.string.fields_not_filled),
+                            Toast.LENGTH_LONG
+                        )
+                    toast.show()
 
-    fun showAlertDialog() {
-        val alertDialog = AlertDialog.Builder(requireContext()).create()
-        alertDialog.setTitle("Error")
-        alertDialog.setMessage(getString(R.string.fields_not_filled))
-        //alertDialog.setIcon(R.drawable.welcome)
+                } else { // lisa asjad shopping listi
+                    dao.insertFridgeOrShoppingListItem(
+                        FridgeItemEntity(
+                            0,
+                            itemName.toString(),
+                            itemType,
+                            amount.toFloat(),
+                            0,
+                            null
+                        )
+                    )
 
-        alertDialog.setButton(
-            AlertDialog.BUTTON_POSITIVE, "OK"
-        ) { dialog, which ->
-            // tee midagi kui vajutab erroril ok
+                    shoppingListAdapter.data = dao.getAllShoppingListItems()
+                    shoppingListAdapter.notifyDataSetChanged()
+                    dialog.dismiss()
+                }
+            }
         }
-
-        alertDialog.show()
     }
 
     //https://www.geeksforgeeks.org/how-to-implement-custom-searchable-spinner-in-android/
@@ -131,7 +113,7 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
         var arrayList: ArrayList<String> = ArrayList(ingredientsList.map { it.name })
 
         textview.let {
-            textview.setOnClickListener(View.OnClickListener {
+            textview.setOnClickListener {
                 Log.i(TAG, "set on click listener called")
                 // Initialize dialog
                 var dialog = this.context?.let { it1 -> Dialog(it1) }
@@ -194,7 +176,7 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
                         // Dismiss dialog
                         dialog.dismiss()
                     }
-            })
+            }
         }
     }
 }
