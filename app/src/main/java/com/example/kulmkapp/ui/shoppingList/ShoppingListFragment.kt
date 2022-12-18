@@ -29,7 +29,7 @@ class ShoppingListFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private lateinit var shoppingListAdapter : ShoppingListAdapter
+    private lateinit var shoppingListAdapter: ShoppingListAdapter
     private lateinit var dao: FridgeDao
 
     val TAG = "shopping list fragment"
@@ -59,7 +59,7 @@ class ShoppingListFragment : Fragment() {
             Log.i(TAG, "setting up recycler view")
             val shoppingListItems = dao.getAllShoppingListItems()
 
-            shoppingListAdapter = ShoppingListAdapter(shoppingListItems,  activity)
+            shoppingListAdapter = ShoppingListAdapter(shoppingListItems, activity)
             binding.shoppingListRecyclerView.adapter = shoppingListAdapter
             binding.shoppingListRecyclerView.layoutManager = LinearLayoutManager(this.context)
 
@@ -68,17 +68,32 @@ class ShoppingListFragment : Fragment() {
             }
             binding.shoppingListMoveToFridgeButton.setOnClickListener {
                 if (shoppingListAdapter!!.itemsChecked.isNotEmpty()) askIfWantsToMoveCheckedItemsToFridge()
-                else Toast.makeText(this.context,getString(R.string.choose_items_to_add_to_fridge),
-                    Toast.LENGTH_SHORT).show()
+                else Toast.makeText(
+                    this.context, getString(R.string.choose_items_to_add_to_fridge),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
-            shoppingListAdapter!!.setOnItemClickListener(object : ShoppingListAdapter.OnItemClickListener {
+            shoppingListAdapter!!.setOnItemClickListener(object :
+                ShoppingListAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
                     Log.i(TAG, "fridgeAdapter.setOnItemClickListener")
                     Log.i(TAG, position.toString())
                     onShoppingListItemClick(shoppingListAdapter.data[position])
                 }
             })
+
+            binding.shoppingListItemCheckBox.apply {
+                this.setOnClickListener { checkbox ->
+                    for (i in shoppingListAdapter.data.indices) {
+                        shoppingListAdapter.setOfCheckBoxes[i].isChecked = this.isChecked
+                        val checked = this.isChecked
+                        val fridgeItem = shoppingListAdapter.data[i]
+                        if (checked) shoppingListAdapter.itemsChecked.add(fridgeItem)
+                        else shoppingListAdapter.itemsChecked.remove(fridgeItem)
+                    }
+                }
+            }
 
             val dividerItemDecoration = DividerItemDecoration(
                 binding.shoppingListRecyclerView.context,
@@ -110,7 +125,7 @@ class ShoppingListFragment : Fragment() {
 
     private fun moveSelectedItemsToFridge() {
 
-        shoppingListAdapter.let{
+        shoppingListAdapter.let {
             val itemsToMove = it.itemsChecked
             Log.i(TAG, "moving items from shopping list to fridge: ${itemsToMove}")
             itemsToMove.forEach {
@@ -123,8 +138,11 @@ class ShoppingListFragment : Fragment() {
         }
     }
 
-    fun removeTicksFromAllCheckboxes(adapter: ShoppingListAdapter){
-        Log.i(TAG, "removing ticks from all checkboxes. number of checkboxes total: ${adapter.setOfCheckBoxes.size}")
+    fun removeTicksFromAllCheckboxes(adapter: ShoppingListAdapter) {
+        Log.i(
+            TAG,
+            "removing ticks from all checkboxes. number of checkboxes total: ${adapter.setOfCheckBoxes.size}"
+        )
         adapter.setOfCheckBoxes.forEach {
             it.isChecked = false
         }
@@ -137,7 +155,8 @@ class ShoppingListFragment : Fragment() {
 
     fun onShoppingListItemClick(shoppingListItem: FridgeItemEntity) {
         Log.i(TAG, "onFrigeItemClick ${shoppingListItem.customName}, $shoppingListItem")
-        val newFragment: DialogFragment = ShoppingListItemDialogFragment(shoppingListItem, shoppingListAdapter)
+        val newFragment: DialogFragment =
+            ShoppingListItemDialogFragment(shoppingListItem, shoppingListAdapter)
         newFragment.show(this.parentFragmentManager, "fridge_item_info_dialog_fragment")
     }
 

@@ -28,7 +28,8 @@ class FridgeAdapter(
 
     var data = sortItemsByDateAscending(dao.getAllFridgeItems())
     val TAG = "fridge adapter class"
-    var itemsChecked = mutableListOf<FridgeItemEntity>();
+    var itemsChecked = mutableListOf<FridgeItemEntity>()
+    var setOfCheckBoxes = mutableListOf<CheckBox>()
     private lateinit var mListener: OnItemClickListener
 
     interface OnItemClickListener {
@@ -47,7 +48,11 @@ class FridgeAdapter(
         // delete item
         Log.i(TAG, "Deleting item with id $itemId")
         val dao = LocalRoomDb.getInstance(activity).getFridgeDao()
-
+        val item = data.filter { it.id == itemId }[0]
+        // delete from list if selected
+        itemsChecked.remove(item)
+        val pos = data.indexOf(item)
+        setOfCheckBoxes.removeAt(pos)
         dao.deleteFridgeOrShoppingListItem(itemId)
         Log.i(TAG, dao.getAllFridgeItems().toString())
 
@@ -145,7 +150,9 @@ class FridgeAdapter(
             this.findViewById<TextView>(R.id.fridgeItemAmount).text =
                 fridgeItem.amount.toString()
 
-            this.findViewById<CheckBox>(R.id.fridgeItemCheckBox).apply {
+            val checkBox = this.findViewById<CheckBox>(R.id.fridgeItemCheckBox)
+            setOfCheckBoxes.add(checkBox)
+            checkBox.apply {
                 this.setOnClickListener {
                     val checked = this.isChecked
                     if (checked) itemsChecked.add(fridgeItem)

@@ -22,7 +22,7 @@ class ShoppingListAdapter(var data: List<FridgeItemEntity>, var activity: Activi
 
     val TAG = "shopping list adapter class"
     var itemsChecked = mutableListOf<FridgeItemEntity>();
-    var setOfCheckBoxes = mutableSetOf<CheckBox>()
+    var setOfCheckBoxes = mutableListOf<CheckBox>()
     private lateinit var mListener: OnItemClickListener
 
     interface OnItemClickListener {
@@ -101,7 +101,6 @@ class ShoppingListAdapter(var data: List<FridgeItemEntity>, var activity: Activi
             val deleteButton: Button = this.findViewById(R.id.shoppingList_item_delete_button)
             deleteButton.setOnClickListener {
                 Log.i("deleting from shopping list", "${shoppingListItem.customName}")
-                itemsChecked.remove(shoppingListItem)
                 askIfWantsToDeleteItemFromShoppingList(shoppingListItem.id)
                 //deleteItemFromShoppingList(shoppingListItem.id)
             }
@@ -135,7 +134,10 @@ class ShoppingListAdapter(var data: List<FridgeItemEntity>, var activity: Activi
         // delete item
         Log.i(TAG, "Deleting item with id $itemId")
         val dao = LocalRoomDb.getInstance(activity).getFridgeDao()
-
+        val item = data.filter { it.id == itemId }[0]
+        val pos = data.indexOf(item)
+        itemsChecked.remove(item)
+        setOfCheckBoxes.removeAt(pos)
         dao.deleteFridgeOrShoppingListItem(itemId)
         Log.i(TAG, dao.getAllShoppingListItems().toString())
 

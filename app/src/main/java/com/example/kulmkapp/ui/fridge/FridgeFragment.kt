@@ -76,7 +76,11 @@ class FridgeFragment : Fragment() {
             }
             binding.fridgeSearchRecipe.setOnClickListener {
                 if (fridgeAdapter.itemsChecked.isNotEmpty()) openRecipes(fridgeAdapter.itemsChecked)
-                else Toast.makeText(this.context,getString(R.string.choose_items_for_recipe),Toast.LENGTH_SHORT).show()
+                else Toast.makeText(
+                    this.context,
+                    getString(R.string.choose_items_for_recipe),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             fridgeAdapter.setOnItemClickListener(object : FridgeAdapter.OnItemClickListener {
@@ -86,6 +90,19 @@ class FridgeFragment : Fragment() {
                     onFridgeItemClick(fridgeAdapter.data[position])
                 }
             })
+
+            binding.fridgeItemCheckBox.apply {
+                this.setOnClickListener { checkbox ->
+                    for (i in fridgeAdapter.data.indices) {
+                        fridgeAdapter.setOfCheckBoxes[i].isChecked = this.isChecked
+                        val checked = this.isChecked
+                        val fridgeItem = fridgeAdapter.data[i]
+                        if (checked) fridgeAdapter.itemsChecked.add(fridgeItem)
+                        else fridgeAdapter.itemsChecked.remove(fridgeItem)
+                    }
+                }
+
+            }
 
             val dividerItemDecoration = DividerItemDecoration(
                 binding.fridgeRecyclerView.context,
@@ -131,7 +148,6 @@ class FridgeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 
 
 }
