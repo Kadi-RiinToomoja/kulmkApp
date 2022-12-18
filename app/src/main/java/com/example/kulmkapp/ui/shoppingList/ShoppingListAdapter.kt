@@ -92,7 +92,7 @@ class ShoppingListAdapter(var data: List<FridgeItemEntity>, var activity: Activi
                     else {
                         activity.findViewById<FloatingActionButton>(R.id.shoppingListMoveToFridgeButton)?.background
                             ?.mutate()
-                            ?.setTint(ContextCompat.getColor(context, R.color.brown_orange))
+                            ?.setTint(ContextCompat.getColor(context, R.color.yellow_orange))
                     }
                 }
             }
