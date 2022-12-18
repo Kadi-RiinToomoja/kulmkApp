@@ -25,11 +25,11 @@ class FridgeItemDialogFragment(val fridgeItem: FridgeItemEntity, val fridgeAdapt
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val builder = AlertDialog.Builder(it)
-            builder.setTitle("Details")
-
             dao = LocalRoomDb.getInstance(requireActivity()).getFridgeDao()
             ingredientsList = dao.getAllIngredients()
+
+            val builder = AlertDialog.Builder(it)
+            builder.setTitle("Details")
 
             val inflater = requireActivity().layoutInflater;
             val itemDetailsView: View = inflater.inflate(R.layout.add_item_fridge, null)
