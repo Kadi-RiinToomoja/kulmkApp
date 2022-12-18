@@ -35,6 +35,9 @@ interface FridgeDao {
     @Query("SELECT * FROM FridgeItems WHERE isInFridge==0")
     fun getAllShoppingListItems(): List<FridgeItemEntity>
 
+    @Query("UPDATE FridgeItems SET customName = :customName, itemType = :itemType, amount = :amount, expireDate = :expireDate WHERE id = :id")
+    fun updateFridgeItem(id: Int, customName: String, itemType: String, amount: Float, expireDate: String)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFridgeOrShoppingListItem(vararg fridgeItem: FridgeItemEntity)
 

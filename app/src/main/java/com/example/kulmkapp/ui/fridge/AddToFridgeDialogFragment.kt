@@ -23,7 +23,7 @@ import com.example.kulmkapp.logic.room.LocalRoomDb
 
 class AddToFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragment() {
 
-    private val TAG = "MyFridgeDialogFragment"
+    private val TAG = "MyAddToFridgeDialogFragment"
     private lateinit var dao: FridgeDao
     private lateinit var ingredientsList: List<IngredientEntity>
 
@@ -49,14 +49,15 @@ class AddToFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragme
 
             builder.setView(addItemView)
                 .setPositiveButton(R.string.add, null)
-                .setNegativeButton(R.string.cancel, { dialog, id ->
-                        getDialog()?.cancel()
-                    })
-            var newDialog = builder.create()
+                .setNegativeButton(R.string.cancel) { dialog, id ->
+                    getDialog()?.cancel()
+                }
 
             // kontrolli kas kõik väljad on täidetud, kui pole siis alert et täida koik
+            var newDialog = builder.create()
             dialogPositiveButtonOnClick(newDialog, addItemView)
             newDialog
+
         } ?: throw IllegalStateException("Activity cannot be null")
 
     }
@@ -65,31 +66,37 @@ class AddToFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragme
         dialog: AlertDialog,
         addItemView: View
     ) {
-        dialog.setOnShowListener(DialogInterface.OnShowListener {
-            val button: Button = (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
+        dialog.setOnShowListener {
+            val button: Button = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
             button.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(view: View?) {
-                    // TODO Do something
                     val itemName =
                         addItemView.findViewById<TextView>(R.id.customName).text
                     val itemType: String =
                         addItemView.findViewById<TextView>(R.id.foodTypeSpinner).text.toString()
-                    val amount = addItemView.findViewById<EditText>(R.id.itemAmount).text
+                    var amount = addItemView.findViewById<EditText>(R.id.itemAmount).text.toString()
                     val dateString = addItemView.findViewById<TextView>(R.id.dateText).text
-                    //val dateString = dao.getValueByKey("addToFridgeDate").value
+
+                    if (amount.isEmpty()) {
+                        amount = "1"
+                    }
 
                     // kontrolli kas kõik väljad on täidetud, kui pole siis alert et täida koik
-                    if (itemName.isEmpty() || amount.isEmpty() || dateString.isEmpty() || itemType.isEmpty()) {
-                        val toast = Toast.makeText(context, getString(R.string.fields_not_filled), Toast.LENGTH_LONG)
+                    if (itemName.isEmpty() || dateString.isEmpty() || itemType.isEmpty()) {
+                        val toast = Toast.makeText(
+                            context,
+                            getString(R.string.fields_not_filled),
+                            Toast.LENGTH_LONG
+                        )
                         toast.show()
-                        //showAlertDialog()
+
                     } else { // lisa asjad fridgesse
                         dao.insertFridgeOrShoppingListItem(
                             FridgeItemEntity(
                                 0,
                                 itemName.toString(),
                                 itemType,
-                                amount.toString().toFloat(),
+                                amount.toFloat(),
                                 1,
                                 dateString.toString()
                             )
@@ -102,7 +109,7 @@ class AddToFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragme
                     }
                 }
             })
-        })
+        }
     }
 
     fun showDatePickerDialog(addItemView: View) {
@@ -146,7 +153,10 @@ class AddToFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragme
                 dialog!!.setContentView(R.layout.dialog_searchable_spinner)
 
                 // set custom height and width
-                dialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT) // see oile hea
+                dialog.window!!.setLayout(
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.MATCH_PARENT
+                ) // see oile hea
 
                 // set transparent background
                 dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -199,7 +209,8 @@ class AddToFridgeDialogFragment(val fridgeAdapter: FridgeAdapter) : DialogFragme
                             val selectedFoodType = adapter.getItem(position)
                             textview!!.setText(selectedFoodType)
                             Log.i(TAG, "selected item $selectedFoodType")
-                            addItemView.findViewById<TextView>(R.id.customName).text = selectedFoodType
+                            addItemView.findViewById<TextView>(R.id.customName).text =
+                                selectedFoodType
 
                         }
                         // Dismiss dialog
