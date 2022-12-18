@@ -6,18 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.fridge.FridgeFragment">
 
-    <TextView
-        android:id="@+id/text_fridge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/fridgeSearchRecipe"
-        app:layout_constraintEnd_toStartOf="@+id/fridgeSearchRecipe"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/fridgeSearchRecipe" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fridgeRecyclerView"
         android:layout_width="0dp"
@@ -49,9 +37,9 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
-        android:enabled="false"
+        android:enabled="true"
         android:src="@drawable/dark_recipe"
-        app:backgroundTint="#03A9F4"
+        app:backgroundTint="@color/disabled"
         app:layout_constraintBottom_toTopOf="@+id/fridgeAddButton"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
