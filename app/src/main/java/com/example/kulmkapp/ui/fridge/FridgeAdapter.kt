@@ -1,6 +1,7 @@
 package com.example.kulmkapp.ui.fridge
 
 import android.app.Activity
+import android.graphics.Color
 import android.icu.text.SimpleDateFormat
 import android.util.Log
 import android.view.LayoutInflater
@@ -92,16 +93,13 @@ class FridgeAdapter(
 
     inner class FridgeItemViewHolder(itemView: View, listener: OnItemClickListener) :
         RecyclerView.ViewHolder(itemView) {
-        inner class FridgeItemViewHolder(
-            itemView: View,
-            listener: OnItemClickListener
-        ) : RecyclerView.ViewHolder(itemView) {
+
             init {
                 itemView.setOnClickListener {
                     listener.onItemClick(adapterPosition)
                 }
             }
-        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FridgeItemViewHolder {
@@ -121,6 +119,9 @@ class FridgeAdapter(
         holder.itemView.apply {
             this.findViewById<TextView>(R.id.fridgeItemName).text = fridgeItem.customName
             this.findViewById<TextView>(R.id.fridgeItemDate).text = fridgeItem.expireDate
+            if(fridgeItem.expireDate.equals("UNDEFINED")) {
+                this.findViewById<TextView>(R.id.fridgeItemDate).setTextColor(Color.RED)
+            }
             this.findViewById<TextView>(R.id.fridgeItemAmount).text =
                 fridgeItem.amount.toString()
 

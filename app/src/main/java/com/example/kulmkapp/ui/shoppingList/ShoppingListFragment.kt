@@ -30,7 +30,6 @@ class ShoppingListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var shoppingListAdapter : ShoppingListAdapter
-    val homeViewModel: ShoppingListViewModel by viewModels()
     private lateinit var dao: FridgeDao
 
     val TAG = "shopping list fragment"

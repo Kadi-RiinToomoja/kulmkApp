@@ -8,8 +8,8 @@ import androidx.room.TypeConverters
 
 @TypeConverters(DateTypeConverter::class)
 @Database(
-    entities = [IngredientEntity::class, FridgeItemEntity::class, RecipeEntity::class, RecipeIngredientEntity::class, KeyValueEntity::class],
-    version = 13
+    entities = [IngredientEntity::class, FridgeItemEntity::class, RecipeEntity::class, RecipeIngredientEntity::class],
+    version = 14
 )
 abstract class LocalRoomDb : RoomDatabase() {
 

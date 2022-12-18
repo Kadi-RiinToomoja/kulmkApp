@@ -36,7 +36,6 @@ class FridgeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var fridgeAdapter: FridgeAdapter
-    val model: FridgeViewModel by viewModels()
     private lateinit var dao: FridgeDao
 
     val TAG = "my fridge fragment"
@@ -47,8 +46,6 @@ class FridgeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.i(TAG, "onCreateView start")
-        val notificationsViewModel =
-            ViewModelProvider(this)[FridgeViewModel::class.java]
 
         _binding = FragmentFridgeBinding.inflate(inflater, container, false)
         val root: View = binding.root

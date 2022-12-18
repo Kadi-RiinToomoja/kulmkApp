@@ -82,40 +82,10 @@ interface FridgeDao {
     @Query("DELETE FROM RecipeIngredients WHERE recipeId==:id")
     fun deleteRecipeIngredients(id: Int)
 
-
     @Transaction
     fun deleteRecipeAndItsIngredients(id : Int) {
         deleteRecipe(id)
         deleteRecipeIngredients(id) // kustutabki kõik selle recipega seotud sest mitu tükki on selle id-ga
     }
-
-    // KeyValue
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertKeyValue(vararg keyValue: KeyValueEntity)
-
-    @Query("DELETE FROM KeyValue WHERE `key`==:KEY")
-    fun deleteKeyValue(KEY: String)
-
-    @Query("UPDATE KeyValue SET value = :VALUE WHERE `key` = :KEY")
-    fun updateKeyValue(KEY: String, VALUE: String)
-
-    @Query("SELECT COUNT(value) FROM KeyValue WHERE `key` = :KEY")
-    fun getHowManyRowsKeyValue(KEY: String) : Int
-
-    @Transaction
-    fun addKeyValue(keyValue: KeyValueEntity){ // kontrollib kas selline key on juba tabelis ja kui on siis kirjutab üle, vastasel juhul lisab
-        if (getHowManyRowsKeyValue(keyValue.key) == 0) {
-            insertKeyValue(keyValue)
-            Log.i("MyFridgeDAO", "Inserting new key ${keyValue.key} with value ${keyValue.value}")
-        } else {
-            updateKeyValue(keyValue.key, keyValue.value)
-            Log.i("MyFridgeDAO", "Updating key ${keyValue.key} with value ${keyValue.value}")
-        }
-    }
-
-    @Query("SELECT * FROM KeyValue WHERE `key`==:KEY")
-    fun getValueByKey(KEY: String): KeyValueEntity
-
 
 }

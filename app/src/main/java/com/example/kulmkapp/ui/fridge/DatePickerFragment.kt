@@ -10,7 +10,6 @@ import android.widget.DatePicker
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.kulmkapp.R
-import com.example.kulmkapp.logic.room.KeyValueEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 
 class DatePickerFragment(val addItemView: View) : DialogFragment(), DatePickerDialog.OnDateSetListener {
@@ -35,7 +34,5 @@ class DatePickerFragment(val addItemView: View) : DialogFragment(), DatePickerDi
 
         addItemView.findViewById<TextView>(R.id.dateText).text = dateString
 
-        val dao = LocalRoomDb.getInstance(requireActivity()).getFridgeDao()
-        dao.addKeyValue(KeyValueEntity("addToFridgeDate", dateString))
     }
 }

@@ -28,18 +28,5 @@
         android:id="@+id/navigation_recipes"
         android:name="com.example.kulmkapp.ui.recipes.RecipesFragment"
         android:label="@string/title_recipes"
-        tools:layout="@layout/fragment_recipes" >
-        <action
-            android:id="@+id/action_open_recipe_details"
-            app:destination="@id/recipeDetailsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/recipeDetailsFragment"
-        android:name="com.example.kulmkapp.ui.recipes.RecipeDetailsFragment"
-        android:label="@string/title_recipe_details"
-        tools:layout="@layout/fragment_recipe_details">
-        <action
-            android:id="@+id/action_open_recipe_list"
-            app:destination="@id/mobile_navigation" />
-    </fragment>
+        tools:layout="@layout/fragment_recipes" />
 </navigation>

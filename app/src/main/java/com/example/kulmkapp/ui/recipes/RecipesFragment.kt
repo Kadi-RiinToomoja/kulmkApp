@@ -38,8 +38,6 @@ class RecipesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(RecipesViewModel::class.java)
 
         _binding = FragmentRecipesBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -96,11 +94,5 @@ class RecipesFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         this.getArguments()?.clear()
-    }
-
-    private fun openRecipeDetails(recipe: RecipeEntity) {
-        val bundle = Bundle()
-        bundle.putInt("recipeId", recipe.id)
-        findNavController().navigate(R.id.action_open_recipe_details, bundle)
     }
 }
