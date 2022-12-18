@@ -61,6 +61,9 @@ interface FridgeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipeIngredient(vararg recipe: RecipeIngredientEntity)
 
+    @Query("DELETE FROM RecipeIngredients")
+    fun deleteAllIngredientsAllRecipes()
+
     @Query("DELETE FROM Recipes")
     fun deleteAllRecipes()
 

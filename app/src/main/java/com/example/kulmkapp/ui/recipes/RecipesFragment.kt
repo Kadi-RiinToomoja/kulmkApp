@@ -53,7 +53,7 @@ class RecipesFragment : Fragment() {
             val items = dao.getAllFridgeItems().filter { ids.contains(it.id) }
             val query = items.joinToString(",+") { it.itemType }
             Log.d("RecipeFragment", query)
-            SpoonacularAPI.getRecipes(requireContext(), query, dao, recipesAdapter)
+            //SpoonacularAPI.getRecipes(requireContext(), query, dao, recipesAdapter)
         }
 
         return root
