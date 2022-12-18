@@ -53,7 +53,7 @@ class FridgeAdapter(
         Log.i(TAG, dao.getAllFridgeItems().toString())
 
         // refresh
-        data = dao.getAllFridgeItems();
+        refreshData()
     }
 
         fun refreshData() {
