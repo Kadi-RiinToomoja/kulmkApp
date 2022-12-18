@@ -30,7 +30,7 @@ class DatePickerFragment(val addItemView: View) : DialogFragment(), DatePickerDi
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
         // Do something with the date chosen by the user
-        dateString = "$day/$month/$year"
+        dateString = "$day/${month + 1}/$year"
         Log.i("MyDatePickerFragment", dateString)
 
         addItemView.findViewById<TextView>(R.id.dateText).text = dateString
