@@ -69,7 +69,7 @@ class ShoppingListFragment : Fragment() {
                 onClickOpenAdd(shoppingListAdapter!!)//siin vist ei tohiks neid 2 hüüumärki olla
             }
             binding.shoppingListMoveToFridgeButton.setOnClickListener {
-                Log.i(TAG, "moving items from shopping list to fridge: ${shoppingListAdapter!!.itemsChecked.toString()}")
+                moveSelectedItemsToFridge()//todo: siin peaks tegelt küsima kas tahad ikka
             }
 
             val dividerItemDecoration = DividerItemDecoration(
@@ -80,6 +80,14 @@ class ShoppingListFragment : Fragment() {
 
         }
         Log.i(TAG, "setUpRecyclerView method ends")
+    }
+
+    private fun moveSelectedItemsToFridge() {
+        val itemsToMove = shoppingListAdapter!!.itemsChecked
+        Log.i(TAG, "moving items from shopping list to fridge: ${itemsToMove}")
+        itemsToMove.forEach {
+            dao.moveFromShoppingListToFridge(it.id)
+        }
     }
 
     override fun onDestroyView() {
