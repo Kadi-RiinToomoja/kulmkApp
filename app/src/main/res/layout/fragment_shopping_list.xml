@@ -7,19 +7,6 @@
     tools:context=".ui.shoppingList.ShoppingListFragment">
 
 
-
-    <TextView
-        android:id="@+id/text_shopping_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/shoppingListMoveToFridgeButton"
-        app:layout_constraintEnd_toStartOf="@+id/shoppingListMoveToFridgeButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/shoppingListMoveToFridgeButton" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/shoppingListRecyclerView"
         android:layout_width="0dp"
@@ -49,9 +36,9 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
-        android:enabled="false"
+        android:enabled="true"
         android:src="@drawable/dark_fridge"
-        app:backgroundTint="@color/purple_200"
+        app:backgroundTint="@color/disabled"
         app:layout_constraintBottom_toTopOf="@+id/shoppingListAddButton"
         app:layout_constraintEnd_toEndOf="parent" />
 
