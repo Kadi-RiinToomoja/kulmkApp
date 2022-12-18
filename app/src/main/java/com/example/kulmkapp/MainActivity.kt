@@ -77,7 +77,14 @@ class MainActivity : AppCompatActivity() {
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
-        c.add(Calendar.MINUTE, 1)
+        c.set(year, month, day, 9, 0, 0)
+
+        // add alarm to next day if past 9
+        if(c.before(Calendar.getInstance())) {
+            c.add(Calendar.DAY_OF_MONTH, 1)
+        }
+
+
 
         var dateString = "$day/$month/$year"
 
