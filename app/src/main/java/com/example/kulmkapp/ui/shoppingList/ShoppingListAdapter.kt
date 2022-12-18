@@ -20,14 +20,15 @@ class ShoppingListAdapter(var dao: FridgeDao,var activity: Activity): RecyclerVi
     val TAG = "shopping list adapter class"
     var data = dao.getAllShoppingListItems()
     var itemsChecked = mutableListOf<FridgeItemEntity>();
+    var setOfCheckBoxes = mutableSetOf<CheckBox>() //vb saaks ka ilma aga ma ei oska. ilma oleks muidugi parem kui saaks
 
     inner class ShoppingListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingListItemViewHolder {
-        val item1 = FridgeItemEntity(44, "igavene juust", "cheese", 1.0.toFloat(), 0, null)
-        val item2 = FridgeItemEntity(45, "igavene vorst", "sausage", 1.0.toFloat(), 0, null)
-        dao.insertFridgeOrShoppingListItem(item1)
-        dao.insertFridgeOrShoppingListItem(item2)
+        //val item1 = FridgeItemEntity(44, "igavene juust", "cheese", 1.0.toFloat(), 0, null)
+        //val item2 = FridgeItemEntity(45, "igavene vorst", "sausage", 1.0.toFloat(), 0, null)
+        //dao.insertFridgeOrShoppingListItem(item1)
+        //dao.insertFridgeOrShoppingListItem(item2)
         data = dao.getAllShoppingListItems()
 
 
@@ -46,8 +47,10 @@ class ShoppingListAdapter(var dao: FridgeDao,var activity: Activity): RecyclerVi
             this.findViewById<TextView>(R.id.shoppingListItemName).text = shoppingListItem.customName
             this.findViewById<TextView>(R.id.shoppingListItemAmount).text = shoppingListItem.amount.toString()
 
+            val checkBox = this.findViewById<CheckBox>(R.id.shoppingListItemCheckBox)
+            setOfCheckBoxes.add(checkBox)
 
-            this.findViewById<CheckBox>(R.id.shoppingListItemCheckBox).apply {
+            checkBox.apply {
                 this.setOnClickListener {
                     Log.i(TAG, "clicked checkbox of item $it")
                     val checked = this.isChecked
@@ -76,6 +79,7 @@ class ShoppingListAdapter(var dao: FridgeDao,var activity: Activity): RecyclerVi
     override fun getItemCount(): Int {
         return data.size
     }
+
 
     private fun deleteItemFromShoppingList(itemId: Int) {
         // delete item

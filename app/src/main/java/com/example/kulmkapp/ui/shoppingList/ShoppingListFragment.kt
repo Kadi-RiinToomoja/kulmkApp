@@ -83,10 +83,23 @@ class ShoppingListFragment : Fragment() {
     }
 
     private fun moveSelectedItemsToFridge() {
-        val itemsToMove = shoppingListAdapter!!.itemsChecked
-        Log.i(TAG, "moving items from shopping list to fridge: ${itemsToMove}")
-        itemsToMove.forEach {
-            dao.moveFromShoppingListToFridge(it.id)
+       shoppingListAdapter?.let{
+            val itemsToMove = it.itemsChecked
+            Log.i(TAG, "moving items from shopping list to fridge: ${itemsToMove}")
+            itemsToMove.forEach {
+                dao.moveFromShoppingListToFridge(it.id)
+            }
+            it.data = dao.getAllShoppingListItems()
+            it.notifyDataSetChanged()
+            removeTicksFromAllCheckboxes(it)
+            it.itemsChecked = mutableListOf()
+        }
+    }
+
+    fun removeTicksFromAllCheckboxes(adapter: ShoppingListAdapter){
+        Log.i(TAG, "removing ticks from all checkboxes. number of checkboxes total: ${adapter.setOfCheckBoxes.size}")
+        adapter.setOfCheckBoxes.forEach {
+            it.isChecked = false
         }
     }
 
