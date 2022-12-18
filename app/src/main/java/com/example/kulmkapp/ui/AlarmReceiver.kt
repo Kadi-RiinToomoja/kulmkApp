@@ -26,9 +26,9 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val notification = p0?.let {
             NotificationCompat.Builder(it, "to_do_list")
-                .setContentTitle("Task Reminder")
+                .setContentTitle("Expiring Food Reminder")
                 .setContentText(notificationEntity?.description)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.dark_fridge)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)
