@@ -1,6 +1,7 @@
 package com.example.kulmkapp.ui.fridge
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.graphics.Color
 import android.icu.text.SimpleDateFormat
 import android.util.Log
@@ -111,6 +112,25 @@ class FridgeAdapter(
         return FridgeItemViewHolder(view, mListener)
     }
 
+    fun askIfWantsToDeleteItemFromFridge(id: Int) {
+        val alertDialog = AlertDialog.Builder(this.activity).create()
+        alertDialog.setTitle(R.string.question_title)
+        alertDialog.setMessage(this.activity.getText(R.string.delete_from_fridge))
+
+        alertDialog.setButton(
+            AlertDialog.BUTTON_POSITIVE, this.activity.getText(R.string.answer_yes)
+        ) { dialog, which ->
+            deleteItemFromFridge(id)
+            refreshData()
+        }
+        alertDialog.setButton(
+            AlertDialog.BUTTON_NEGATIVE, this.activity.getText(R.string.answer_no)
+        ) { dialog, which ->
+        }
+
+        alertDialog.show()
+    }
+
 
     override fun onBindViewHolder(holder: FridgeItemViewHolder, position: Int) {
         Log.i(TAG, "onbindviewholder called")
@@ -148,7 +168,10 @@ class FridgeAdapter(
 
             val deleteButton: Button = this.findViewById(R.id.fridge_item_delete_button)
             deleteButton.setOnClickListener {
-                deleteItemFromFridge(fridgeItem.id)
+                // delete from list if selected
+                //itemsChecked.remove(fridgeItem)
+                askIfWantsToDeleteItemFromFridge(fridgeItem.id)
+                //deleteItemFromFridge(fridgeItem.id)
             }
         }
     }
