@@ -146,6 +146,8 @@ class FridgeAdapter(
             this.findViewById<TextView>(R.id.fridgeItemDate).text = fridgeItem.expireDate
             if(fridgeItem.expireDate.equals("UNDEFINED")) {
                 this.findViewById<TextView>(R.id.fridgeItemDate).setTextColor(Color.RED)
+            } else {
+                this.findViewById<TextView>(R.id.fridgeItemDate).setTextColor(Color.BLACK)
             }
             this.findViewById<TextView>(R.id.fridgeItemAmount).text =
                 fridgeItem.amount.toString()
