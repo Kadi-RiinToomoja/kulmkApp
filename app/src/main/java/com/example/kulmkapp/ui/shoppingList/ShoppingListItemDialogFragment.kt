@@ -10,6 +10,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
@@ -128,7 +129,11 @@ class ShoppingListItemDialogFragment : DialogFragment() {
 
                 // set custom dialog
                 dialog!!.setContentView(R.layout.dialog_searchable_spinner)
-                //dialog.window!!.setLayout(650, 800) // see oile hea
+                // set custom height and width
+                dialog.window!!.setLayout(
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.MATCH_PARENT
+                )
                 dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 dialog.show()
 
