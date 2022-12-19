@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,6 +49,11 @@ class ShoppingListFragment : Fragment() {
 
         setupRecyclerView()
 
+        setFragmentResultListener("requestKeyShopping") { requestKey, bundle ->
+            shoppingListAdapter.data = dao.getAllShoppingListItems()
+            shoppingListAdapter.notifyDataSetChanged()
+        }
+
         return root
     }
 
@@ -64,7 +70,7 @@ class ShoppingListFragment : Fragment() {
             binding.shoppingListRecyclerView.layoutManager = LinearLayoutManager(this.context)
 
             binding.shoppingListAddButton.setOnClickListener {
-                onClickOpenAdd(shoppingListAdapter!!)
+                onClickOpenAdd()
             }
             binding.shoppingListMoveToFridgeButton.setOnClickListener {
                 if (shoppingListAdapter!!.itemsChecked.isNotEmpty()) askIfWantsToMoveCheckedItemsToFridge()
@@ -160,8 +166,8 @@ class ShoppingListFragment : Fragment() {
         newFragment.show(this.parentFragmentManager, "fridge_item_info_dialog_fragment")
     }
 
-    fun onClickOpenAdd(shoppingListAdapter: ShoppingListAdapter) {
-        val newFragment: DialogFragment = AddToShoppingListDialogFragment(shoppingListAdapter)
+    fun onClickOpenAdd() {
+        val newFragment: DialogFragment = AddToShoppingListDialogFragment()
         newFragment.show(this.parentFragmentManager, "shopping_list_dialog_fragment")
         Log.i(TAG, "on click open add is called")
     }

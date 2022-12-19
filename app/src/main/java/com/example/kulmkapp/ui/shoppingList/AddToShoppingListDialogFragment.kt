@@ -12,7 +12,9 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 import com.example.kulmkapp.R
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
@@ -20,7 +22,7 @@ import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 
 
-class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapter) :
+class AddToShoppingListDialogFragment() :
     DialogFragment() {
 
 
@@ -96,8 +98,7 @@ class AddToShoppingListDialogFragment(val shoppingListAdapter: ShoppingListAdapt
                         )
                     )
 
-                    shoppingListAdapter.data = dao.getAllShoppingListItems()
-                    shoppingListAdapter.notifyDataSetChanged()
+                    setFragmentResult("requestKeyShopping", bundleOf())
                     dialog.dismiss()
                 }
             }

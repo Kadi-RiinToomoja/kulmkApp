@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -56,6 +57,10 @@ class FridgeFragment : Fragment() {
 
         setupRecyclerViewAndButton()
 
+        setFragmentResultListener("requestKeyFridge") { requestKey, bundle ->
+            fridgeAdapter.refreshData()
+        }
+
         Log.i(TAG, "onCreateView end")
         return root
     }
@@ -72,7 +77,7 @@ class FridgeFragment : Fragment() {
             binding.fridgeRecyclerView.layoutManager = LinearLayoutManager(this.context)
 
             binding.fridgeAddButton.setOnClickListener {
-                onClickOpenAdd(fridgeAdapter)
+                onClickOpenAdd()
             }
             binding.fridgeSearchRecipe.setOnClickListener {
                 if (fridgeAdapter.itemsChecked.isNotEmpty()) openRecipes(fridgeAdapter.itemsChecked)
@@ -124,8 +129,8 @@ class FridgeFragment : Fragment() {
     }
 
 
-    fun onClickOpenAdd(fridgeAdapter: FridgeAdapter) {
-        val newFragment: DialogFragment = AddToFridgeDialogFragment(fridgeAdapter)
+    fun onClickOpenAdd() {
+        val newFragment: DialogFragment = AddToFridgeDialogFragment()
         newFragment.show(this.parentFragmentManager, "add_to_fridge_dialog_fragment")
     }
 
