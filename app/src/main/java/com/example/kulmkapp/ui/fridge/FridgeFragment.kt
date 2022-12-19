@@ -1,20 +1,14 @@
 package com.example.kulmkapp.ui.fridge
 
-import android.app.AlertDialog
-import android.icu.text.SimpleDateFormat
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,9 +18,6 @@ import com.example.kulmkapp.logic.IngredientsListReader
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
-import java.util.*
-import kotlin.Comparator
-import kotlin.math.exp
 
 class FridgeFragment : Fragment() {
 
@@ -124,7 +115,10 @@ class FridgeFragment : Fragment() {
 
     fun onFridgeItemClick(fridgeItem: FridgeItemEntity) {
         Log.i(TAG, "onFrigeItemClick ${fridgeItem.customName}, $fridgeAdapter")
-        val newFragment: DialogFragment = FridgeItemDialogFragment(fridgeItem, fridgeAdapter)
+        val newFragment: DialogFragment = FridgeItemDialogFragment()
+        val args = Bundle()
+        args.putInt("fridgeItemId", fridgeItem.id)
+        newFragment.arguments = args
         newFragment.show(this.parentFragmentManager, "fridge_item_info_dialog_fragment")
     }
 

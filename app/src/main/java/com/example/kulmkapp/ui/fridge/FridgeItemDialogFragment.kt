@@ -2,30 +2,38 @@ package com.example.kulmkapp.ui.fridge
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.setFragmentResult
 import com.example.kulmkapp.R
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 
-class FridgeItemDialogFragment(val fridgeItem: FridgeItemEntity, val fridgeAdapter: FridgeAdapter) :
-    DialogFragment() {
+class FridgeItemDialogFragment : DialogFragment() {
 
     private var TAG = "MyFridgeItemDialogFragment"
     private lateinit var dao: FridgeDao
     private lateinit var ingredientsList: List<IngredientEntity>
+    private lateinit var fridgeItem: FridgeItemEntity
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             dao = LocalRoomDb.getInstance(requireActivity()).getFridgeDao()
+
+            var fridgeItemId = arguments?.getInt("fridgeItemId")
+            fridgeItem =
+                dao.getAllFridgeItems().filter { it.id == fridgeItemId }[0]
+
             ingredientsList = dao.getAllIngredients()
 
             val builder = AlertDialog.Builder(it)
@@ -94,9 +102,7 @@ class FridgeItemDialogFragment(val fridgeItem: FridgeItemEntity, val fridgeAdapt
                         amount.toFloat(),
                         dateString.toString()
                     )
-
-                    fridgeAdapter.data = dao.getAllFridgeItems()
-                    fridgeAdapter.notifyDataSetChanged()
+                    setFragmentResult("requestKeyFridge", bundleOf())
                     //Dismiss once everything is OK.
                     dialog.dismiss()
                 }

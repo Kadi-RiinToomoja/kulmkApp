@@ -11,7 +11,9 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 import com.example.kulmkapp.R
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
@@ -19,20 +21,22 @@ import com.example.kulmkapp.logic.room.IngredientEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
 
 
-class ShoppingListItemDialogFragment(
-    val shoppingListItem: FridgeItemEntity,
-    val shoppingListAdapter: ShoppingListAdapter
-) :
-    DialogFragment() {
+class ShoppingListItemDialogFragment : DialogFragment() {
 
     private val TAG = "MyShoppinglistItemDialogFragment"
     private lateinit var dao: FridgeDao
     private lateinit var ingredientsList: List<IngredientEntity>
+    private lateinit var shoppingListItem: FridgeItemEntity
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
 
             dao = LocalRoomDb.getInstance(requireContext()).getFridgeDao()
+
+            var shoppingListItemId = arguments?.getInt("shoppingListItemId")
+            shoppingListItem =
+                dao.getAllShoppingListItems().filter { it.id == shoppingListItemId }[0]
+
             ingredientsList = dao.getAllIngredients()
 
             val builder = AlertDialog.Builder(it)
@@ -101,9 +105,7 @@ class ShoppingListItemDialogFragment(
                         amount.toFloat(),
                         null.toString()
                     )
-
-                    shoppingListAdapter.data = dao.getAllShoppingListItems()
-                    shoppingListAdapter.notifyDataSetChanged()
+                    setFragmentResult("requestKeyShopping", bundleOf())
                     dialog.dismiss()
                 }
             }

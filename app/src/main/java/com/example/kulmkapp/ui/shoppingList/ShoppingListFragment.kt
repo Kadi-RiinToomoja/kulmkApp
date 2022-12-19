@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kulmkapp.R
@@ -18,8 +17,6 @@ import com.example.kulmkapp.databinding.FragmentShoppingListBinding
 import com.example.kulmkapp.logic.room.FridgeDao
 import com.example.kulmkapp.logic.room.FridgeItemEntity
 import com.example.kulmkapp.logic.room.LocalRoomDb
-import com.example.kulmkapp.ui.fridge.FridgeAdapter
-import com.example.kulmkapp.ui.fridge.FridgeItemDialogFragment
 
 
 class ShoppingListFragment : Fragment() {
@@ -162,7 +159,10 @@ class ShoppingListFragment : Fragment() {
     fun onShoppingListItemClick(shoppingListItem: FridgeItemEntity) {
         Log.i(TAG, "onFrigeItemClick ${shoppingListItem.customName}, $shoppingListItem")
         val newFragment: DialogFragment =
-            ShoppingListItemDialogFragment(shoppingListItem, shoppingListAdapter)
+            ShoppingListItemDialogFragment()
+        val args = Bundle()
+        args.putInt("shoppingListItemId", shoppingListItem.id)
+        newFragment.arguments = args
         newFragment.show(this.parentFragmentManager, "fridge_item_info_dialog_fragment")
     }
 
